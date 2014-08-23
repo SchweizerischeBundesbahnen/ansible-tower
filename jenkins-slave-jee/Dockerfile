@@ -16,7 +16,7 @@ RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.
 RUN echo 'PATH=$PATH:$HOME/bin:/opt/jdk17/bin' > /etc/profile.d/user_bin_dir.sh
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p /var/data/jenkins/{bin,m2,buildtools,.ssh} && adduser jenkins --home /var/data/jenkins
+RUN mkdir -p /var/data && adduser jenkins --home /var/data/jenkins && mkdir -p /var/data/jenkins/{bin,m2,buildtools,.ssh}
 
 # Create .m2 repository and download newest settings.xml
 RUN cd /var/data/jenkins && ln -s m2 .m2 && cd /var/data/jenkins/m2 && wget --quiet https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml --user=${user} --password=${password} --no-check-certificate
