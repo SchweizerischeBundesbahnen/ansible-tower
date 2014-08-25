@@ -13,8 +13,11 @@ ENV password sommer11
 ENV executors 2
 ENV filerurl http://wzufiler.sbb.ch 
 
+# Install epel
+RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum clean all
+
 # Install a basic SSH server and some nice admin tools
-RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb expect -y && yum clean all 
+RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb expect xmlstarlet -y && yum clean all 
 
 # Add a script for custom skeletton
 RUN echo 'PATH=$PATH:$HOME/bin:/opt/jdk17/bin' > /etc/profile.d/user_bin_dir.sh

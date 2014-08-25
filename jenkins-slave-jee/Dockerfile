@@ -3,7 +3,7 @@ FROM centos:centos6
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 #Environment variables
-ENV mvnversion 3.2.3
+ENV mvnversion 3.0.5
 ENV swarmversion 1.16
 ENV datadir /var/data 
 ENV jenkinshome ${datadir}/jenkins
@@ -13,11 +13,14 @@ ENV password sommer11
 ENV executors 4
 ENV filerurl http://wzufiler.sbb.ch 
 
+# Install epel repo
+RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum clean all
+
 # Install a basic SSH server and some nice admin tools
-RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb -y && yum clean all 
+RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all 
 
 # Add a script for custom skeletton
-RUN echo 'PATH=$PATH:$HOME/bin:/opt/jdk17/bin' > /etc/profile.d/user_bin_dir.sh
+RUN echo 'PATH=$PATH:$HOME/bin:/opt/jdk17/bin' >> /etc/profile.d/user_bin_dir.sh && echo 'WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> /etc/profile.d/user_bin_dir.sh && echo 'WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> /etc/profile.d/user_bin_dir.sh
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser jenkins --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh}
