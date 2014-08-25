@@ -7,12 +7,14 @@ ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.3
 ENV swarmversion 1.16
+ENV appuser jenkins
+ENV portoffset 90
 ENV datadir /var/data 
 ENV jenkinshome ${datadir}/jenkins
 ENV master http://ci-t.sbb.ch
 ENV user fsvctip
 ENV password sommer11
-ENV executors 4
+ENV executors 1
 ENV filerurl http://wzufiler.sbb.ch 
 
 # Install epel repo
@@ -25,7 +27,7 @@ RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.
 RUN echo 'PATH=$PATH:$HOME/bin:/opt/jdk17/bin' >> /etc/profile.d/user_bin_dir.sh && echo 'WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> /etc/profile.d/user_bin_dir.sh && echo 'WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> /etc/profile.d/user_bin_dir.sh
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p ${datadir} && adduser jenkins --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh}
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh}
 
 # Create .m2 repository and download newest settings.xml
 RUN cd ${jenkinshome} && ln -s m2 .m2 && cd ${jenkinshome}/m2 && wget --quiet https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml --user=${user} --password=${password} --no-check-certificate
