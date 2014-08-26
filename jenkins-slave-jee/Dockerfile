@@ -24,7 +24,7 @@ RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-
 RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all 
 
 # Add a script for custom skeletton
-RUN echo 'PATH=$PATH:$HOME/bin:/opt/jdk17/bin' >> /etc/profile.d/user_bin_dir.sh && echo 'WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> /etc/profile.d/user_bin_dir.sh && echo 'WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> /etc/profile.d/user_bin_dir.sh
+RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin' >> /etc/profile.d/user_bin_dir.sh && echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> /etc/profile.d/user_bin_dir.sh && echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> /etc/profile.d/user_bin_dir.sh
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh}
@@ -80,6 +80,9 @@ RUN cd ${jenkinshome} && ln -s buildtools/ build-binaries && cd build-binaries &
 # Chown ${jenkinshome} to jenkins
 RUN chown -R jenkins:jenkins ${jenkinshome}
 
+# Change timezone to Europe/Zurich
+RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+
 # Standard SSH port
 EXPOSE 22
 
@@ -87,4 +90,4 @@ EXPOSE 22
 CMD ["server", "sshd", "start"]
 
 # Start Slave
-CMD su - jenkins -c "source /etc/profile.d/user_bin_dir.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -description 'JEE Slave' -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${user} -password ${password} -mode exclusive -labels swarm"
+CMD su - jenkins -c "source /etc/profile.d/user_bin_dir.sh && ulimit -u 10000 && ulimit -n 10000 && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -description 'JEE Slave' -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${user} -password ${password} -mode exclusive -labels swarm"
