@@ -15,7 +15,8 @@ ENV master http://ci-t.sbb.ch
 ENV user fsvctip
 ENV password sommer11
 ENV executors 1
-ENV filerurl http://wzufiler.sbb.ch 
+ENV filerurl http://wzufiler.sbb.ch
+ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
 
 # Install epel repo
 RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum clean all
@@ -30,7 +31,7 @@ RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin' >> /etc/profile.d/user_bin
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh}
 
 # Create .m2 repository and download newest settings.xml
-RUN cd ${jenkinshome} && ln -s m2 .m2 && cd ${jenkinshome}/m2 && wget --quiet https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml --user=${user} --password=${password} --no-check-certificate
+RUN cd ${jenkinshome} && ln -s m2 .m2 && cd ${jenkinshome}/m2 && wget --quiet ${settingsxmlurl} --user=${user} --password=${password} --no-check-certificate
 
 # Set password for the jenkins user (you may want to alter this).
 RUN echo "jenkins:jenkins" | chpasswd
@@ -83,11 +84,17 @@ RUN chown -R jenkins:jenkins ${jenkinshome}
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
-# Standard SSH port
-EXPOSE 22
+# Workaround for running crond
+RUN sed -i '/session    required   pam_loginuid.so/c\#session    required   pam_loginuid.so' /etc/pam.d/crond
 
-# Start sshd daemon on container start
-CMD ["server", "sshd", "start"]
+# Adding crontab for update settings.xml every minute
+RUN echo "* * * * * wget --quiet ${settingsxmlurl} --user=${user} --password=${password} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> /etc/crontab
+
+# Add command to start crond
+RUN echo "service crond start" >> /root/run.sh
+
+# Add run script
+#RUN echo "su - jenkins -c source /etc/profile.d/user_bin_dir.sh && ulimit -u 10000 && ulimit -n 10000 && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -description 'JEE Slave' -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${user} -password ${password} -mode exclusive -labels swarm" >> /root/run.sh
 
 # Start Slave
-CMD su - jenkins -c "source /etc/profile.d/user_bin_dir.sh && ulimit -u 10000 && ulimit -n 10000 && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -description 'JEE Slave' -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${user} -password ${password} -mode exclusive -labels swarm"
+CMD /bin/bash /root/run.sh && su - jenkins -c "source /etc/profile.d/user_bin_dir.sh && ulimit -u 10000 && ulimit -n 10000 && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -description 'JEE Slave' -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${user} -password ${password} -mode exclusive -labels swarm" 
