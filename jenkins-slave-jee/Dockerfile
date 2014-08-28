@@ -28,7 +28,7 @@ RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-
 RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all 
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh}
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} 
 
 # Set password for the jenkins user (you may want to alter this).
 RUN echo "jenkins:jenkins" | chpasswd
@@ -37,7 +37,7 @@ RUN echo "jenkins:jenkins" | chpasswd
 RUN wget --quiet ${filerurl}/jenkins-slave-authorized_keys -O ${jenkinshome}/.ssh/authorized_keys && chown -R jenkins:jenkins ${jenkinshome}/.ssh && chmod 640 ${jenkinshome}/.ssh/authorized_keys
 
 # Download JDK 1.7 as jenkins runtime
-RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && /opt/jdk17/bin/java -version
+RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && ln -s /opt/jdk17/bin/java ${jenkinshome}/bin/java && su - jenkins -c "java -version" 
 
 # Download Ant 1
 RUN wget --quiet ${filerurl}/apache-ant-1.8.tar.gz -O /tmp/apache-ant-1.8.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/apache-ant-1.8.tar.gz && ln -s apache-ant-1.8* apache-ant-1.8 && rm -f /tmp/apache-ant-1.8.tar.gz
@@ -85,7 +85,7 @@ RUN wget --quiet ${filerurl}/was85-jdk.tar.gz -O /tmp/was85-jdk.tar.gz && cd ${j
 RUN wget --quiet "http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
 
 # Legacy stuff
-RUN cd ${jenkinshome} && ln -s m2 .m2 && ln -s buildtools/ build-binaries && cd build-binaries && ln -s apache-maven-${mvn30version} apache-maven-3.0.4 && ln -s oracle-jdk-6 jdk-oracle-1.6.0.30 && ln -s oracle-jdk-6-32b jdk-oracle-1.6.0.31-32b && ln -s oracle-jdk-6 jdk-oracle-1.6.0.31 && ln -s oracle-jdk-7 jdk-oracle-1.7.0.3 && ln -s oracle-jdk-7-32b jdk-oracle-1.7.0.3-32b && ln -s oracle-jdk-7 1.7.0.2 && ln -s oracle-jdk-8 jdk-oracle-1.8.0.5-64b && ln -s jdk-ibm-1.7.0.5 jdk-ibm-1.7.0.2 && ln -s was85 base_v85 && ln -s was70 base_v70
+RUN cd ${jenkinshome} && ln -s m2 .m2 && ln -s buildtools/ build-binaries && cd build-binaries && ln -s apache-maven-${mvn30version} apache-maven-3.0.4 && ln -s oracle-jdk-6 jdk-oracle-1.6.0.30 && ln -s oracle-jdk-6-32b jdk-oracle-1.6.0.31-32b && ln -s oracle-jdk-6 jdk-oracle-1.6.0.31 && ln -s oracle-jdk-7 jdk-oracle-1.7.0.3 && ln -s oracle-jdk-7-32b jdk-oracle-1.7.0.3-32b && ln -s oracle-jdk-7 1.7.0.2 && ln -s oracle-jdk-8 jdk-oracle-1.8.0.5-64b && ln -s jdk-ibm-1.7.0.5 jdk-ibm-1.7.0.2 && ln -s was85 base_v85 && ln -s was70 base_v70 && ln -s oracle-jdk-7 jdk-oracle-1.7.0.2
 
 # Chown ${jenkinshome} to jenkins
 RUN chown -R jenkins:jenkins ${jenkinshome}
@@ -97,7 +97,7 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin WAS7RUNTIME=/var/data/jenkins/buildtools/was70 WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 
 # Add environment variables to run on start
-RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> /root/run.sh && echo 'su - jenkins -c "source ${jenkinshome}/env.sh && ulimit -u 10000 && ulimit -n 10000 && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels swarm"' >> /root/run.sh && chmod +x /root/run.sh
+RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> /root/run.sh && echo 'su - jenkins -c "source ${jenkinshome}/env.sh && ulimit -u 20000 && ulimit -n 30000 && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels swarm"' >> /root/run.sh && chmod +x /root/run.sh
 
 # Start Slave
 CMD /root/run.sh 
