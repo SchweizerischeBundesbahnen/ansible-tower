@@ -47,7 +47,7 @@ EXPOSE 8070
 EXPOSE 10070
 
 # Create run.sh
-RUN echo "wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml" >> /root/run.sh && echo "sed -i 's/issues.sbb.ch/${domain}/g' /opt/jira/conf/server.xml" >> /root/run.sh && echo "sed -i 's/10.134.205.202/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/jira/bin/setenv.sh" >> /root/run.sh && chmod +x /root/run.sh
+RUN echo "wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml" >> /root/run.sh && echo "sed -i 's/10.134.205.202/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/jira/bin/setenv.sh" >> /root/run.sh && chmod +x /root/run.sh
 
 # Start jira
-CMD /bin/bash /root/run.sh && su - jira -c 'export JAVA_HOME=/opt/jdk17 && /opt/jira/bin/start-jira.sh' && tail -f /opt/jira/logs/catalina.out
+CMD /bin/bash /root/run.sh && sed -i "s/issues.sbb.ch/$domain/g" /opt/jira/conf/server.xml && su - jira -c 'export JAVA_HOME=/opt/jdk17 && /opt/jira/bin/start-jira.sh' && tail -f /opt/jira/logs/catalina.out
