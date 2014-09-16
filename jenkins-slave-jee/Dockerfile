@@ -20,21 +20,13 @@ ENV svnpassword fsbuild2011
 ENV executors 1
 ENV filerurl http://wzufiler.sbb.ch
 ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
+ENV labels swarm
 
 # Install epel repo
-RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum clean all
-
-# Install a basic SSH server and some nice admin tools
-RUN yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all 
+RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum clean all && yum install -q openssh-server vim wget tar subversion git glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all 
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} 
-
-# Set password for the jenkins user (you may want to alter this).
-RUN echo "jenkins:jenkins" | chpasswd
-
-# Add authorized keys
-RUN wget --quiet ${filerurl}/jenkins-slave-authorized_keys -O ${jenkinshome}/.ssh/authorized_keys && chown -R jenkins:jenkins ${jenkinshome}/.ssh && chmod 640 ${jenkinshome}/.ssh/authorized_keys
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "jenkins:jenkins" | chpasswd
 
 # Download JDK 1.7 as jenkins runtime
 RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && ln -s /opt/jdk17/bin/java ${jenkinshome}/bin/java && su - jenkins -c "java -version" 
@@ -87,17 +79,17 @@ RUN wget --quiet "http://maven.jenkins-ci.org/content/repositories/releases/org/
 # Legacy stuff
 RUN cd ${jenkinshome} && ln -s m2 .m2 && ln -s buildtools/ build-binaries && cd build-binaries && ln -s apache-maven-${mvn30version} apache-maven-3.0.4 && ln -s oracle-jdk-6 jdk-oracle-1.6.0.30 && ln -s oracle-jdk-6-32b jdk-oracle-1.6.0.31-32b && ln -s oracle-jdk-6 jdk-oracle-1.6.0.31 && ln -s oracle-jdk-7 jdk-oracle-1.7.0.3 && ln -s oracle-jdk-7-32b jdk-oracle-1.7.0.3-32b && ln -s oracle-jdk-7 1.7.0.2 && ln -s oracle-jdk-8 jdk-oracle-1.8.0.5-64b && ln -s jdk-ibm-1.7.0.5 jdk-ibm-1.7.0.2 && ln -s was85 base_v85 && ln -s was70 base_v70 && ln -s oracle-jdk-7 jdk-oracle-1.7.0.2
 
-# Chown ${jenkinshome} to jenkins
-RUN chown -R jenkins:jenkins ${jenkinshome}
-
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
 # Create environment file
-RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin WAS7RUNTIME=/var/data/jenkins/buildtools/was70 WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
+RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin WAS7RUNTIME=/var/data/jenkins/buildtools/was70 WAS85RUNTIME=/var/data/jenkins/buildtools/was85 LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
 
 # Add environment variables to run on start
-RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> /root/run.sh && echo 'su - jenkins -c "source ${jenkinshome}/env.sh && ulimit -u 20000 && ulimit -n 30000 && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels swarm"' >> /root/run.sh && chmod +x /root/run.sh
+RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> /root/run.sh && wget --quiet ${wzufiler}/keystore -O ${jenkinshome}/.keystore && chmod +x /root/run.sh
+
+# Chown JENKINS_HOME to jenkins
+RUN chown -R jenkins:jenkins ${jenkinshome}
 
 # Start Slave
-CMD /root/run.sh 
+CMD /root/run.sh && su - jenkins -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}" 
