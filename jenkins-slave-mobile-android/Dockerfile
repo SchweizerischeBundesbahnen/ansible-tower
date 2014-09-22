@@ -24,4 +24,4 @@ RUN echo 'export PATH=$PATH:'${jenkinshome}/buildtools/android-sdk-linux/tools:$
 RUN ln -sf ${jenkinshome}/buildtools/android-sdk-linux/build-tools/20.0.0/zipalign ${jenkinshome}/buildtools/android-sdk-linux/tools/zipalign
 
 # Run jenkins
-CMD ${jenkinshome}/run.sh && su - jenkins -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
+CMD su - jenkins -c "${jenkinshome}/run.sh" && su - jenkins -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
