@@ -74,10 +74,10 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
 
 # Add environment variables to run on start
-RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> /root/run.sh && wget --quiet ${wzufiler}/keystore -O ${jenkinshome}/.keystore && chmod +x /root/run.sh
+RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh && wget --quiet ${wzufiler}/keystore -O ${jenkinshome}/.keystore && chmod +x ${jenkinshome}/run.sh
 
 # Chown JENKINS_HOME to jenkins
 RUN chown -R jenkins:jenkins ${jenkinshome}
 
 # Start Slave
-CMD /root/run.sh && su - jenkins -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}" 
+CMD ${jenkinshome}/run.sh && su - jenkins -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}" 
