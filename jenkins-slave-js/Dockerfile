@@ -20,7 +20,7 @@ RUN wget --quiet ${filerurl}/was70-jdk.tar.gz -O /tmp/was70-jdk.tar.gz && cd ${j
 RUN wget --quiet ${filerurl}/was85-jdk.tar.gz -O /tmp/was85-jdk.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/was85-jdk.tar.gz && ln -s jdk-ibm-1.7* ibm-jdk-was85 && rm -f /tmp/was85-jdk.tar.gz
 
 # Legacy stuff
-RUN cd ${jenkinshome} && ln -s jdk-ibm-1.7.0.5 jdk-ibm-1.7.0.2
+RUN cd ${jenkinshome}/buildtools && ln -s jdk-ibm-1.7.0.5 jdk-ibm-1.7.0.2
 
 # Chown jenkinshome
 RUN chown -R jenkins:jenkins ${jenkinshome}
