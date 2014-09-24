@@ -22,5 +22,8 @@ RUN wget --quiet ${filerurl}/was85-jdk.tar.gz -O /tmp/was85-jdk.tar.gz && cd ${j
 # Legacy stuff
 RUN cd ${jenkinshome} && ln -s jdk-ibm-1.7.0.5 jdk-ibm-1.7.0.2
 
+# Chown jenkinshome
+RUN chown -R jenkins:jenkins ${jenkinshome}
+
 # Run jenkins
 CMD su - jenkins -c "${jenkinshome}/run.sh" && su - jenkins -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
