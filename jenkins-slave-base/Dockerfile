@@ -27,7 +27,7 @@ ENV gitversion 1.8.5.5
 RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum install -q openssh-server vim wget tar subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect unzip gettext-devel expat-devel curl-devel zlib-devel openssl-devel -y && yum clean all -q 
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "jenkins:jenkins" | chpasswd
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "${appuser}:${appuser}" | chpasswd
 
 # Download JDK 1.7 as jenkins runtime
 RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && ln -s /opt/jdk17/bin/java ${jenkinshome}/bin/java && su - ${appuser} -c "java -version" 
