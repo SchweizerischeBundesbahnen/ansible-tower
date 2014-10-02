@@ -6,7 +6,7 @@ ENV gradle1version 1.12
 ENV labels "swarm android"
 
 # Install qemu and kvm
-RUN yum install -q qemu-kvm qemu-kvm-tools
+RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
 
 # Get android sdk
 RUN wget --quiet ${filerurl}/android-sdk.tar.gz -O /tmp/android-sdk.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/android-sdk.tar.gz && rm -f /tmp/android-sdk.tar.gz && cd ${jenkinshome}/buildtools/android-sdk-linux && wget --quiet ${filerurl}/android-sdk-update.sh -O android-sdk-update.sh && chmod +x ./android-sdk-update.sh && chown -R ${appuser}:${appuser} ${jenkinshome}
