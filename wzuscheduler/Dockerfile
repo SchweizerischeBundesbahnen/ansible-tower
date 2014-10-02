@@ -5,7 +5,7 @@ MAINTAINER igor.masen2@sbb.ch
  
 ENV datadir /var/data
 ENV appname jenkins
-ENV appversion 1.565.2
+ENV appversion 1.565.3
 ENV portoffset 90
 ENV maxheap 3072m
 ENV JENKINS_HOME ${datadir}/${appname}

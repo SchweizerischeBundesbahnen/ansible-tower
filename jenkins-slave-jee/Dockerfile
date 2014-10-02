@@ -2,24 +2,6 @@
 FROM schweizerischebundesbahnen/jenkins-slave-base 
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
-#Environment variables
-ENV mvn30version 3.0.5
-ENV mvn31version 3.1.1
-ENV mvn32version 3.2.3
-ENV antversion 1.9.4
-ENV swarmversion 1.16
-ENV appuser jenkins
-ENV portoffset 90
-ENV datadir /var/data 
-ENV jenkinshome ${datadir}/jenkins
-ENV master http://ci-t.sbb.ch
-ENV ciuser overridethis 
-ENV svnuser fsbuild 
-ENV cipassword overridethis 
-ENV svnpassword fsbuild2011 
-ENV executors 1
-ENV filerurl http://wzufiler.sbb.ch
-ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
 ENV labels "swarm jee"
 
 # Download and extract WAS 70 and create profile
@@ -44,7 +26,7 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70 WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 
 # Chown JENKINS_HOME to jenkins
-RUN chown -R jenkins:jenkins ${jenkinshome}
+RUN chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Start Slave
-CMD su - jenkins -c "${jenkinshome}/run.sh" && su - jenkins -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}" 
+CMD su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}" 
