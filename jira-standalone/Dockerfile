@@ -4,7 +4,7 @@ MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 #Environment variables
 ENV domain issues-t.sbb.ch
-ENV jiraversion 6.2.7
+ENV jiraversion 6.3.7
 ENV datadir /var/data
 ENV jirahome /var/data/jira
 ENV portoffset 70
