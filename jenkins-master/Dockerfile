@@ -44,6 +44,9 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 # create custom run.sh without ssh
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> ${JENKINS_HOME}/run.sh
 
+# expose port 8080 for jenkins
+EXPOSE 8080
+
 # start jenkins on container start without ssh
 CMD su - ${appname} -c "sh ${JENKINS_HOME}/run.sh"
  
