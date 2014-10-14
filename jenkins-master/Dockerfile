@@ -29,7 +29,7 @@ RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 # start ssh daemon
 RUN /etc/init.d/sshd start
 RUN mkdir -p ${JENKINS_HOME}/.ssh
-RUN chown -R jenkins:jenkins ${JENKINS_HOME}/.ssh; chmod 700 ${JENKINS_HOME}/.ssh
+RUN chown -R ${appname}:${appname} ${JENKINS_HOME}/.ssh; chmod 700 ${JENKINS_HOME}/.ssh
 EXPOSE 22
 
 # get java
@@ -45,8 +45,8 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> ${JENKINS_HOME}/run.sh
 
 # start jenkins on container start without ssh
-CMD su - jenkins -c "sh ${JENKINS_HOME}/run.sh"
+CMD su - ${appname} -c "sh ${JENKINS_HOME}/run.sh"
  
 # start jenkins on container start with ssh
-#CMD service sshd start && su - jenkins -c "sh ${JENKINS_HOME}/run.sh"
+#CMD service sshd start && su - ${appname} -c "sh ${JENKINS_HOME}/run.sh"
 
