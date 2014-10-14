@@ -42,14 +42,14 @@ RUN echo "export JAVA_OPTIONS=${JAVA_OPTIONS}" >> ${JENKINS_HOME}/.bashrc
 RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.war -O /opt/jenkins.war && chown ${appname}:${appname} /opt/jenkins.war
 
 # create custom run.sh without ssh
-RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> ${JENKINS_HOME}/run.sh
+RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /opt/run.sh
 
 # expose port 8080 for jenkins
 EXPOSE 8080
 
 # start jenkins on container start without ssh
-CMD su - ${appname} -c "sh ${JENKINS_HOME}/run.sh"
+CMD su - ${appname} -c "sh /opt/run.sh"
  
 # start jenkins on container start with ssh
-#CMD service sshd start && su - ${appname} -c "sh ${JENKINS_HOME}/run.sh"
+#CMD service sshd start && su - ${appname} -c "sh /opt/run.sh"
 
