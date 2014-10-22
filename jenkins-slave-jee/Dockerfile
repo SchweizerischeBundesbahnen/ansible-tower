@@ -2,13 +2,13 @@
 FROM schweizerischebundesbahnen/jenkins-slave-base 
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
-ENV labels "swarm jee"
+ENV labels "jee"
 
 # Download and extract WAS 70 and create profile
-RUN cd ${jenkinshome}/buildtools &&  wget -qO- ${filerurl}/was70.tar.gz | tar xfz - && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh
+RUN cd /opt &&  wget -qO- ${filerurl}/was70.tar.gz | tar xfz - && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh && ln -s /opt/was70 ${jenkinshome}/buildtools/was70
 
 # Download and extract WAS 85 and create profile 
-RUN cd ${jenkinshome}/buildtools &&  wget -qO- ${filerurl}/was85.tar.gz | tar xfz - && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh
+RUN cd /opt &&  wget -qO- ${filerurl}/was85.tar.gz | tar xfz - && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh && ln -s /opt/was70 ${jenkinshome}/buildtools/was85
 
 # Get WAS 70 JDK
 RUN wget --quiet ${filerurl}/was70-jdk.tar.gz -O /tmp/was70-jdk.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/was70-jdk.tar.gz && ln -s jdk-ibm-1.6* ibm-jdk-was70 && rm -f /tmp/was70-jdk.tar.gz
