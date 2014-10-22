@@ -24,25 +24,25 @@ ENV labels swarm
 ENV gitversion 1.8.5.5
 
 # Install epel repo
-RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum install -q openssh-server vim wget tar subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect unzip gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
+RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum install -q openssh-server vim wget tar subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect unzip gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "${appuser}:${appuser}" | chpasswd
 
 # Download JDK 1.7 as jenkins runtime
-RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && ln -s /opt/jdk17/bin/java ${jenkinshome}/bin/java && su - ${appuser} -c "java -version" 
+RUN cd /opt && wget -qO- ${filerurl}/jdk17.tar.gz | tar xfz - && ln -s /opt/jdk1.7* /opt/jdk17 && ln -s /opt/jdk17/bin/java ${jenkinshome}/bin/java && su - ${appuser} -c "java -version"
 
 # Download Ant 1
-RUN wget --quiet ${filerurl}/apache-ant-1.8.tar.gz -O /tmp/apache-ant-1.8.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/apache-ant-1.8.tar.gz && ln -s apache-ant-1.8* apache-ant-1.8 && rm -f /tmp/apache-ant-1.8.tar.gz
+RUN cd ${jenkinshome}/buildtools && wget -qO- ${filerurl}/apache-ant-1.8.tar.gz | tar xfz - && ln -s apache-ant-1.8* apache-ant-1.8
 
 # Download Maven 3.0
-RUN wget --quiet "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn30version}/binaries/apache-maven-${mvn30version}-bin.tar.gz" -O /tmp/apache-maven-${mvn30version}-bin.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/apache-maven-${mvn30version}-bin.tar.gz && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml` && rm -f /tmp/apache-maven-${mvn30version}-bin.tar.gz
+RUN cd ${jenkinshome}/buildtools && wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn30version}/binaries/apache-maven-${mvn30version}-bin.tar.gz" | tar xfz - && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.1
-RUN wget --quiet "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn31version}/binaries/apache-maven-${mvn31version}-bin.tar.gz" -O /tmp/apache-maven-${mvn31version}-bin.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/apache-maven-${mvn31version}-bin.tar.gz && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml` && rm -f /tmp/apache-maven-${mvn31version}-bin.tar.gz
+RUN cd ${jenkinshome}/buildtools && wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn31version}/binaries/apache-maven-${mvn31version}-bin.tar.gz" | tar xfz - && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.2
-RUN wget --quiet "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn32version}/binaries/apache-maven-${mvn32version}-bin.tar.gz" -O /tmp/apache-maven-${mvn32version}-bin.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/apache-maven-${mvn32version}-bin.tar.gz && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml` && rm -f /tmp/apache-maven-${mvn32version}-bin.tar.gz
+RUN cd ${jenkinshome}/buildtools && wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn32version}/binaries/apache-maven-${mvn32version}-bin.tar.gz" | tar xfz - && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Get Oracle 6 32 Bit JDK
 RUN wget --quiet ${filerurl}/oracle-jdk-6-32b.tar.gz -O /tmp/oracle-jdk-6-32b.tar.gz  && cd ${jenkinshome}/buildtools && tar xfz /tmp/oracle-jdk-6-32b.tar.gz && rm -f /tmp/oracle-jdk-6-32b.tar.gz && ln -s jdk1.6*32b oracle-jdk-6-32b
