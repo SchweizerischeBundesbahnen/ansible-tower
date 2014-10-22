@@ -5,10 +5,10 @@ MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 ENV labels "jee"
 
 # Download and extract WAS 70 and create profile
-RUN cd /opt &&  wget -qO- ${filerurl}/was70.tar.gz | tar xfz - && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh && ln -s /opt/was70 ${jenkinshome}/buildtools/was70
+RUN cd /opt &&  wget -qO- ${filerurl}/was70.tar.gz | tar xfz - && ln -s /opt/was70 ${jenkinshome}/buildtools/was70 && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh
 
 # Download and extract WAS 85 and create profile 
-RUN cd /opt &&  wget -qO- ${filerurl}/was85.tar.gz | tar xfz - && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh && ln -s /opt/was70 ${jenkinshome}/buildtools/was85
+RUN cd /opt &&  wget -qO- ${filerurl}/was85.tar.gz | tar xfz - && ln -s /opt/was85 ${jenkinshome}/buildtools/was85 && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh
 
 # Get WAS 70 JDK
 RUN wget --quiet ${filerurl}/was70-jdk.tar.gz -O /tmp/was70-jdk.tar.gz && cd ${jenkinshome}/buildtools && tar xfz /tmp/was70-jdk.tar.gz && ln -s jdk-ibm-1.6* ibm-jdk-was70 && rm -f /tmp/was70-jdk.tar.gz
