@@ -16,7 +16,7 @@ ADD launch.bash /launch
 # Launching Stash
 
 WORKDIR /opt/stash
-VOLUME /opt/atlassian-home
+VOLUME /var/data/stash:/opt/atlassian-home
 EXPOSE 7990 7999
 USER stash
 CMD ["/launch"]
