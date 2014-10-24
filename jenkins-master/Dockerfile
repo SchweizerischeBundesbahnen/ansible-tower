@@ -45,7 +45,7 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /opt/run.sh
 
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
-RUN mkdir/opt/tmp/WEB-INF/plugins
+RUN mkdir -p /opt/tmp/WEB-INF/plugins
 RUN curl -k -L https://updates.jenkins-ci.org/latest/git.hpi -o /opt/tmp/WEB-INF/plugins/git.hpi
 RUN curl -k curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /opt/tmp/WEB-INF/plugins/git-client.hpi
 RUN cd /opt/tmp; zip --grow /opt/jenkins.war WEB-INF/*
