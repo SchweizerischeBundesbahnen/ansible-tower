@@ -44,6 +44,12 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 # create custom run.sh without ssh
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /opt/run.sh
 
+# download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
+RUM mkdir /tmp/WEB-INF/plugins
+RUN curl -L https://updates.jenkins-ci.org/latest/git.hpi -o /tmp/WEB-INF/plugins/git.hpi
+RUN curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi
+RUN cd /tmp; zip --grow /opt/jenkins.war WEB-INF/*
+
 # expose port 8080 for jenkins
 EXPOSE 8080
 
