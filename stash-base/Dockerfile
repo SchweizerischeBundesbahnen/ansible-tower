@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/atlassian-base:jdk7
+FROM schweizerischebundesbahnen/atlassian-base
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
