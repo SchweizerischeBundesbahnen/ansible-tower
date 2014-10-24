@@ -16,7 +16,3 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http:/
 RUN /usr/sbin/groupadd atlassian
 ADD own-volume.sh /usr/local/bin/own-volume
 RUN echo "%atlassian ALL=NOPASSWD: /usr/local/bin/own-volume" >> /etc/sudoers
-
-ADD common.bash /usr/local/share/atlassian/common.bash
-RUN chgrp atlassian /usr/local/share/atlassian/common.bash
-RUN chmod g+w /usr/local/share/atlassian/common.bash
