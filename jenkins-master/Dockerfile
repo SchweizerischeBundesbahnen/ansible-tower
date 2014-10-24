@@ -20,7 +20,7 @@ RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
 RUN echo "LC_ALL=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
  
 # install basic tools
-RUN yum install --quiet openssh-server git subversion vim wget curl tar -y && yum clean all -y
+RUN yum install --quiet openssh-server git subversion vim wget curl tar zip unzip  -y && yum clean all -y
  
 # don't use pam in ssh
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
