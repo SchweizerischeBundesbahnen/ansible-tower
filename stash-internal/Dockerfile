@@ -37,6 +37,6 @@ RUN chown -R stash:atlassian $STASH_HOME /opt/stash /opt/jdk*
 
 RUN echo "sed -i 's/10.134.205.228/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/stash/bin/setenv.sh" >> /root/run.sh && chmod +x /root/run.sh
 
-EXPOSE 8090:7990
+EXPOSE 8090
 
 CMD /bin/bash /root/run.sh && sed -i "s/code.sbb.ch/$DOMAIN/g" /opt/stash/conf/server.xml && su - stash -c 'export JAVA_HOME=/opt/jdk && /opt/stash/bin/start-stash.sh' && tail -f /opt/stash/logs/catalina.out
