@@ -20,4 +20,4 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 
 #Setting Stash Home
 RUN sed -i 's,#STASH_HOME="",STASH_HOME="/var/data/atlassian-base",g' /opt/stash/bin/setenv.sh
-RUN chown -R stash:stash /opt/stash
+RUN chown -R stash:atlassian /opt/stash
