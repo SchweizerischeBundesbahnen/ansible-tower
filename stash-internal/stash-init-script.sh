@@ -5,8 +5,8 @@
 # chkconfig: - 85 15
 
 opts="-p 7990:7990 -v /var/data/stash/log:/var/data/atlassian-base/log -v /var/data/stash/logs:/var/data/atlassian-base/logs -v /var/data/stash/data:/var/data/atlassian-base/data -d -m 10g -e DOMAIN=code-t.sbb.ch"
-containername=jira
-imagename=jira
+containername=stash
+imagename=stash
 
 function start_container() {
 	docker start $containername
