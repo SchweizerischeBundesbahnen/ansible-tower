@@ -33,7 +33,7 @@ VOLUME /var/data/stash/data:$STASH_HOME/data
 RUN curl -Lks ${FILER_URL}/stash/stash-config.properties-test -o $STASH_HOME/stash-config.properties 
 RUN curl -Lks ${FILER_URL}/stash/server.xml-prod -o /opt/stash/conf/server.xml
 
-RUN chown -R stash:atlassian $STASH_HOME /opt/stash /opt/jdk*
+RUN chown -R stash:atlassian $STASH_HOME
 
 RUN echo "sed -i 's/10.134.205.228/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/stash/bin/setenv.sh" >> /root/run.sh && chmod +x /root/run.sh
 

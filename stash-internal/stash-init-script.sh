@@ -4,7 +4,7 @@
 #
 # chkconfig: - 85 15
 
-opts="-p 7990:7990 -v /var/data/stash/log:/var/data/atlassian-base/log -v /var/data/stash/logs:/var/data/atlassian-base/logs -v /var/data/stash/data:/var/data/atlassian-base/data -d -m 10g -e DOMAIN=code-t.sbb.ch"
+opts="-p 8090:8090 -v /var/data/stash/log:/var/data/atlassian-base/log -v /var/data/stash/logs:/var/data/atlassian-base/logs -v /var/data/stash/data:/var/data/atlassian-base/data -d -m 10g -e DOMAIN=code-t.sbb.ch"
 containername=stash
 imagename=stash
 
