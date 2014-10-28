@@ -9,61 +9,8 @@ ENV appversion 1.565.3
 ENV portoffset 90
 ENV JAVA_OPTIONS -Xmx1024m
 ENV JENKINS_HOME ${datadir}/${appname}
-ENV JENKINS_PLUGINS "android-emulator
-ant
-antisamy-markup-formatter
-audit-trail
-backup
-blame-upstream-commiters
-build-blocker-plugin
-build-pipeline-plugin
-claim
-console-column-plugin
-credentials
-cron_column
-email-ext
-embeddable-build-status
-extended-choice-parameter
-external-monitor-job
-git
-git-client
-greenballs
-hp-application-automation-tools-plugin
-javadoc
-jobConfigHistory
-jquery
-ldap
-log-parser
-m2release
-mailer
-mapdb-api
-mask-passwords
-matrix-auth
-matrix-project
-maven-plugin
-msbuild
-mstest
-nested-view
-pam-auth
-parameterized-trigger
-port-allocator
-publish-over-ssh
-scm-api
-slave-status
-sonar
-ssh-agent
-ssh-credentials
-ssh-slaves
-stashNotifier
-subversion
-swarm
-systemloadaverage-monitor
-timestamper
-token-macro
-vstestrunner
-windows-slaves
-xcode-plugin
-xfpanel
+ENV JENKINS_PLUGINS "android-emulator \
+ant \
 xvfb"
 
 # create data directory
