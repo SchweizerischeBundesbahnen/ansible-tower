@@ -39,4 +39,4 @@ RUN chown -R stash:atlassian $STASH_HOME
 
 EXPOSE 8090
 
-CMD /bin/bash /root/run.sh && sed -i "s/code.sbb.ch/$DOMAIN/g" /opt/stash/conf/server.xml && su - stash -c 'export JAVA_HOME=/opt/jdk && /opt/stash/bin/start-stash.sh -fd'
+CMD /bin/bash /root/run.sh && sed -i "s/code.sbb.ch/$DOMAIN/g" /opt/stash/conf/server.xml && su - stash -c 'export JAVA_HOME=/opt/jdk && /opt/stash/bin/start-stash.sh -fg'
