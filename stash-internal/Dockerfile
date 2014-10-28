@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/stash-base
+FROM schweizerischebundesbahnen/stash-base:3.4.0
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Stash Base installed with java and stash in /opt.
@@ -10,12 +10,12 @@ ENV DOMAIN code-t.sbb.ch
 #Plugin download
 RUN mkdir -p $STASH_HOME/plugins/installed-plugins
 
-#Universal Plugin in Version 2.15.2
+#Universal Plugin in Version 2.18.1
 RUN curl -Lks https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138571 -o $STASH_HOME/plugins/installed-plugins/atlassian-universal-plugin-manager-plugin.jar
-#Categories in Version 0.4
-RUN curl -Lks https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/400100 -o  $STASH_HOME/plugins/installed-plugins/stash-project-categories.jar
-#Workzone in Version 1.3.1
-RUN curl -Lks https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/1003001010 -o $STASH_HOME/plugins/installed-plugins/workzone.jar
+#Categories in Version 1.0
+RUN curl -Lks https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -o  $STASH_HOME/plugins/installed-plugins/stash-project-categories.jar
+#Workzone in Version 2.1.3
+RUN curl -Lks https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2001003010 -o $STASH_HOME/plugins/installed-plugins/workzone.jar
 #Unmerged Branch Hook in Version 1.1
 RUN curl -Lks https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -o $STASH_HOME/plugins/installed-plugins/stash-protect-unmerged-branch-hook.jar
 #Webhook in Version 2.0
