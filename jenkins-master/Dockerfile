@@ -102,7 +102,7 @@ RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /op
 
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
 RUN mkdir -p /tmp/WEB-INF/plugins
-RUN for PLUGIN in $JENKINS_PLUGINS; do  curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
+RUN for PLUGIN in $JENKINS_PLUGINS; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
 RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
 
 # expose port 8080 for jenkins
