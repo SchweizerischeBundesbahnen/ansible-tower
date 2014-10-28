@@ -48,7 +48,7 @@ RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /op
 RUN mkdir -p /tmp/WEB-INF/plugins
 RUN curl -k -L https://updates.jenkins-ci.org/latest/git.hpi -o /tmp/WEB-INF/plugins/git.hpi
 RUN curl -k curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi
-RUN cd /tmp; zip --grow /opt/jenkins.war WEB-INF/*
+RUN cd /tmp && zip --grow /opt/jenkins.war WEB-INF/*
 
 # expose port 8080 for jenkins
 EXPOSE 8080
