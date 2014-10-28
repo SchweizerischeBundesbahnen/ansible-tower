@@ -15,7 +15,7 @@ ENV JENKINS_HOME ${datadir}/${appname}
 RUN mkdir -p /var/data
  
 # create user
-RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
+#RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
 
 # setting up locale
 RUN echo "LC_ALL=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
