@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM centos:centos6
+FROM schweizerischebundesbahnen/jenkins-base
  
 MAINTAINER igor.masen2@sbb.ch
  
