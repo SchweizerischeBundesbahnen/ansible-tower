@@ -25,9 +25,9 @@ RUN curl -Lks http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.relea
 
 WORKDIR /opt/stash
 #Linking logs and repositories in container
-VOLUME /var/data/stash/log:$STASH_HOME/log
-VOLUME /var/data/stash/logs:$STASH_HOME/logs
-VOLUME /var/data/stash/data:$STASH_HOME/data
+#VOLUME /var/data/stash/log:$STASH_HOME/log
+#VOLUME /var/data/stash/logs:$STASH_HOME/logs
+#VOLUME /var/data/stash/data:$STASH_HOME/data
 
 #Getting config and server.xml. server.xml is adapted later to test-/whatever instances
 RUN curl -Lks ${FILER_URL}/stash/stash-config.properties-test -o $STASH_HOME/stash-config.properties 
@@ -35,7 +35,7 @@ RUN curl -Lks ${FILER_URL}/stash/server.xml-prod -o /opt/stash/conf/server.xml
 
 RUN chown -R stash:atlassian $STASH_HOME
 
-RUN echo "sed -i 's/10.134.205.228/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/stash/bin/setenv.sh" > /root/run.sh && chmod +x /root/run.sh
+#RUN echo "sed -i 's/10.134.205.228/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/stash/bin/setenv.sh" > /root/run.sh && chmod +x /root/run.sh
 
 EXPOSE 8090
 
