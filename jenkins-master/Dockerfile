@@ -9,7 +9,7 @@ ENV appversion 1.565.3
 ENV portoffset 90
 ENV JAVA_OPTIONS -Xmx1024m
 ENV JENKINS_HOME ${datadir}/${appname}
-ENV JENKINS_PLUGINS "android-emulator \
+ENV JENKINS_PLUGINS android-emulator \
 ant \
 antisamy-markup-formatter \
 audit-trail \
@@ -64,7 +64,7 @@ vstestrunner \
 windows-slaves \
 xcode-plugin \
 xfpanel \
-xvfb"
+xvfb
 
 # create data directory
 RUN mkdir -p /var/data
