@@ -8,7 +8,7 @@ ENV mvn31version 3.1.1
 ENV mvn32version 3.2.3
 ENV antversion 1.9.4
 ENV swarmversion 1.16
-ENV appuser jenkinsslave
+ENV appuser jenkins
 ENV portoffset 91
 ENV datadir /var/data 
 ENV jenkinshome ${datadir}/jenkins
