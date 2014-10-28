@@ -102,7 +102,6 @@ RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /op
 
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
 RUN mkdir -p /tmp/WEB-INF/plugins
-ADD download-plugins.sh /tmp/download-plugins.sh
 RUN for PLUGIN in $JENKINS_PLUGINS; do  curl --fail --silent -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
 RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
 
