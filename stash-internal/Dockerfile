@@ -40,4 +40,4 @@ RUN sed -i "s/code.sbb.ch/$DOMAIN/g" /opt/stash/conf/server.xml
 
 EXPOSE 8090
 
-CMD su - stash -c 'export JAVA_HOME=/opt/jdk && /opt/stash/bin/start-stash.sh -fg'
+#CMD su - stash -c '/opt/stash/bin/start-stash.sh -fg'
