@@ -2,7 +2,7 @@ FROM schweizerischebundesbahnen/atlassian-base
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
-ENV stashversion 2.12.5
+ENV stashversion 3.4.0
 ENV appuser stash
 ENV mysqlconnectorversion 5.1.32
 
