@@ -9,7 +9,6 @@ ENV appversion 1.565.3
 ENV portoffset 90
 ENV JAVA_OPTIONS -Xmx1024m
 ENV JENKINS_HOME ${datadir}/${appname}
-ENV JENKINS_PLUGINS xvfb
 
 
 # create data directory
@@ -47,6 +46,7 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /opt/run.sh
 
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
+ENV JENKINS_PLUGINS xvfb
 RUN mkdir -p /tmp/WEB-INF/plugins
 RUN for PLUGIN in $JENKINS_PLUGINS; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
 RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
