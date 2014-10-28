@@ -9,7 +9,7 @@ ENV appversion 1.565.3
 ENV portoffset 90
 ENV JAVA_OPTIONS -Xmx1024m
 ENV JENKINS_HOME ${datadir}/${appname}
- 
+
 # create data directory
 RUN mkdir -p /var/data
  
@@ -46,8 +46,8 @@ RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /op
 
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
 RUN mkdir -p /tmp/WEB-INF/plugins
-RUN curl -k -L https://updates.jenkins-ci.org/latest/git.hpi -o /tmp/WEB-INF/plugins/git.hpi
-RUN curl -k curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi
+ADD download-plugins.sh /tmp/download-plugins.sh
+RUN /tmp/download-plugins.sh
 RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
 
 # expose port 8080 for jenkins
