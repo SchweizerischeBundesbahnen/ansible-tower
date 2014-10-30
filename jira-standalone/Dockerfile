@@ -25,6 +25,9 @@ RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jir
 # Download JDK 1.7 as jira runtime
 RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && /opt/jdk17/bin/java -version
 
+# Import the default keystore
+RUN wget --quiet ${filerurl}/keystore -O /opt/jdk17/jre/lib/security/cacerts
+
 # Download jira into /opt
 RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz -O /opt/atlassian-jira-${jiraversion}.tar.gz && cd /opt && tar xfz atlassian-jira-${jiraversion}.tar.gz && rm -f /opt/atlassian-jira-${jiraversion}.tar.gz && ln -s /opt/atlassian-jira* /opt/jira
 
