@@ -40,6 +40,9 @@ RUN wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && w
 # Set Timezone to zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
+# Link logs and temp
+RUN rm -rf /opt/jira/{logs,temp} && mkdir -p ${jirahome}/{logs,temp} && ln -sf ${jirahome}/logs /opt/jira/logs && ln -sf ${jirahome}/temp /opt/jira/temp
+
 # Standard JIRA-Port AJP
 EXPOSE 9070
 
