@@ -37,6 +37,9 @@ RUN chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk1.7*
 # Get setenv.sh and server.xml
 RUN wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml
 
+# Set Timezone to zurich
+RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+
 # Standard JIRA-Port AJP
 EXPOSE 9070
 

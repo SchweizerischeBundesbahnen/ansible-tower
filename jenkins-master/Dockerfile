@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM centos:centos6
+FROM schweizerischebundesbahnen/jenkins-base
  
 MAINTAINER igor.masen2@sbb.ch
  
@@ -9,12 +9,13 @@ ENV appversion 1.565.3
 ENV portoffset 90
 ENV JAVA_OPTIONS -Xmx1024m
 ENV JENKINS_HOME ${datadir}/${appname}
- 
+
+
 # create data directory
 RUN mkdir -p /var/data
  
 # create user
-RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
+#RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
 
 # setting up locale
 RUN echo "LC_ALL=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
@@ -45,10 +46,50 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /opt/run.sh
 
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
+ENV JENKINS_PLUGINS android-emulator \
+audit-trail \
+backup \
+blame-upstream-commiters \
+build-blocker-plugin \
+build-pipeline-plugin \
+claim \
+console-column-plugin \
+cron_column \
+email-ext \
+embeddable-build-status \
+extended-choice-parameter \
+git \
+git-client \
+greenballs \
+hp-application-automation-tools-plugin \
+jobConfigHistory \
+jquery \
+log-parser \
+m2release \
+mapdb-api \
+mask-passwords \
+msbuild \
+mstest \
+nested-view \
+parameterized-trigger \
+port-allocator \
+publish-over-ssh \
+scm-api \
+slave-status \
+sonar \
+ssh-agent \
+stashNotifier \
+swarm \
+systemloadaverage-monitor \
+timestamper \
+token-macro \
+vstestrunner \
+xcode-plugin \
+xfpanel \
+xvfb
 RUN mkdir -p /tmp/WEB-INF/plugins
-RUN curl -k -L https://updates.jenkins-ci.org/latest/git.hpi -o /tmp/WEB-INF/plugins/git.hpi
-RUN curl -k curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi
-RUN cd /tmp; zip --grow /opt/jenkins.war WEB-INF/*
+RUN for PLUGIN in $JENKINS_PLUGINS; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
+RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
 
 # expose port 8080 for jenkins
 EXPOSE 8080
