@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM centos:centos6
+FROM schweizerischebundesbahnen/jenkins-base
  
 MAINTAINER igor.masen2@sbb.ch
  
@@ -9,18 +9,19 @@ ENV appversion 1.565.3
 ENV portoffset 90
 ENV JAVA_OPTIONS -Xmx1024m
 ENV JENKINS_HOME ${datadir}/${appname}
- 
+
+
 # create data directory
 RUN mkdir -p /var/data
  
 # create user
-RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
+#RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
 
 # setting up locale
 RUN echo "LC_ALL=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
  
 # install basic tools
-RUN yum install --quiet openssh-server git subversion vim wget curl tar -y && yum clean all -y
+RUN yum install --quiet openssh-server git subversion vim wget curl tar zip unzip  -y && yum clean all -y
  
 # don't use pam in ssh
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
@@ -43,6 +44,52 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 
 # create custom run.sh without ssh
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /opt/run.sh
+
+# download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
+ENV JENKINS_PLUGINS android-emulator \
+audit-trail \
+backup \
+blame-upstream-commiters \
+build-blocker-plugin \
+build-pipeline-plugin \
+claim \
+console-column-plugin \
+cron_column \
+email-ext \
+embeddable-build-status \
+extended-choice-parameter \
+git \
+git-client \
+greenballs \
+hp-application-automation-tools-plugin \
+jobConfigHistory \
+jquery \
+log-parser \
+m2release \
+mapdb-api \
+mask-passwords \
+msbuild \
+mstest \
+nested-view \
+parameterized-trigger \
+port-allocator \
+publish-over-ssh \
+scm-api \
+slave-status \
+sonar \
+ssh-agent \
+stashNotifier \
+swarm \
+systemloadaverage-monitor \
+timestamper \
+token-macro \
+vstestrunner \
+xcode-plugin \
+xfpanel \
+xvfb
+RUN mkdir -p /tmp/WEB-INF/plugins
+RUN for PLUGIN in $JENKINS_PLUGINS; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
+RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
 
 # expose port 8080 for jenkins
 EXPOSE 8080
