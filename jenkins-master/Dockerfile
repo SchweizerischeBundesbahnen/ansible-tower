@@ -20,7 +20,7 @@ RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
 RUN echo "LC_ALL=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
  
 # install basic tools
-RUN yum install --quiet openssh-server git subversion vim wget curl tar -y && yum clean all -y
+RUN yum install --quiet openssh-server git subversion vim wget curl tar zip unzip  -y && yum clean all -y
  
 # don't use pam in ssh
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
@@ -43,6 +43,12 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 
 # create custom run.sh without ssh
 RUN echo "/opt/jdk17/bin/java ${JAVA_OPTS} -jar /opt/jenkins.war -server" >> /opt/run.sh
+
+# download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
+RUN mkdir -p /tmp/WEB-INF/plugins
+RUN curl -k -L https://updates.jenkins-ci.org/latest/git.hpi -o /tmp/WEB-INF/plugins/git.hpi
+RUN curl -k curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi
+RUN cd /tmp; zip --grow /opt/jenkins.war WEB-INF/*
 
 # expose port 8080 for jenkins
 EXPOSE 8080
