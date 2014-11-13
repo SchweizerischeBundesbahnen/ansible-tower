@@ -94,9 +94,14 @@ EXPOSE 22
 
 # install supervisord
 # FIXME: move this into base class
-RUN yum -y install python-setuptools && yum clean all
+RUN yum -y install python-setuptools sudo && yum clean all
 RUN easy_install supervisor
 RUN mkdir -p /etc/supervisor/conf.d
+
+ENV wzuuser wzuuser
+RUN /usr/sbin/useradd --create-home --home-dir /home/${wzuuser} --groups wheel --shell /bin/bash $wzuuser
+RUN echo "${wzuuser}:${wzuuser}" | chpasswd
+RUN echo "${wzuuser} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # supervisord: configure
 COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
