@@ -8,7 +8,7 @@ ENV datadir /var/data
 ENV appname jenkins
 ENV appversion 1.565.3
 ENV portoffset 90
-ENV JAVA_OPTIONS -Xmx1024m
+ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=/var/data/jenkins/jenkins
 ENV JENKINS_HOME ${datadir}/${appname}
 ENV JAVA_RUNTIME /opt/jdk17/bin/java
 
@@ -83,14 +83,19 @@ RUN mkdir -p /tmp/WEB-INF/plugins
 RUN for PLUGIN in $JENKINS_PLUGINS; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
 RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
 
-# expose port 8080 for jenkins
-EXPOSE 8080
+# expose port 8050 for jenkins
+EXPOSE 8050
+# expose port 9050 for jenkins ajp
+EXPOSE 9050
 
 # init ssh service
 RUN service sshd start
 
 # expose ssh port
 EXPOSE 22
+
+# expose port for slave communication
+EXPOSE 9051
 
 # install supervisord
 # FIXME: move this into base class
@@ -103,6 +108,7 @@ RUN /usr/sbin/useradd --create-home --home-dir /home/${wzuuser} --groups wheel -
 RUN echo "${wzuuser}:${wzuuser}" | chpasswd
 RUN echo "${wzuuser} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+
 # supervisord: configure
 COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
 COPY configs/jenkins.ini /etc/supervisor/conf.d/
@@ -110,7 +116,7 @@ COPY configs/sshd.ini /etc/supervisor/conf.d/
 
 # supervisor can not use env variables
 RUN sed -ri "s#JAVA_PATH#${JAVA_RUNTIME}#g" /etc/supervisor/conf.d/jenkins.ini
-RUN sed -ri "s/JAVA_OPTS/${JAVA_OPTIONS}/g" /etc/supervisor/conf.d/jenkins.ini 
+RUN sed -ri "s#JAVA_OPTS#${JAVA_OPTIONS}#g" /etc/supervisor/conf.d/jenkins.ini 
 RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/jenkins.ini
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
