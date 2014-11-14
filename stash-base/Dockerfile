@@ -7,9 +7,9 @@ ENV mysqlconnectorversion 5.1.32
 
 
 RUN yum install -q git-core wget -y && yum clean all
-RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -o /root/stash.tar.gz
 
-RUN cd /opt/stash && tar zxf /root/stash.tar.gz
+RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -O /opt/atlassian-stash-${stashversion}.tar.gz && cd /opt && tar xfz atlassian-stash-${stashversion}.tar.gz && rm -f /opt/atlassian-stash-${stashversion}.tar.gz && ln -s /opt/atlassian-stash* /opt/stash
+
 RUN mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml
 # Install JDBC driver
 RUN wget --quiet "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=proxy.external.nexus-ext-cache.releases&g=mysql&a=mysql-connector-java&v=${mysqlconnectorversion}&e=jar" -O /opt/stash/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
