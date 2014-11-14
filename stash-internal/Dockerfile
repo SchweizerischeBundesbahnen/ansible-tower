@@ -11,7 +11,7 @@ ENV JAVA_OPTIONS -Xmx1024m
 ENV JAVA_RUNTIME /opt/jdk17/bin/java
 
 #Plugin download
-RUN mkdir -p $stash_home/plugins/installed-plugins
+RUN mkdir -p $stash_home/plugins/installed-plugins && mkdir -p $stash_home/shared
 
 #Universal Plugin in Version 2.18.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138571 -O $stash_home/plugins/installed-plugins/atlassian-universal-plugin-manager-plugin.jar
