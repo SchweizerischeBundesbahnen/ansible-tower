@@ -27,13 +27,9 @@ RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.re
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.0/enforce-message-hook-plugin-2.0.jar -O $stash_home/plugins/installed-plugins/enforce-message-hook-plugin.jar
 
 WORKDIR /opt/stash
-#Linking logs and repositories in container
-#VOLUME /var/data/stash/log:$stash_home/log
-#VOLUME /var/data/stash/logs:$stash_home/logs
-#VOLUME /var/data/stash/data:$stash_home/data
 
 #Getting config and server.xml. server.xml is adapted later to test-/whatever instances
-RUN wget --quiet ${filer_url}/stash/stash-config.properties-test -O $stash_home/stash-config.properties && wget --quiet ${filer_url}/stash/server.xml-test -P /opt/stash/conf/server.xml
+RUN wget --quiet ${filer_url}/stash/stash-config.properties-test -O $stash_home/shared/stash-config.properties && wget --quiet ${filer_url}/stash/server.xml-test -P /opt/stash/conf/server.xml
 
 RUN adduser $appname 
 # RUN chown -R $appname:$appname $stash_home
@@ -46,5 +42,10 @@ COPY configs/sshd.ini /etc/supervisor/conf.d/
 
 # supervisor can not use env variables
 RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
+
+#Linking logs and repositories in container
+VOLUME /var/data/stash/log:$stash_home/log
+VOLUME /var/data/stash/logs:$stash_home/logs
+VOLUME /var/data/stash/shared:$stash_home/shared/data
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
