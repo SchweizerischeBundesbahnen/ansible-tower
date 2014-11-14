@@ -36,9 +36,6 @@ RUN adduser $appname
 # RUN chown -R $appname:$appname $stash_home
 EXPOSE 8090
 
-# init ssh service
-RUN service sshd start
-
 # expose ssh port
 EXPOSE 22
 
@@ -47,6 +44,9 @@ EXPOSE 22
 RUN yum -y install python-setuptools openssh-server && yum clean all
 RUN easy_install supervisor
 RUN mkdir -p /etc/supervisor/conf.d
+
+# init ssh service
+RUN service sshd start
 
 # supervisord: configure
 COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
