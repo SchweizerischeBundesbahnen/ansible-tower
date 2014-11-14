@@ -29,5 +29,8 @@ ENV wzuuser wzuuser
 RUN /usr/sbin/useradd --create-home --home-dir /home/${wzuuser} --groups wheel --shell /bin/bash $wzuuser
 RUN echo "${wzuuser}:${wzuuser}" | chpasswd
 RUN echo "${wzuuser} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# don't use pam in ssh
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
