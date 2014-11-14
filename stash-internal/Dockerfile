@@ -3,37 +3,48 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Stash Base installed with java and stash in /opt.
 #Only Stuff in /var/data/atlassian-base
-ENV STASH_HOME /var/data/atlassian-base
-ENV FILER_URL http://wzufiler.sbb.ch 
-ENV DOMAIN code-t.sbb.ch
+ENV stash_home /var/data/atlassian-base
+ENV filer_url http://wzufiler.sbb.ch 
+ENV appname stash
+
+ENV JAVA_OPTIONS -Xmx1024m
+ENV JAVA_RUNTIME /opt/jdk17/bin/java
 
 #Plugin download
-RUN mkdir -p $STASH_HOME/plugins/installed-plugins
+RUN mkdir -p $stash_home/plugins/installed-plugins
 
 #Universal Plugin in Version 2.18.1
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138571 -O $STASH_HOME/plugins/installed-plugins/atlassian-universal-plugin-manager-plugin.jar
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138571 -O $stash_home/plugins/installed-plugins/atlassian-universal-plugin-manager-plugin.jar
 #Categories in Version 1.0
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  $STASH_HOME/plugins/installed-plugins/stash-project-categories.jar
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  $stash_home/plugins/installed-plugins/stash-project-categories.jar
 #Workzone in Version 2.1.3
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2001003010 -O $STASH_HOME/plugins/installed-plugins/workzone.jar
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2001003010 -O $stash_home/plugins/installed-plugins/workzone.jar
 #Unmerged Branch Hook in Version 1.1
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O $STASH_HOME/plugins/installed-plugins/stash-protect-unmerged-branch-hook.jar
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O $stash_home/plugins/installed-plugins/stash-protect-unmerged-branch-hook.jar
 #Webhook in Version 2.0
-RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/jenkins-push-webhook/2.0.0/jenkins-push-webhook-2.0.0.jar -O $STASH_HOME/plugins/installed-plugins/jenkins-push-webhook.jar
+RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/jenkins-push-webhook/2.0.0/jenkins-push-webhook-2.0.0.jar -O $stash_home/plugins/installed-plugins/jenkins-push-webhook.jar
 #Commit Enforcer in Version 2.0
-RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.0/enforce-message-hook-plugin-2.0.jar -O $STASH_HOME/plugins/installed-plugins/enforce-message-hook-plugin.jar
+RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.0/enforce-message-hook-plugin-2.0.jar -O $stash_home/plugins/installed-plugins/enforce-message-hook-plugin.jar
 
 WORKDIR /opt/stash
 #Linking logs and repositories in container
-#VOLUME /var/data/stash/log:$STASH_HOME/log
-#VOLUME /var/data/stash/logs:$STASH_HOME/logs
-#VOLUME /var/data/stash/data:$STASH_HOME/data
+#VOLUME /var/data/stash/log:$stash_home/log
+#VOLUME /var/data/stash/logs:$stash_home/logs
+#VOLUME /var/data/stash/data:$stash_home/data
 
 #Getting config and server.xml. server.xml is adapted later to test-/whatever instances
-RUN wget --quiet ${FILER_URL}/stash/stash-config.properties-test -O $STASH_HOME/stash-config.properties && wget --quiet ${FILER_URL}/stash/server.xml-test -P /opt/stash/conf/server.xml
+RUN wget --quiet ${filer_url}/stash/stash-config.properties-test -O $stash_home/stash-config.properties && wget --quiet ${filer_url}/stash/server.xml-test -P /opt/stash/conf/server.xml
 
-RUN chown -R stash:atlassian $STASH_HOME
-
+RUN adduser $appname 
+# RUN chown -R $appname:$appname $stash_home
 EXPOSE 8090
 
-CMD su - stash -c 'export JAVA_HOME=/opt/jdk && /opt/stash/bin/start-stash.sh -fg'
+# supervisord: configure
+COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
+COPY configs/stash.ini /etc/supervisor/conf.d/
+COPY configs/sshd.ini /etc/supervisor/conf.d/
+
+# supervisor can not use env variables
+RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
+
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
