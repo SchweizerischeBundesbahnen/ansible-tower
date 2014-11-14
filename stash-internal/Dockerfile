@@ -44,7 +44,7 @@ EXPOSE 22
 
 # install supervisord
 # FIXME: move this into base class
-RUN yum -y install python-setuptools && yum clean all
+RUN yum -y install python-setuptools openssh-server && yum clean all
 RUN easy_install supervisor
 RUN mkdir -p /etc/supervisor/conf.d
 
