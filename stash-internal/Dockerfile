@@ -36,22 +36,8 @@ RUN adduser $appname
 # RUN chown -R $appname:$appname $stash_home
 EXPOSE 8090
 
-# expose ssh port
-EXPOSE 22
-
-# install supervisord
-# FIXME: move this into base class
-RUN yum -y install python-setuptools openssh-server && yum clean all
-RUN easy_install supervisor
-RUN mkdir -p /etc/supervisor/conf.d
-
-# init ssh service
-RUN service sshd start
-
-# supervisord: configure
-COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
+# install script for stash
 COPY configs/stash.ini /etc/supervisor/conf.d/
-COPY configs/sshd.ini /etc/supervisor/conf.d/
 
 # supervisor can not use env variables
 RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
