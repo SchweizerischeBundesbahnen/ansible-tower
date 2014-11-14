@@ -5,9 +5,13 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 ENV stashversion 3.4.1
 ENV mysqlconnectorversion 5.1.32
 ENV appname stash
+ENV stash_home /var/data/atlassian-base
 
 #Installing git and wget
 RUN yum install -q git-core -y && yum clean all
+
+#Making directory for volumes
+RUN mkdir -p $stash_home/shared
 
 #Getting stash and setting it
 RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -O /opt/atlassian-stash-${stashversion}.tar.gz && cd /opt && tar xfz atlassian-stash-${stashversion}.tar.gz && rm -f /opt/atlassian-stash-${stashversion}.tar.gz && ln -s /opt/atlassian-stash* /opt/stash
@@ -29,3 +33,16 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 RUN adduser $appname 
 EXPOSE 8090
 # RUN chown -R $appname:$appname $stash_home
+
+# install script for stash
+COPY configs/stash.ini /etc/supervisor/conf.d/
+
+# supervisor can not use env variables
+RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
+
+#Linking logs and repositories in container
+VOLUME /var/data/stash/log:$stash_home/log
+VOLUME /var/data/stash/logs:$stash_home/logs
+VOLUME /var/data/stash/shared:$stash_home/shared/data
+
+WORKDIR /opt/stash
