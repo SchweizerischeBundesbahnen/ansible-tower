@@ -32,7 +32,7 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 
 
 # Adding run user with right uid to access external storage
-RUN adduser $appname --uid ${uid} --gid ${gid}
+RUN addgroup ${appname} --gid ${gid} && adduser ${appname} --uid ${uid} --gid ${gid}
 EXPOSE 8090
 # RUN chown -R $appname:$appname $stash_home
 
@@ -43,6 +43,7 @@ COPY configs/stash.ini /etc/supervisor/conf.d/
 RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
 
 #Linking logs and repositories in container
+VOLUME /opt/stash/logs
 VOLUME ${stash_home}/log
 VOLUME ${stash_home}/logs
 VOLUME ${stash_home}/shared/data
