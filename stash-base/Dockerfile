@@ -30,7 +30,7 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 
 
 # Adding run user
-RUN adduser $appname 
+RUN adduser $appname
 EXPOSE 8090
 # RUN chown -R $appname:$appname $stash_home
 
