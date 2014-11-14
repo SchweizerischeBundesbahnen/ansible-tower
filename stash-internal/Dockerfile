@@ -31,9 +31,22 @@ WORKDIR /opt/stash
 #Getting config and server.xml. server.xml is adapted later to test-/whatever instances
 RUN wget --quiet ${filer_url}/stash/stash-config.properties-test -O $stash_home/shared/stash-config.properties && wget --quiet ${filer_url}/stash/server.xml-test -P /opt/stash/conf/server.xml
 
+# Adding run user
 RUN adduser $appname 
 # RUN chown -R $appname:$appname $stash_home
 EXPOSE 8090
+
+# init ssh service
+RUN service sshd start
+
+# expose ssh port
+EXPOSE 22
+
+# install supervisord
+# FIXME: move this into base class
+RUN yum -y install python-setuptools && yum clean all
+RUN easy_install supervisor
+RUN mkdir -p /etc/supervisor/conf.d
 
 # supervisord: configure
 COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
