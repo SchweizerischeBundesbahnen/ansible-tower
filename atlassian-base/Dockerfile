@@ -19,6 +19,14 @@ COPY configs/sshd.ini /etc/supervisor/conf.d/
 # expose ssh port
 EXPOSE 22
 
+#SSH stuff
+ENV wzuuser wzuuser
+RUN /usr/sbin/useradd --create-home --home-dir /home/${wzuuser} --groups wheel --shell /bin/bash $wzuuser
+RUN echo "${wzuuser}:${wzuuser}" | chpasswd
+RUN echo "${wzuuser} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+# don't use pam in ssh
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config && sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
+
 # init ssh service
 RUN service sshd start
 

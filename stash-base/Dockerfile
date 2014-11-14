@@ -41,8 +41,8 @@ COPY configs/stash.ini /etc/supervisor/conf.d/
 RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
 
 #Linking logs and repositories in container
-VOLUME /var/data/stash/log:$stash_home/log
-VOLUME /var/data/stash/logs:$stash_home/logs
-VOLUME /var/data/stash/shared:$stash_home/shared/data
+VOLUME ${stash_home}/log
+VOLUME ${stash_home}/logs
+VOLUME ${stash_home}/shared/data
 
 WORKDIR /opt/stash
