@@ -25,6 +25,9 @@ RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jir
 # Download JDK 1.7 as jira runtime
 RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && /opt/jdk17/bin/java -version
 
+# Import the default keystore
+RUN wget --quiet ${filerurl}/keystore -O /opt/jdk17/jre/lib/security/cacerts
+
 # Download jira into /opt
 RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz -O /opt/atlassian-jira-${jiraversion}.tar.gz && cd /opt && tar xfz atlassian-jira-${jiraversion}.tar.gz && rm -f /opt/atlassian-jira-${jiraversion}.tar.gz && ln -s /opt/atlassian-jira* /opt/jira
 
@@ -36,6 +39,12 @@ RUN chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk1.7*
 
 # Get setenv.sh and server.xml
 RUN wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml
+
+# Set Timezone to zurich
+RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+
+# Link logs and temp
+RUN rm -rf /opt/jira/{logs,temp} && mkdir -p ${jirahome}/{logs,temp} && ln -sf ${jirahome}/logs /opt/jira/logs && ln -sf ${jirahome}/temp /opt/jira/temp
 
 # Standard JIRA-Port AJP
 EXPOSE 9070

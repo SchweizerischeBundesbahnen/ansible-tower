@@ -25,9 +25,9 @@ RUN curl -Lks http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.relea
 
 WORKDIR /opt/stash
 #Linking logs and repositories in container
-VOLUME /var/data/stash/log:$STASH_HOME/log
-VOLUME /var/data/stash/logs:$STASH_HOME/logs
-VOLUME /var/data/stash/data:$STASH_HOME/data
+#VOLUME /var/data/stash/log:$STASH_HOME/log
+#VOLUME /var/data/stash/logs:$STASH_HOME/logs
+#VOLUME /var/data/stash/data:$STASH_HOME/data
 
 #Getting config and server.xml. server.xml is adapted later to test-/whatever instances
 RUN curl -Lks ${FILER_URL}/stash/stash-config.properties-test -o $STASH_HOME/stash-config.properties 
@@ -38,4 +38,4 @@ RUN chown -R stash:atlassian $STASH_HOME
 
 EXPOSE 8090
 
-#CMD su - stash -c '/opt/stash/bin/start-stash.sh -fg'
+CMD su - stash -c 'export JAVA_HOME=/opt/jdk && /opt/stash/bin/start-stash.sh -fg'
