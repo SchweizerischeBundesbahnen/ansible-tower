@@ -8,7 +8,6 @@ ENV mysqlconnectorversion 5.1.32
 
 RUN yum install -q git-core wget -y && yum clean all
 RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -o /root/stash.tar.gz
-RUN /usr/sbin/useradd --create-home --home-dir /opt/stash --groups atlassian --shell /bin/bash $appuser
 
 RUN tar zxf /root/stash.tar.gz --strip=1 -C /opt/stash
 RUN mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml
