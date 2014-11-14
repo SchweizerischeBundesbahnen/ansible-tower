@@ -6,6 +6,8 @@ ENV stashversion 3.4.1
 ENV mysqlconnectorversion 5.1.32
 ENV appname stash
 ENV stash_home /var/data/atlassian-base
+ENV uid 1090
+ENV gid 1090
 
 #Installing git and wget
 RUN yum install -q git-core -y && yum clean all
@@ -29,8 +31,8 @@ RUN wget --quiet "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=pro
 RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n#\n# setting JAVA_HOME\nJAVA_HOME="/opt/jdk",g' /opt/stash/bin/setenv.sh && sed -i 's,#STASH_HOME="",STASH_HOME="/var/data/atlassian-base",g' /opt/stash/bin/setenv.sh
 
 
-# Adding run user
-RUN adduser $appname
+# Adding run user with right uid to access external storage
+RUN adduser $appname --uid ${uid} --gid ${gid}
 EXPOSE 8090
 # RUN chown -R $appname:$appname $stash_home
 

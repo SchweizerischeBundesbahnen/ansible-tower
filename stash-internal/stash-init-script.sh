@@ -4,9 +4,9 @@
 #
 # chkconfig: - 85 15
 
-opts="-p 8090:8090 -v /var/data/stash/log:/var/data/atlassian-base/log -v /var/data/stash/logs:/var/data/atlassian-base/logs -v /var/data/stash/data:/var/data/atlassian-base/data -d -m 10g -e DOMAIN=code-t.sbb.ch"
-containername=stash
-imagename=stash
+opts=" --privileged=true -p 8090:8090 -v /opt/stash/logs:/opt/stash/logs -v /var/data/stash/log:/var/data/atlassian-base/log -v /var/data/stash/logs:/var/data/atlassian-base/logs -v /var/data/stash/shared/data:/var/data/atlassian-base/shared/data -d -m 10g"
+containername=schweizerischebundesbahnen/stash-internal:3.4.1
+imagename=schweizerischebundesbahnen/stash-internal:3.4.1
 
 function start_container() {
 	docker start $containername
