@@ -32,7 +32,7 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 
 
 # Adding run user with right uid to access external storage
-RUN addgroup ${appname} --gid ${gid} && adduser ${appname} --uid ${uid} --gid ${gid}
+RUN groupadd ${appname} --gid ${gid} && useradd ${appname} --uid ${uid} --gid ${gid}
 EXPOSE 8090
 # RUN chown -R $appname:$appname $stash_home
 
