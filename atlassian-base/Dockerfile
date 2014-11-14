@@ -12,5 +12,3 @@ RUN yum install -q -y sudo tar python-setuptools && yum clean all
 
 # get java
 RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz -o /opt/jdk17.tar.gz && cd /opt && tar xfz jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk && rm -rf /opt/*.tar.gz
-
-RUN /usr/sbin/groupadd atlassian
