@@ -33,7 +33,7 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 # Adding run user with right uid to access external storage
 RUN groupadd ${appname} --gid ${gid} && useradd ${appname} --uid ${uid} --gid ${gid}
 #According to https://confluence.atlassian.com/x/Fh6_Eg , some folders must be writable
-RUN chown -R $appname:$appname /opt/stash/logs /opt/stash/work /opt/stash/temp ${stash_home}
+RUN chown -R $appname:$appname /opt/stash/logs /opt/stash/work /opt/stash/temp
 #Exposing Port to make Stash accessible
 EXPOSE 8090
 
