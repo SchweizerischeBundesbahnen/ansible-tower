@@ -5,15 +5,10 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 ENV stashversion 3.4.1
 ENV mysqlconnectorversion 5.1.32
 ENV appname stash
-ENV stash_home /var/data/atlassian-base
-ENV uid 1090
-ENV gid 1090
-
-#Installing git and wget
-RUN yum install -q git-core -y && yum clean all
+ENV stash_home /var/data/stash
 
 #Making directory for volumes
-RUN mkdir -p $stash_home/shared
+RUN mkdir -p ${stash_home}/shared
 
 #Getting stash and setting it
 RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -O /opt/atlassian-stash-${stashversion}.tar.gz && cd /opt && tar xfz atlassian-stash-${stashversion}.tar.gz && rm -f /opt/atlassian-stash-${stashversion}.tar.gz && ln -s /opt/atlassian-stash* /opt/stash
@@ -31,9 +26,10 @@ RUN wget --quiet "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=pro
 RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n#\n# setting JAVA_HOME\nJAVA_HOME="/opt/jdk",g' /opt/stash/bin/setenv.sh && sed -i 's,#STASH_HOME="",STASH_HOME="/var/data/atlassian-base",g' /opt/stash/bin/setenv.sh
 
 # Adding run user with right uid to access external storage
-RUN groupadd ${appname} --gid ${gid} && useradd ${appname} --uid ${uid} --gid ${gid}
+RUN useradd ${appname}
 #According to https://confluence.atlassian.com/x/Fh6_Eg , some folders must be writable
 RUN chown -R $appname:$appname /opt/stash/logs /opt/stash/work /opt/stash/temp
+
 #Exposing Port to make Stash accessible
 EXPOSE 8090
 
@@ -42,10 +38,3 @@ COPY configs/stash.ini /etc/supervisor/conf.d/
 
 # supervisor can not use env variables
 RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
-
-#Linking logs and repositories in container
-VOLUME ${stash_home}/log
-VOLUME ${stash_home}/logs
-VOLUME ${stash_home}/shared/data
-
-WORKDIR /opt/stash
