@@ -7,7 +7,7 @@ ENV appuser stash
 ENV mysqlconnectorversion 5.1.32
 
 
-RUN yum install -q git-core wget -y
+RUN yum install -q git-core -y
 RUN curl -Lks http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -o /root/stash.tar.gz
 RUN /usr/sbin/useradd --create-home --home-dir /opt/stash --groups atlassian --shell /bin/bash $appuser
 RUN tar zxf /root/stash.tar.gz --strip=1 -C /opt/stash

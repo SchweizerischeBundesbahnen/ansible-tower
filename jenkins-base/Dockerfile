@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM centos:centos6
+FROM schweizerischebundesbahnen/base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 #Environment variables
@@ -23,7 +23,7 @@ ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml
 ENV gitversion 1.8.5.5
 
 # Install epel repo
-RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum install -q openssh-server vim wget tar subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect unzip gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
+RUN yum install -q vim subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect unzip gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "${appuser}:${appuser}" | chpasswd
@@ -66,9 +66,6 @@ RUN cd /usr/local/src && wget --quiet https://www.kernel.org/pub/software/scm/gi
 
 # Legacy stuff
 RUN cd ${jenkinshome} && ln -s m2 .m2 && ln -s buildtools/ build-binaries && cd build-binaries && ln -s apache-maven-${mvn30version} apache-maven-3.0.4 && ln -s oracle-jdk-6 jdk-oracle-1.6.0.30 && ln -s oracle-jdk-6-32b jdk-oracle-1.6.0.31-32b && ln -s oracle-jdk-6 jdk-oracle-1.6.0.31 && ln -s oracle-jdk-7 jdk-oracle-1.7.0.3 && ln -s oracle-jdk-7-32b jdk-oracle-1.7.0.3-32b && ln -s oracle-jdk-7 1.7.0.2 && ln -s oracle-jdk-8 jdk-oracle-1.8.0.5-64b && ln -s oracle-jdk-7 jdk-oracle-1.7.0.2
-
-# Change timezone to Europe/Zurich
-RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
 # Create environment file
 RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh

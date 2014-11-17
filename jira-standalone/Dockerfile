@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM centos:centos6
+FROM schweizerischebundesbahnen/base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 #Environment variables
@@ -12,12 +12,6 @@ ENV appuser jira
 ENV filerurl http://wzufiler.sbb.ch 
 ENV JAVA_HOME /opt/jdk17
 ENV mysqlconnectorversion 5.1.32
-
-# Install epel repo
-RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum clean all
-
-# Install a basic SSH server and some nice admin tools
-RUN yum install -q vim wget tar -y && yum clean all 
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jirahome}

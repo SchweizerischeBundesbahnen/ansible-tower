@@ -19,9 +19,6 @@ RUN cd ${jenkinshome}/buildtools && ln -s /opt/was85/java_1.7_64 ibm-jdk-was85 &
 # Legacy stuff
 RUN cd ${jenkinshome}/buildtools && ln -s ibm-jdk-was85 jdk-ibm-1.7.0.2 && ln -s was85 base_v85 && ln -s was70 base_v70
 
-# Change timezone to Europe/Zurich
-RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
-
 # Create environment file
 RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70 WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 

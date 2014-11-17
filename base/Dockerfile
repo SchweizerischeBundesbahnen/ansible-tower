@@ -13,6 +13,7 @@ EXPOSE 22
 
 # Install packages
 RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y \
+	&& yum update -y \
 	&& yum -y install openssh-server wget curl tar python-setuptools sudo \
 	&& yum clean all -q
 
@@ -28,15 +29,15 @@ COPY configs/sshd.ini /etc/supervisor/conf.d/
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
-# Till we use 1.3 everywhere: add wzu debug user and add to sudoers
+# Till we use docker version 1.3 everywhere: add wzu debug user and add to sudoers
 RUN /usr/sbin/useradd --create-home --home-dir /home/${wzuuser} --groups wheel --shell /bin/bash $wzuuser \
 	&& echo "${wzuuser}:${wzuuser}" | chpasswd \
 	&& echo "${wzuuser} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # init ssh service
 # don't use pam in ssh
-RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
-RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
+	&& sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 RUN service sshd start && service sshd stop
 
 
