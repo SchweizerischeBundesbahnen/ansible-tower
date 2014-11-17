@@ -7,7 +7,7 @@ ENV gitversion 1.8.5.5
 ENV mysqlconnectorversion 5.1.32
 ENV appname stash
 ENV stash_home /var/data/stash
-ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin
+ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 
 #Installing toolchain necessary to compile git > 1.7.1 (shipped with rhel 6)
 RUN yum install -q -y gcc openssl-devel curl-devel expat-devel  perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker gettext && yum clean all -q 
