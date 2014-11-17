@@ -3,9 +3,17 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
 ENV stashversion 3.4.1
+ENV gitversion 1.8.5.5
 ENV mysqlconnectorversion 5.1.32
 ENV appname stash
 ENV stash_home /var/data/stash
+ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin
+
+#Installing toolchain necessary to compile git > 1.7.1 (shipped with rhel 6)
+RUN yum install -q -y gcc openssl-devel curl-devel expat-devel  perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker gettext && yum clean all -q 
+
+# Download, make and install git
+RUN cd /usr/local/src && wget --quiet https://www.kernel.org/pub/software/scm/git/git-${gitversion}.tar.gz && tar xzf git-${gitversion}.tar.gz && cd git-${gitversion} && ./configure --prefix=/usr/local --without-tcltk && make prefix=/usr/local all && make prefix=/usr/local install && rm -rf git-${gitversion}* && git --version
 
 #Making directory for volumes
 RUN mkdir -p ${stash_home}/shared
@@ -28,7 +36,7 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 # Adding run user with right uid to access external storage
 RUN useradd ${appname}
 #According to https://confluence.atlassian.com/x/Fh6_Eg , some folders must be writable
-RUN chown -R $appname:$appname /opt/stash/logs /opt/stash/work /opt/stash/temp
+RUN chown -R ${appname}:${appname} /opt/stash/logs /opt/stash/work /opt/stash/temp
 
 #Exposing Port to make Stash accessible
 EXPOSE 8090
