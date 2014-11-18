@@ -5,7 +5,7 @@
 # chkconfig: - 85 15
 
 opts=" --privileged=true -p 8090:8090 -v /var/data/stash/log:/var/data/atlassian-base/log -v /var/data/stash/logs:/var/data/atlassian-base/logs -v /var/data/stash/shared/data:/var/data/atlassian-base/shared/data -d -m 10g"
-containername=schweizerischebundesbahnen/stash-internal:3.4.1
+containername=stash
 imagename=schweizerischebundesbahnen/stash-internal:3.4.1
 
 function start_container() {
@@ -21,8 +21,8 @@ function stop_container() {
 }
 
 function reinitialize_container() {
-        docker rm $containername
-        init_container
+  docker rm $containername
+  init_container
 }
 
 case "$1" in
