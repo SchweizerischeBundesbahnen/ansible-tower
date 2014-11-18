@@ -31,51 +31,10 @@ RUN echo "export JAVA_OPTIONS=${JAVA_OPTIONS}" >> ${JENKINS_HOME}/.bashrc
 # download jenkins war
 RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.war -O /opt/jenkins.war && chown ${appname}:${appname} /opt/jenkins.war
 
-# FIXME: get this list from wzufiler
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
-ENV JENKINS_PLUGINS android-emulator \
-audit-trail \
-backup \
-blame-upstream-commiters \
-build-blocker-plugin \
-build-pipeline-plugin \
-claim \
-console-column-plugin \
-cron_column \
-email-ext \
-embeddable-build-status \
-extended-choice-parameter \
-git \
-git-client \
-greenballs \
-hp-application-automation-tools-plugin \
-jobConfigHistory \
-jquery \
-log-parser \
-m2release \
-mapdb-api \
-mask-passwords \
-msbuild \
-mstest \
-nested-view \
-parameterized-trigger \
-port-allocator \
-publish-over-ssh \
-scm-api \
-slave-status \
-sonar \
-ssh-agent \
-stashNotifier \
-swarm \
-systemloadaverage-monitor \
-timestamper \
-token-macro \
-vstestrunner \
-xcode-plugin \
-xfpanel \
-xvfb
+COPY configs/jenkins_plugins.txt /tmp/jenkins_plugins.txt
 RUN mkdir -p /tmp/WEB-INF/plugins
-RUN for PLUGIN in $JENKINS_PLUGINS; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
+RUN for PLUGIN in `cat /tmp/jenkins_plugins.txt`; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
 RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
 
 # expose port 8050 for jenkins
