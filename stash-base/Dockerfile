@@ -12,7 +12,7 @@ ENV stash_home /var/data/stash
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 
 #Installing toolchain necessary to compile git > 1.7.1 (shipped with rhel 6)
-RUN yum install -q -y gcc openssl-devel curl-devel expat-devel  perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker gettext && yum clean all -q 
+RUN yum install -q -y gcc openssl-devel curl-devel expat-devel perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker gettext && yum clean all -q 
 
 # Download, make and install git
 RUN cd /usr/local/src && wget --quiet https://www.kernel.org/pub/software/scm/git/git-${gitversion}.tar.gz && tar xzf git-${gitversion}.tar.gz && cd git-${gitversion} && ./configure --prefix=/usr/local --without-tcltk && make prefix=/usr/local all && make prefix=/usr/local install && rm -rf git-${gitversion}* && git --version
