@@ -6,7 +6,7 @@ ENV stashversion 3.4.1
 ENV gitversion 1.8.5.5
 ENV mysqlconnectorversion 5.1.32
 ENV portoffset 90
-ENV appname stash
+ENV appuser stash
 ENV datadir /var/data
 ENV stash_home /var/data/stash
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
@@ -35,10 +35,8 @@ RUN wget --quiet "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=pro
 #Setting Java Home and Stash Home in /opt/stash/bin/setenv.sh
 RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n#\n# setting JAVA_HOME\nJAVA_HOME="/opt/jdk",g' /opt/stash/bin/setenv.sh && sed -i 's,#STASH_HOME="",STASH_HOME="/var/data/stash",g' /opt/stash/bin/setenv.sh
 
-# Adding run user with right uid to access external storage
-RUN useradd ${appname}
 #According to https://confluence.atlassian.com/x/Fh6_Eg , some folders must be writable
-RUN chown -R ${appname}:${appname} /opt/stash/logs /opt/stash/work /opt/stash/temp
+RUN chown -R ${appuser}:${appuser} /opt/stash/logs /opt/stash/work /opt/stash/temp
 
 #Exposing Port to make Stash accessible
 EXPOSE 8090
@@ -47,4 +45,4 @@ EXPOSE 8090
 COPY configs/stash.ini /etc/supervisor/conf.d/
 
 # supervisor can not use env variables
-RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/stash.ini
+RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/stash.ini

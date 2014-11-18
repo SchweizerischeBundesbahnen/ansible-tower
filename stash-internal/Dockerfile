@@ -26,6 +26,6 @@ RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.re
 #Getting config and server.xml. server.xml is adapted later to test-/whatever instances
 RUN wget --quiet ${filer_url}/stash/stash-config.properties-test -O $stash_home/shared/stash-config.properties && wget --quiet ${filer_url}/stash/server.xml-test -O /opt/stash/conf/server.xml
 
-RUN chown -R ${appname}:${appname} $stash_home
+RUN chown -R ${appuser}:${appuser} $stash_home
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
