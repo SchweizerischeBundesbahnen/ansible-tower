@@ -14,8 +14,8 @@ RUN mkdir -p ${plugin_folder}
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138571 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
 #Categories in Version 1.0
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  ${plugin_folder}/stash-project-categories.jar
-#Workzone in Version 2.1.3
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2001003010 -O ${plugin_folder}/workzone.jar
+#Workzone in Version 2.1.4
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2001004000 -O ${plugin_folder}/workzone.jar
 #Unmerged Branch Hook in Version 1.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
 #Webhook in Version 2.0
