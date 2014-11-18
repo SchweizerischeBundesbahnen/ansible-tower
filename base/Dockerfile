@@ -5,11 +5,10 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 # The wzu user name used for ssh debug sessions to the running container
 ENV wzuuser wzuuser
-
+ENV JAVA_HOME /opt/jdk
 
 # Open ports
 EXPOSE 22
-
 
 # Install packages
 RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y \
@@ -25,7 +24,6 @@ RUN mkdir -p /etc/supervisor/conf.d
 COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
 COPY configs/sshd.ini /etc/supervisor/conf.d/
 
-
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
@@ -40,4 +38,8 @@ RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
 	&& sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 RUN service sshd start && service sshd stop
 
-
+# Get and Install Java
+RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz -o /opt/jdk17.tar.gz \
+	&& cd /opt && tar xfz jdk17.tar.gz \
+	&& ln -s /opt/jdk1.7* ${JAVA_HOME} \
+	&& rm -rf /opt/*.tar.gz
