@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/atlassian-base
+FROM schweizerischebundesbahnen/base
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
@@ -14,7 +14,7 @@ ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 #Installing toolchain necessary to compile git > 1.7.1 (shipped with rhel 6)
 RUN yum install -q -y gcc openssl-devel curl-devel expat-devel perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker gettext && yum clean all -q 
 
-# Download, make and install git
+# Download, make and install git because of https://answers.atlassian.com/questions/52498/stash-requires-git-1-7-6-but-rhel6-comes-with-git-1-7-1?page=1#86674
 RUN cd /usr/local/src && wget --quiet https://www.kernel.org/pub/software/scm/git/git-${gitversion}.tar.gz && tar xzf git-${gitversion}.tar.gz && cd git-${gitversion} && ./configure --prefix=/usr/local --without-tcltk && make prefix=/usr/local all && make prefix=/usr/local install && rm -rf git-${gitversion}* && git --version
 
 # Create Data directory structure and add user jira to the image
