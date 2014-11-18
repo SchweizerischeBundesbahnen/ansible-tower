@@ -34,8 +34,10 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 # download plugins (@see: https://github.com/cloudbees/jenkins-ci.org-docker)
 COPY configs/jenkins_plugins.txt /tmp/jenkins_plugins.txt
 RUN mkdir -p /tmp/WEB-INF/plugins
-RUN for PLUGIN in `cat /tmp/jenkins_plugins.txt`; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done
-RUN cd /tmp && zip -r --grow /opt/jenkins.war WEB-INF/*
+RUN for PLUGIN in `cat /tmp/jenkins_plugins.txt`; do  echo $PLUGIN; curl -k -L https://updates.jenkins-ci.org/latest/${PLUGIN}.hpi -o /tmp/WEB-INF/plugins/${PLUGIN}.hpi; done \
+	&& cd /tmp \
+	&& zip -r --grow /opt/jenkins.war WEB-INF/*
+	&& rm -rf /tmp/WEB-INF
 
 # expose port 8050 for jenkins
 EXPOSE 8050
