@@ -23,13 +23,10 @@ ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml
 ENV gitversion 1.8.5.5
 
 # Install epel repo
-RUN yum install -q vim subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect unzip gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
+RUN yum install -q subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "${appuser}:${appuser}" | chpasswd
-
-# Download JDK 1.7 as jenkins runtime
-RUN cd /opt && wget -qO- ${filerurl}/jdk17.tar.gz | tar xfz - && ln -s /opt/jdk1.7* /opt/jdk17 && ln -s /opt/jdk17/bin/java ${jenkinshome}/bin/java && su - ${appuser} -c "java -version"
 
 # Download Ant 1
 RUN cd ${jenkinshome}/buildtools && wget -qO- ${filerurl}/apache-ant-1.8.tar.gz | tar xfz - && ln -s apache-ant-1.8* apache-ant-1.8
@@ -68,7 +65,7 @@ RUN cd /usr/local/src && wget --quiet https://www.kernel.org/pub/software/scm/gi
 RUN cd ${jenkinshome} && ln -s m2 .m2 && ln -s buildtools/ build-binaries && cd build-binaries && ln -s apache-maven-${mvn30version} apache-maven-3.0.4 && ln -s oracle-jdk-6 jdk-oracle-1.6.0.30 && ln -s oracle-jdk-6-32b jdk-oracle-1.6.0.31-32b && ln -s oracle-jdk-6 jdk-oracle-1.6.0.31 && ln -s oracle-jdk-7 jdk-oracle-1.7.0.3 && ln -s oracle-jdk-7-32b jdk-oracle-1.7.0.3-32b && ln -s oracle-jdk-7 1.7.0.2 && ln -s oracle-jdk-8 jdk-oracle-1.8.0.5-64b && ln -s oracle-jdk-7 jdk-oracle-1.7.0.2
 
 # Create environment file
-RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk17/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
+RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
 
 # Add environment variables to run on start
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh && wget --quiet ${wzufiler}/keystore -O ${jenkinshome}/.keystore && chmod +x ${jenkinshome}/run.sh

@@ -6,10 +6,9 @@ MAINTAINER igor.masen2@sbb.ch
 ENV datadir /var/data
 ENV appname jenkins
 ENV appversion 1.565.3
-ENV portoffset 90
-ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=/var/data/jenkins/jenkins
+ENV portoffset 50
+ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=${datadir}/${appname}/${appname}
 ENV JENKINS_HOME ${datadir}/${appname}
-ENV JAVA_RUNTIME /opt/jdk17/bin/java
 
 # create data directory
 RUN mkdir -p /var/data
@@ -18,13 +17,8 @@ RUN mkdir -p /var/data
 RUN echo "LC_ALL=en_US.UTF-8" >> ${JENKINS_HOME}/.bashrc
  
 # install basic tools
-RUN yum install --quiet git curl zip -y && yum clean all -y
+RUN yum install --quiet git -y && yum clean all -y
  
-
-
-# get java
-RUN wget --quiet --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz -O /opt/jdk17.tar.gz && cd /opt && tar xfz jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && rm -rf /opt/*.tar.gz
-
 # add java opts to .bashrc file
 RUN echo "export JAVA_OPTIONS=${JAVA_OPTIONS}" >> ${JENKINS_HOME}/.bashrc
 
@@ -40,9 +34,9 @@ RUN mkdir -p /tmp/WEB-INF/plugins \
 	&& rm -rf /tmp/WEB-INF
 
 # expose port 8050 for jenkins
-EXPOSE 8050
+EXPOSE 80${portoffset}
 # expose port 9050 for jenkins ajp
-EXPOSE 9050
+EXPOSE 90${portoffset}
 # expose port for slave communication
 EXPOSE 9051
 
@@ -50,7 +44,7 @@ EXPOSE 9051
 COPY configs/jenkins.ini /etc/supervisor/conf.d/
 
 # supervisor can not use env variables
-RUN sed -ri "s#JAVA_PATH#${JAVA_RUNTIME}#g" /etc/supervisor/conf.d/jenkins.ini
+RUN sed -ri "s#JAVA_PATH#${JAVA_HOME}/bin/java#g" /etc/supervisor/conf.d/jenkins.ini
 RUN sed -ri "s#JAVA_OPTS#${JAVA_OPTIONS}#g" /etc/supervisor/conf.d/jenkins.ini 
 RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/jenkins.ini
 
