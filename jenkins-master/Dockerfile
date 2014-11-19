@@ -8,6 +8,7 @@ ENV appname jenkins
 ENV appversion 1.565.3
 ENV portoffset 50
 ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=${datadir}/${appname}/${appname}
+ENV JAVA_HOME /opt/jdk
 ENV JENKINS_HOME ${datadir}/${appname}
 
 # create data directory
