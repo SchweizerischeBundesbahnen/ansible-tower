@@ -5,6 +5,7 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 #Only Stuff in /var/data/stash
 
 ENV filer_url http://wzufiler.sbb.ch 
+ENV stash_home /var/data/stash
 ENV plugin_folder ${stash_home}/shared/plugins/installed-plugins
 
 #Plugin download
@@ -24,7 +25,8 @@ RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.re
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.0/enforce-message-hook-plugin-2.0.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
 #Getting config and server.xml. server.xml is adapted later to test-/whatever instances
-RUN wget --quiet ${filer_url}/stash/stash-config.properties-test -O $stash_home/shared/stash-config.properties && wget --quiet ${filer_url}/stash/server.xml-test -O /opt/stash/conf/server.xml
+RUN wget --quiet ${filer_url}/stash/stash-config.properties-test -O ${stash_home}/shared/stash-config.properties \
+	&& wget --quiet ${filer_url}/stash/server.xml-test -O /opt/stash/conf/server.xml
 
 RUN chown -R ${appuser}:${appuser} $stash_home
 
