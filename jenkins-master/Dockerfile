@@ -34,9 +34,9 @@ RUN mkdir -p /tmp/WEB-INF/plugins \
 	&& rm -rf /tmp/WEB-INF
 
 # expose port 8050 for jenkins
-EXPOSE 80${portoffset}
+EXPOSE 8050
 # expose port 9050 for jenkins ajp
-EXPOSE 90${portoffset}
+EXPOSE 9050
 # expose port for slave communication
 EXPOSE 9051
 
