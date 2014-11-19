@@ -13,7 +13,7 @@ EXPOSE 22
 # Install packages
 RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y \
 	&& yum update -y \
-	&& yum -y install openssh-server wget curl tar python-setuptools sudo \
+	&& yum -y install openssh-server wget curl tar zip unzip python-setuptools sudo \
 	&& yum clean all -q
 
 # Install supervisor
