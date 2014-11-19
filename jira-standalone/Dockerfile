@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM schweizerischebundesbahnen/atlassian-base
+FROM schweizerischebundesbahnen/base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 #Environment variables
@@ -10,7 +10,7 @@ ENV jirahome /var/data/jira
 ENV portoffset 70
 ENV appuser jira
 ENV filerurl http://wzufiler.sbb.ch 
-ENV JAVA_HOME /opt/jdk17
+ENV JAVA_HOME /opt/jdk
 ENV mysqlconnectorversion 5.1.32
 
 # Create Data directory structure and add user jira to the image
@@ -47,4 +47,4 @@ EXPOSE 10070
 RUN echo "sed -i 's/10.134.205.202/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/jira/bin/setenv.sh" >> /root/run.sh && chmod +x /root/run.sh
 
 # Start jira
-CMD /bin/bash /root/run.sh && sed -i "s/issues.sbb.ch/$domain/g" /opt/jira/conf/server.xml && su - jira -c 'export JAVA_HOME=/opt/jdk17 && /opt/jira/bin/start-jira.sh' && tail -f /opt/jira/logs/catalina.out
+CMD /bin/bash /root/run.sh && sed -i "s/issues.sbb.ch/$domain/g" /opt/jira/conf/server.xml && su - jira -c 'export JAVA_HOME=/opt/jdk && /opt/jira/bin/start-jira.sh' && tail -f /opt/jira/logs/catalina.out
