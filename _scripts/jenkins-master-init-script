@@ -4,7 +4,7 @@
 #
 # chkconfig: - 85 15
 
-opts="-p 8090:8090 -p 9090:9090 -p 10090:10090 -v /var/data/jenkins:/var/data/jenkins -d"
+opts="-p 8050:8050 -p 9050:9050 -p 9051:9051 -v /var/data/jenkins:/var/data/jenkins -d"
 containername=jenkins-master
 imagename=schweizerischebundesbahnen/jenkins-master
 
