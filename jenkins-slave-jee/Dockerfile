@@ -1,14 +1,22 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM schweizerischebundesbahnen/jenkins-slave-base 
+FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV labels "jee"
 
 # Download and extract WAS 70 and create profile
-RUN cd /opt &&  wget -qO- ${filerurl}/was70.tar.gz | tar xfz - && ln -s /opt/was70 ${jenkinshome}/buildtools/was70 && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh
+RUN cd /opt \
+        &&  wget -qO- ${filerurl}/was70.tar.gz | tar xfz - \
+        && ln -s /opt/was70 ${jenkinshome}/buildtools/was70 \
+        && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh \
+        && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was70*
 
-# Download and extract WAS 85 and create profile 
-RUN cd /opt &&  wget -qO- ${filerurl}/was85.tar.gz | tar xfz - && ln -s /opt/was85 ${jenkinshome}/buildtools/was85 && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh
+# Download and extract WAS 85 and create profile
+RUN cd /opt \
+        &&  wget -qO- ${filerurl}/was85.tar.gz | tar xfz - \
+        && ln -s /opt/was85 ${jenkinshome}/buildtools/was85 \
+        && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh \
+        && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was85*
 
 # Link WAS70 JDK to the right place
 RUN cd ${jenkinshome}/buildtools && ln -s /opt/was70/java ibm-jdk-was70 && ${jenkinshome}/buildtools/ibm-jdk-was70/bin/java -version
@@ -22,8 +30,6 @@ RUN cd ${jenkinshome}/buildtools && ln -s ibm-jdk-was85 jdk-ibm-1.7.0.2 && ln -s
 # Create environment file
 RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70 WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 
-# Chown JENKINS_HOME to jenkins
-RUN chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was*
-
 # Start Slave
-CMD su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}" 
+CMD su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}"
+~
