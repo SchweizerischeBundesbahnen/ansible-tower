@@ -24,7 +24,7 @@ RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${
 RUN echo 'export PATH=$PATH:'${jenkinshome}/buildtools/android-sdk-linux/tools:${jenkinshome}/buildtools/gradle-1/bin >> ${jenkinshome}/env.sh
 
 # Workaround for zipalign
-RUN ln -sf ${jenkinshome}/buildtools/android-sdk-linux/build-tools/20.0.0/zipalign ${jenkinshome}/buildtools/android-sdk-linux/tools/zipalign
+RUN ln -sf ${jenkinshome}/buildtools/android-sdk-linux/build-tools/2*/zipalign ${jenkinshome}/buildtools/android-sdk-linux/tools/zipalign
 
 # Run jenkins
 CMD su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk17/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
