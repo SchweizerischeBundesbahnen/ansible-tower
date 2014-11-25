@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM centos:centos6
+FROM schweizerischebundesbahnen/base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 #Environment variables
@@ -10,38 +10,26 @@ ENV jirahome /var/data/jira
 ENV portoffset 70
 ENV appuser jira
 ENV filerurl http://wzufiler.sbb.ch 
-ENV JAVA_HOME /opt/jdk17
+ENV JAVA_HOME /opt/jdk
 ENV mysqlconnectorversion 5.1.32
-
-# Install epel repo
-RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y && yum update -q -y && yum clean all
-
-# Install a basic SSH server and some nice admin tools
-RUN yum install -q vim wget tar -y && yum clean all 
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jirahome}
 
-# Download JDK 1.7 as jira runtime
-RUN wget --quiet ${filerurl}/jdk17.tar.gz -O /tmp/jdk17.tar.gz && cd /opt/ && tar xfz /tmp/jdk17.tar.gz && rm -f /tmp/jdk17.tar.gz && ln -s /opt/jdk1.7* /opt/jdk17 && /opt/jdk17/bin/java -version
-
 # Import the default keystore
-RUN wget --quiet ${filerurl}/keystore -O /opt/jdk17/jre/lib/security/cacerts
+RUN wget --quiet ${filerurl}/keystore -O /opt/jdk/jre/lib/security/cacerts
 
 # Download jira into /opt
-RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz -O /opt/atlassian-jira-${jiraversion}.tar.gz && cd /opt && tar xfz atlassian-jira-${jiraversion}.tar.gz && rm -f /opt/atlassian-jira-${jiraversion}.tar.gz && ln -s /opt/atlassian-jira* /opt/jira
+RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz -O /opt/atlassian-jira-${jiraversion}.tar.gz \
+	&& cd /opt \
+	&& tar xfz atlassian-jira-${jiraversion}.tar.gz \
+	&& rm -f /opt/atlassian-jira-${jiraversion}.tar.gz \
+	&& ln -s /opt/atlassian-jira* /opt/jira \
+	&& chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk* \
+	&& wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml
 
 # Install JDBC driver
 RUN wget --quiet "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=proxy.external.nexus-ext-cache.releases&g=mysql&a=mysql-connector-java&v=${mysqlconnectorversion}&e=jar" -O /opt/jira/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
-
-# Chown ${jirahome} to jira
-RUN chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk1.7*
-
-# Get setenv.sh and server.xml
-RUN wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml
-
-# Set Timezone to zurich
-RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
 # Link logs and temp
 RUN rm -rf /opt/jira/{logs,temp} && mkdir -p ${jirahome}/{logs,temp} && ln -sf ${jirahome}/logs /opt/jira/logs && ln -sf ${jirahome}/temp /opt/jira/temp
@@ -59,4 +47,4 @@ EXPOSE 10070
 RUN echo "sed -i 's/10.134.205.202/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/jira/bin/setenv.sh" >> /root/run.sh && chmod +x /root/run.sh
 
 # Start jira
-CMD /bin/bash /root/run.sh && sed -i "s/issues.sbb.ch/$domain/g" /opt/jira/conf/server.xml && su - jira -c 'export JAVA_HOME=/opt/jdk17 && /opt/jira/bin/start-jira.sh' && tail -f /opt/jira/logs/catalina.out
+CMD /bin/bash /root/run.sh && sed -i "s/issues.sbb.ch/$domain/g" /opt/jira/conf/server.xml && su - jira -c 'export JAVA_HOME=/opt/jdk && /opt/jira/bin/start-jira.sh' && tail -f /opt/jira/logs/catalina.out
