@@ -8,7 +8,7 @@ ENV appname jenkins
 ENV appuser jenkins
 ENV appversion 1.580.1
 ENV offset 50
-ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=${datadir}/${appname}/${appname}
+ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=${datadir}/${appname}
 ENV JAVA_HOME /opt/jdk
 ENV jenkinshome ${datadir}/${appname}
 
