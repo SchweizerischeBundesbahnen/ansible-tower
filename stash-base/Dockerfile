@@ -5,7 +5,7 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 ENV stashversion 3.4.1
 ENV gitversion 1.8.5.5
 ENV mysqlconnectorversion 5.1.32
-ENV idoffset 90
+ENV idoffset 120
 ENV appuser stash
 ENV datadir /var/data
 ENV stash_home /var/data/stash
@@ -18,7 +18,7 @@ RUN yum install -q -y gcc openssl-devel curl-devel expat-devel perl-ExtUtils-CBu
 RUN cd /usr/local/src && wget --quiet https://www.kernel.org/pub/software/scm/git/git-${gitversion}.tar.gz && tar xzf git-${gitversion}.tar.gz && cd git-${gitversion} && ./configure --prefix=/usr/local --without-tcltk && make prefix=/usr/local all && make prefix=/usr/local install && rm -rf git-${gitversion}* && git --version
 
 # Create Data directory structure and add user jira to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${stash_home} && mkdir -p ${stash_home}/shared
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 1${idoffset} --home ${stash_home} && mkdir -p ${stash_home}/shared
 
 #Getting stash and setting it
 RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -O /opt/atlassian-stash-${stashversion}.tar.gz && cd /opt && tar xfz atlassian-stash-${stashversion}.tar.gz && rm -f /opt/atlassian-stash-${stashversion}.tar.gz && ln -s /opt/atlassian-stash* /opt/stash
