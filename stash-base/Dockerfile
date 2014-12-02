@@ -35,7 +35,8 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 RUN chown -R ${appuser}:${appuser} /opt/stash/logs /opt/stash/work /opt/stash/temp
 
 #Exposing Port to make Stash accessible
-EXPOSE 8090
+EXPOSE 8120
+EXPOSE 9120
 
 # install script for stash
 COPY configs/stash.ini /etc/supervisor/conf.d/
