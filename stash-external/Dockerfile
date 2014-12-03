@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/stash-base:3.4.1-1
+FROM schweizerischebundesbahnen/stash-base:3.4.1-2
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 #Stash Base installed with java and stash in /opt.
@@ -6,7 +6,7 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV stash_home /var/data/stash
 ENV plugin_folder ${stash_home}/shared/plugins/installed-plugins
-ENV filerurl http://30020.hostserv.eu
+ENV filer_url http://30020.hostserv.eu
 
 #Plugin download
 RUN mkdir -p ${plugin_folder}
