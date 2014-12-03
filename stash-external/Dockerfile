@@ -24,7 +24,7 @@ RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.w
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
 
 #Webhook in Version 2.0
-RUN wget --quiet ${filer_url}/stash/jenkins-push-webhook.jar -O ${plugin_folder}/jenkins-push-webhook.jar
+RUN wget --quiet ${filer_url}/stash/jenkins-push-webhook-2.0.0.jar -O ${plugin_folder}/jenkins-push-webhook.jar
 #Commit Enforcer in Version 2.0
 RUN wget --quiet ${filer_url}/stash/enforce-message-hook-plugin-2.0.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
