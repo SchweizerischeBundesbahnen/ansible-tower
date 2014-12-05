@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/stash-base:3.4.1
+FROM schweizerischebundesbahnen/stash-base:3.4.1-2
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Stash Base installed with java and stash in /opt.
