@@ -15,16 +15,11 @@ RUN mkdir -p ${plugin_folder}
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138571 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
 
 #Categories in Version 1.0
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  ${plugin_folder}/stash-project-categories.jar
-
-#Workzone in Version 2.1.4
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2001004000 -O ${plugin_folder}/workzone.jar
+#RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  ${plugin_folder}/stash-project-categories.jar
 
 #Unmerged Branch Hook in Version 1.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
 
-#Webhook in Version 2.0
-RUN wget --quiet ${filer_url}/stash/jenkins-push-webhook-2.0.0.jar -O ${plugin_folder}/jenkins-push-webhook.jar
 #Commit Enforcer in Version 2.0
 RUN wget --quiet ${filer_url}/stash/enforce-message-hook-plugin-2.0.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
