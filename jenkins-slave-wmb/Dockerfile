@@ -6,13 +6,11 @@ ENV labels "wmb"
 ENV buildtoolsdir /var/data/jenkins/buildtools
 
 # Download and extract wmbt
-RUN mkdir -p ${buildtoolsdir} &&  cd  ${buildtoolsdir}/ \
-        &&  wget -qO- ${filerurl}/wmb.tar.gz | tar xfz - \
-        &&  wget -qO- ${filerurl}/ibm-wmb.tar.gz | tar xfz - && mv ibm/* .
+RUN mkdir -p ${buildtoolsdir} \
+        &&  cd  ${buildtoolsdir}/ &&  wget -qO- ${filerurl}/wmb.tar.gz | tar xfz - \
+        &&  cd /var && wget -qO- ${filerurl}/ibm-wmb.tar.gz | tar xfz -
 
-
-
-RUN find ${buildtoolsdir}/wmb | grep mqsicreatebar
+#RUN find ${buildtoolsdir}/wmb | grep mqsicreatebar
 
 # Create environment file
 RUN  echo "export WMB7RUNTIME=${buildtoolsdir}/wmb/WMBT700" >> ${jenkinshome}/env.sh
