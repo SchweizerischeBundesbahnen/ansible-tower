@@ -19,6 +19,6 @@ RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apph
 RUN cd /opt && wget -q "http://dl.zeroturnaround.com/license-server/license-server-${appversion}.zip"  -O license-server-${appversion}.zip && unzip license-server-${appversion}.zip && rm license-server-${appversion}.zip 
 
 
-# Chown JENKINS_HOME to jenkins
+# Start the license server in ${apphome}
 CMD /opt/jdk/bin/java -Dhttp.port=8${idoffset} -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
 

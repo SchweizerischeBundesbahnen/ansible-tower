@@ -6,9 +6,8 @@ ENV labels "wmb"
 ENV buildtoolsdir /var/data/jenkins/buildtools
 
 # Download and extract wmbt
-RUN mkdir -p ${buildtoolsdir} \
-        &&  cd  ${buildtoolsdir}/ &&  wget -qO- ${filerurl}/wmb.tar.gz | tar xfz - \
-        &&  cd /var && wget -qO- ${filerurl}/ibm-wmb.tar.gz | tar xfz -
+RUN cd  ${buildtoolsdir}/ &&  wget -qO- ${filerurl}/wmb.tar.gz | tar xfz - \
+    &&  cd /var && wget -qO- ${filerurl}/ibm-wmb.tar.gz | tar xfz -
 
 #RUN find ${buildtoolsdir}/wmb | grep mqsicreatebar
 
