@@ -27,3 +27,8 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http:/
 	&& cd /opt && tar xfz jdk17.tar.gz \
 	&& ln -s /opt/jdk1.7* ${JAVA_HOME} \
 	&& rm -rf /opt/*.tar.gz
+
+# install swisscom root cert
+COPY configs/Swisscom_Root.cer /opt/jdk/Swisscom_Root.cer
+RUN /opt/jdk/jre/bin/keytool -import -noprompt -keystore /opt/jdk/jre/lib/security/cacerts -file /opt/jdk/Swisscom_Root.cer  -storepass "changeit" \
+	&& rm /opt/jdk/Swisscom_Root.cer 
