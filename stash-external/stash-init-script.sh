@@ -4,9 +4,9 @@
 #
 # chkconfig: - 85 15
 
-opts=" -p 8120:8120 -p 9120:9120 -v /var/data/stash/log:/var/data/stash/log -v /var/data/stash/logs:/var/data/stash/logs -v /var/data/stash/shared/data:/var/data/stash/shared/data -d"
+opts="  -p 8190:8120 -p 9120:9120 -v /var/data/stash/log:/var/data/stash/log -v /var/data/stash/logs:/var/data/stash/logs -v /var/data/stash/shared/data:/var/data/stash/shared/data -d"
 containername=stash
-imagename=schweizerischebundesbahnen/stash-internal:3.4.1
+imagename=schweizerischebundesbahnen/stash-external:3.4.1
 
 function start_container() {
 	docker start $containername
