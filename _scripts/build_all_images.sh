@@ -1,7 +1,7 @@
 #!/bin/bash
 
 error=0
-tasklist=('base' 'jenkins-slave-base' 'stash-base' 'jira-standalone' 'stash-internal' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee')
+tasklist=('base' 'jenkins-slave-base' 'stash-base' 'jira-standalone' 'stash-internal' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb' 'jrebellicenseserver')
 
 for task in "${tasklist[@]}"
 do
