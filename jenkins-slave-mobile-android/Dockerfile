@@ -19,7 +19,7 @@ RUN wget --quiet ${filerurl}/android-sdk.tar.gz -O /tmp/android-sdk.tar.gz \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Update android sdk
-RUN su - ${appuser} -c "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux JAVA_HOME=/opt/jdk && ${jenkinshome}/buildtools/android-sdk-linux/android-sdk-update.sh"
+RUN su - ${appuser} -c "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux JAVA_HOME=/opt/jdk && PATH=$PATH:/opt/jdk/bin && ${jenkinshome}/buildtools/android-sdk-linux/android-sdk-update.sh"
 
 # Download Gradle 1
 RUN wget --quiet "https://services.gradle.org/distributions/gradle-${gradle1version}-bin.zip" -O /tmp/gradle-${gradle1version}-bin.zip \

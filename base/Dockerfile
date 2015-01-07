@@ -1,5 +1,5 @@
 # This is the base Dockerfile for all SBB Dockerfiles @WZU
-FROM centos:centos6
+FROM centos:centos7
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
@@ -9,7 +9,7 @@ ENV JAVA_HOME /opt/jdk
 # Install packages
 RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y \
 	&& yum update -y \
-	&& yum -y install wget curl tar zip unzip python-setuptools sudo \
+	&& yum -y install wget curl tar zip unzip python-setuptools sudo bzip2 \
 	&& yum clean all -q
 
 # Install supervisor

@@ -5,7 +5,7 @@ MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 #Environment variables
 ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
-ENV mvn32version 3.2.3
+ENV mvn32version 3.2.5
 ENV antversion 1.9.4
 ENV swarmversion 1.16
 ENV appuser jenkins
@@ -92,14 +92,14 @@ RUN wget --quiet ${filerurl}/oracle-jdk-8.tar.gz -O /tmp/oracle-jdk-8.tar.gz \
 	&& ln -s `ls | grep jdk1.8.0 | grep -v 32b` oracle-jdk-8
 
 # Download, make and install git
-RUN cd /usr/local/src \
-	&& wget --quiet https://www.kernel.org/pub/software/scm/git/git-${gitversion}.tar.gz \
-	&& tar xzf git-${gitversion}.tar.gz \
-	&& cd git-${gitversion} \
-	&& make prefix=/usr/local all \
-	&& make prefix=/usr/local install \
-	&& rm -rf git-${gitversion}* \
-	&& git --version
+#RUN cd /usr/local/src \
+#	&& wget --quiet https://www.kernel.org/pub/software/scm/git/git-${gitversion}.tar.gz \
+#	&& tar xzf git-${gitversion}.tar.gz \
+#	&& cd git-${gitversion} \
+#	&& make prefix=/usr/local all \
+#	&& make prefix=/usr/local install \
+#	&& rm -rf git-${gitversion}* \
+#	&& git --version
 
 # Download the swarm client
 RUN wget --quiet "http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
@@ -123,7 +123,9 @@ RUN cd ${jenkinshome} \
 RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
 
 # Add environment variables to run on start
-RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh && wget --quiet ${wzufiler}/keystore -O ${jenkinshome}/.keystore && chmod +x ${jenkinshome}/run.sh
+RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
+	&& wget ${filerurl}/keystore -O ${jenkinshome}/.keystore \
+	&& chmod +x ${jenkinshome}/run.sh
 
 # Chown JENKINS_HOME to jenkins
 #RUN chown -R ${appuser}:${appuser} ${jenkinshome}
