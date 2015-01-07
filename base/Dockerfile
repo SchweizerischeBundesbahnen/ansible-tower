@@ -7,7 +7,7 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 ENV JAVA_HOME /opt/jdk
 
 # Install packages
-RUN yum install -q http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -y \
+RUN yum install -q http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm -y \
 	&& yum update -y \
 	&& yum -y install wget curl tar zip unzip python-setuptools sudo bzip2 \
 	&& yum clean all -q

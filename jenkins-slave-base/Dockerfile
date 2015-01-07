@@ -23,7 +23,7 @@ ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml
 ENV labels swarm
 
 # Install dev tools
-RUN yum install -q git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
+RUN yum install -q git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "${appuser}:${appuser}" | chpasswd
