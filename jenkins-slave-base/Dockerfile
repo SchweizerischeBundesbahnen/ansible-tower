@@ -20,11 +20,10 @@ ENV svnpassword fsbuild2011
 ENV executors 1
 ENV filerurl http://wzufiler.sbb.ch
 ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
-ENV gitversion 1.8.5.5
 ENV labels swarm
 
 # Install dev tools
-RUN yum install -q subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
+RUN yum install -q git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect gettext-devel expat-devel curl-devel zlib-devel openssl-devel gcc gcc-g++ -y && yum clean all -q 
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} && echo "${appuser}:${appuser}" | chpasswd
@@ -90,16 +89,6 @@ RUN wget --quiet ${filerurl}/oracle-jdk-8.tar.gz -O /tmp/oracle-jdk-8.tar.gz \
 	&& tar xfz /tmp/oracle-jdk-8.tar.gz \
 	&& rm -f /tmp/oracle-jdk-8.tar.gz \
 	&& ln -s `ls | grep jdk1.8.0 | grep -v 32b` oracle-jdk-8
-
-# Download, make and install git
-#RUN cd /usr/local/src \
-#	&& wget --quiet https://www.kernel.org/pub/software/scm/git/git-${gitversion}.tar.gz \
-#	&& tar xzf git-${gitversion}.tar.gz \
-#	&& cd git-${gitversion} \
-#	&& make prefix=/usr/local all \
-#	&& make prefix=/usr/local install \
-#	&& rm -rf git-${gitversion}* \
-#	&& git --version
 
 # Download the swarm client
 RUN wget --quiet "http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
