@@ -1,23 +1,21 @@
-FROM centos:centos6
+FROM centos:centos6.6
 MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
-ENV gitversion 1.8.5.5
+ENV name git
+ENV version 1.8.5.5
+ENV HOME /root
 
 VOLUME /output
 
 # update and install rpmbuild-tools
-RUN yum update -y \
-    && yum install -q curl-devel expat-devel gettext-devel openssl-devel zlib-devel git curl make yum-utils rpmdev-setuptree rpmdevtools rpm-build
+RUN yum update -q -y && \
+    yum install -q -y tar wget curl-devel expat-devel gettext-devel openssl-devel zlib-devel git curl make yum-utils rpmdev-setuptree rpmdevtools rpm-build xmlto asciidoc perl-ExtUtils-MakeMaker gcc
 
 # create directory structure for rpm-build
-RUN mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+RUN mkdir -p /output ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} ~/src
 
-# clone git-repository
-RUN cd ~/src && git clone https://github.com/git/git.git && git checkout tags/${gitversion}
+# create the script for building git
+COPY configs/build-git-rpm.sh /root/ 
 
-# tar the git code and move to SOURCES
-RUN tar cfz git-${gitversion}.tar.gz git && mv git-${gitversion}.tar.gz ~/rpmbuild/SOURCES
-
-# build the rpm
-RUN ~/src/git && ls | grep *.spec
-rpmbuild -ba git.spec
+# build the rpm on container start
+CMD /bin/bash ~/build-git-rpm.sh
