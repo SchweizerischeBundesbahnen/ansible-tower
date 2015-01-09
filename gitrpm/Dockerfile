@@ -1,4 +1,4 @@
-FROM centos:centos6.6
+FROM centos:centos7
 MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
 ENV name git
@@ -9,7 +9,8 @@ VOLUME /output
 
 # update and install rpmbuild-tools
 RUN yum update -q -y && \
-    yum install -q -y tar wget curl-devel expat-devel gettext-devel openssl-devel zlib-devel git curl make yum-utils rpmdev-setuptree rpmdevtools rpm-build xmlto asciidoc perl-ExtUtils-MakeMaker gcc
+    yum install -q -y tar wget curl-devel expat-devel gettext-devel openssl-devel zlib-devel git curl make yum-utils rpmdev-setuptree rpmdevtools rpm-build xmlto asciidoc perl-ExtUtils-MakeMaker gcc && \
+    yum clean -q all
 
 # create directory structure for rpm-build
 RUN mkdir -p /output ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS} ~/src
