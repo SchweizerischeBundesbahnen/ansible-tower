@@ -1,22 +1,11 @@
 #!/bin/bash
 
-#WORKDIR=~/workspace
 REGISTRY=registry-t.sbb.ch
-#IMAGELIST=('base' 'jenkins-slave-base' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb')
-IMAGELIST=('base' 'jenkins-master')
-#GITREPO=https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
-
+IMAGELIST=('base' 'jenkins-slave-base' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb')
+#IMAGELIST=('base' 'jenkins-master')
 
 
 error=0
-
-#mkdir $WORKDIR
-#cd $WORKDIR
-#rm -rf $WORKDIR/*
-
-#git clone ${GITREPO}
-
-#cd wzu-docker
 
 for IMAGE in "${IMAGELIST[@]}"
 do
