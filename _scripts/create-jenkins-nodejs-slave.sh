@@ -1,5 +1,5 @@
 #!/bin/bash -x
-externalfshome=/var/lib/docker/container-ext-filesystems
+externalfshome=/var/data/docker/container-ext-filesystems
 randomint=`shuf -i 50000-60000 -n1`
 
 # create container
