@@ -11,6 +11,15 @@ IMAGELIST=('base' 'jenkins-master')
 
 error=0
 
+# rewrite all tags
+FILELIST=`find . -name "Dockerfile" | grep -v "/base/"`
+for dockerfile in $FILELIST 
+do
+  search=`grep "FROM schweizerischebundesbahnen" ${dockerfile}`
+  sed -ri "s#${search}#${search}${TAG}#g" ${dockerfile}
+done
+
+# build and push images
 for IMAGE in "${IMAGELIST[@]}"
 do
 	sudo docker build --rm  -t schweizerischebundesbahnen/${IMAGE}${TAG} ./${IMAGE}
@@ -24,6 +33,7 @@ do
 	sudo docker push ${REGISTRY}/${IMAGE}${TAG}
 done
 
+# delete images from disk
 if [ $error -eq 0 ]; then
   for IMAGE in "${IMAGELIST[@]}"
   do
