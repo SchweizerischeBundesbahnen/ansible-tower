@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_DIR=/var/lib/docker/container-ext-filesystems/
+BASE_DIR=/var/data/docker/container-ext-filesystems/
 CONTAINER_IDS=`sudo docker ps -a | awk '{ print $1}' | grep -v CONTAINER`
 USED_FS_IDS=();
 AVAILABLE_IDS=();
