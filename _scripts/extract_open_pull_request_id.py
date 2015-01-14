@@ -43,6 +43,7 @@ print response.status, response.reason
 data = response.read()
 values = json.loads(data).get("values")
 
+print getUrl
 print json.dumps(values, sort_keys=True, indent=4)
 
 #...and find the id of the develop branch
