@@ -28,8 +28,8 @@ import urllib
 host = 'code.sbb.ch'
 feature_branch = str(sys.argv[1])
 commit_hash = str(sys.argv[2])
-userid = release
-passwd = release
+userid = 'release'
+passwd = 'release'
 auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
 
 #construct the REST URL
