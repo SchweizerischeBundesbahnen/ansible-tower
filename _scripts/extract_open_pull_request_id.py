@@ -33,7 +33,7 @@ passwd = 'release'
 auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
 
 #construct the REST URL
-getUrl = '/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=OUTGOING&state=open&order=newest&withAttributes=false&withProperties=false&at=' + urllib.quote_plus( feature_branch )
+getUrl = '/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=INCOMING&state=open&order=newest&withAttributes=false&withProperties=false&at=' + urllib.quote_plus( feature_branch )
 
 #getting the permissions for each repos...
 c=httplib.HTTPSConnection(host)

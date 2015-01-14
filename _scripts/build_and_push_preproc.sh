@@ -4,6 +4,7 @@ branch=$1
 
 commit_hash="`git rev-parse HEAD`"
 echo "commit_hash=$commit_hash"
+echo "branch=$branch"
 
 
 # for testing...
