@@ -1,8 +1,11 @@
 #!/bin/bash
 
+
+echo "START-PARAMS: $1 - $2"
+
 REGISTRY=registry-t.sbb.ch
-IMAGELIST=('base' 'jenkins-slave-base' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb' 'confluence' 'jira-standalone' 'jrebellicenseserver' 'stash-base' 'stash-internal' 'stash-external')
-#IMAGELIST=('base' 'jenkins-master')
+#IMAGELIST=('base' 'jenkins-slave-base' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb' 'confluence' 'jira-standalone' 'jrebellicenseserver' 'stash-base' 'stash-internal' 'stash-external')
+IMAGELIST=('base' 'jenkins-master')
 
 
 error=0
