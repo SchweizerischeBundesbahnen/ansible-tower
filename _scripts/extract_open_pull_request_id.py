@@ -23,7 +23,7 @@ import base64
 import string
 import json
 import sys
-import import urllib
+import urllib
 #general settings
 host = 'code.sbb.ch'
 feature_branch = str(sys.argv[1])
