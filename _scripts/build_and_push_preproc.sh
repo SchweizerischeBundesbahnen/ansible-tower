@@ -1,6 +1,6 @@
 #!/bin/bash
 
-feature_branch="`git rev-parse --abbrev-ref HEAD`"
+feature_branch="`git rev-parse --symbolic-full-name HEAD`"
 commit_hash="`git rev-parse HEAD`"
 echo "feature_branch=$feature_branch"
 echo "commit_hash=$commit_hash"
