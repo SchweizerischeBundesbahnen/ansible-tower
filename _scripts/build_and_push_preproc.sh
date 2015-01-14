@@ -1,9 +1,11 @@
 #!/bin/bash
 
-feature_branch="`git rev-parse --symbolic-full-name HEAD`"
 commit_hash="`git rev-parse HEAD`"
-echo "feature_branch=$feature_branch"
 echo "commit_hash=$commit_hash"
+echo "feature_branch=$feature_branch"
+
+feature_branch="`git rev-parse --symbolic-full-name $commit_hash`"
+
 
 
 # for testing...
