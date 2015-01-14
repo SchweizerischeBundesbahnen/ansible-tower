@@ -1,12 +1,12 @@
 #!/bin/bash -x
 containerid=$1
-externalfshome=/var/lib/docker/container-ext-filesystems
+externalfshome=/var/data/docker/container-ext-filesystems
 
 # stop container
 sudo docker stop $containerid
 
 # get fs id
-fsid=`sudo docker inspect -f='{{.Volumes}}' ${containerid} | cut -d"/" -f7`
+fsid=`sudo docker inspect -f='{{.Name}}' ${containerid} | awk -F"-" '{print $NF }'`
 
 # remove container
 sudo docker rm $containerid
