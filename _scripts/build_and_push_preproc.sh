@@ -3,7 +3,7 @@
 commit_hash="`git rev-parse HEAD`"
 echo "commit_hash=$commit_hash"
 
-feature_branch="`git rev-parse --symbolic-full-name HEAD`"
+feature_branch="`git symbolic-ref HEAD`"
 echo "feature_branch=$feature_branch"
 
 
