@@ -12,7 +12,8 @@ feature_branch="refs/heads/$branch"
 # if we're not on a feature branch...
 if  [[ $feature_branch != *feature* ]]
 then
-    python extract_open_pull_request_id.py ${feature_branch} ${commit_hash}
+    pr="`python extract_open_pull_request_id.py ${feature_branch} ${commit_hash}`"
+    echo "pr=${pr}"
 fi
 
 
