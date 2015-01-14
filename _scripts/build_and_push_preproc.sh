@@ -12,10 +12,10 @@ echo "feature_branch=$feature_branch"
 feature_branch="refs/heads/feature/WZU-2994"
 
 # if we're not on a feature branch...
-#if  [[ $feature_branch != *feature* ]]
-#then
+if  [[ $feature_branch == *feature* ]]
+then
     python extract_open_pull_request_id.py ${feature_branch} ${commit_hash}
-#fi
+fi
 
 
 
