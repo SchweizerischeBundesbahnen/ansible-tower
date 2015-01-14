@@ -22,7 +22,6 @@ do
 
 	sudo docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}${TAG}"
 	sudo docker push ${REGISTRY}/${IMAGE}${TAG}
-	sudo docker rmi -f "${REGISTRY}/${IMAGE}${TAG}"
 done
 
 if [ $error -eq 0 ]; then
