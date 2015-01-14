@@ -28,6 +28,9 @@ import urllib
 host = 'code.sbb.ch'
 feature_branch = str(sys.argv[1])
 commit_hash = str(sys.argv[2])
+userid = release
+passwd = release
+auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
 
 #construct the REST URL
 getUrl = '/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=OUTGOING&state=open&order=newest&withAttributes=false&withProperties=false&at=' + urllib.quote_plus( feature_branch )
@@ -35,7 +38,7 @@ getUrl = '/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction
 #getting the permissions for each repos...
 c=httplib.HTTPSConnection(host)
 c.putrequest('GET', getUrl)
-#c.putheader('Authorization', auth )
+c.putheader('Authorization', auth )
 c.endheaders()
 response = c.getresponse()
 c.close()
@@ -48,8 +51,8 @@ print json.dumps(values, sort_keys=True, indent=4)
 
 #...and find the id of the develop branch
 for value in values:
-    id = value["id"]
+    the_id = value["id"]
 
-print id
+print the_id
 
 
