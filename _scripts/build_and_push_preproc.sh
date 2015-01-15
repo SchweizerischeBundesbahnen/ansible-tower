@@ -8,7 +8,6 @@ echo "commit_hash=${commit_hash}"
 echo "branch=${branch}"
 
 tag="latest"
-
 exit
 
 rm -fR wzu-docker
