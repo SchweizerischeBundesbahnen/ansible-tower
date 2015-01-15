@@ -1,38 +1,27 @@
 #!/bin/bash
 
 # Execute via ssh from Jenkins on the Docker Builder Slave
-# N.B. The environment Variables GIT_BRANCH and GIT_COMMIT are set by the Jenkins Git Plugin,
-# see https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin
+# N.B. The environment Variables from the Jenkins Git Plugin are not forward to the environment in which this script is executed.
+# List of available variables in Jenkins Exec, see https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin
+GIT_URL=$1
+GIT_COMMIT=$2
+GIT_BRANCH=$3
 
-echo "GIT_URL=$1"
-echo "GIT_COMMIT=$2"
-echo "GIT_BRANCH=$3"
+echo "GIT_URL=${GIT_URL}"
+echo "GIT_COMMIT=${GIT_COMMIT}"
+echo "GIT_BRANCH=${GIT_BRANCH}"
 
-
-exit
-
+rm -fR wzu-docker
 git clone ${GIT_URL}
+cd wzu-docker
 git checkout "${GIT_BRANCH}"
-cd _scripts
-chmod u+x
-GIT_COMMIT="`git rev-parse HEAD`"
-./build_and_push_preproc.sh "${GIT_COMMIT}" "${GIT_BRANCH}"
 
 
 
 
 tag="latest"
 
-rm -fR wzu-docker
-git clone https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
-git checkout $branch
 
-
-
-
-
-# for testing...
-feature_branch="refs/heads/$branch"
 
 # if we're not on a feature branch...
 if  [[ $feature_branch != *feature* ]]
@@ -57,10 +46,10 @@ fi
 # branch master -> registry
 registry="registry-t.sbb.ch"
 case $branch in
-  "master")
+  "*master)")
     registry="registry.sbb.ch"
   ;;
-  "develop")
+  "*develop)")
     registry="registry-i.sbb.ch"
   ;;
   *)
