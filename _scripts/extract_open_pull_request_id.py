@@ -40,6 +40,7 @@ print getUrl
 print 'printing dump:'
 print json.dumps(values, sort_keys=True, indent=4)
 
+
 # Find the id of the pull request open on the branch corresponding to the commit_hash
 for value in values:
     if ["latestChangeset"] == commit_hash:
