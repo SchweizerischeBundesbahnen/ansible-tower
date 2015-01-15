@@ -13,7 +13,7 @@ echo "GIT_BRANCH=${GIT_BRANCH}"
 
 rm -fR wzu-docker
 git clone ${GIT_URL}
-cd wzu-docker
+cd wzu-docker/_scripts
 git checkout "${GIT_BRANCH}"
 
 
@@ -44,6 +44,7 @@ fi
 # feature -> registry-t
 # branch develop -> registry-i
 # branch master -> registry
+# (pattern matching in case statements: http://docstore.mik.ua/orelly/unix3/upt/ch35_11.htm)
 registry="registry-t.sbb.ch"
 case $branch in
   "*master)")
