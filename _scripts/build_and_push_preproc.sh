@@ -1,11 +1,23 @@
 #!/bin/bash
 
-branch=$1
+# Find the input parameters
+commit_hash=$1
+branch=$2
+
+echo "commit_hash=${commit_hash}"
+echo "branch=${branch}"
+
 tag="latest"
 
-commit_hash="`git rev-parse HEAD`"
-echo "commit_hash=$commit_hash"
-echo "branch=$branch"
+exit
+
+rm -fR wzu-docker
+git clone https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
+git checkout $branch
+
+
+
+
 
 # for testing...
 feature_branch="refs/heads/$branch"
