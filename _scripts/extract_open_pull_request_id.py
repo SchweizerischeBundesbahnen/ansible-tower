@@ -35,10 +35,9 @@ c.close()
 data = response.read()
 values = json.loads(data).get("values")
 
-print getUrl
-
-print 'printing dump:'
-print json.dumps(values, sort_keys=True, indent=4)
+#print getUrl
+#print 'printing dump:'
+#print json.dumps(values, sort_keys=True, indent=4)
 
 
 # Find the id of the pull request open on the branch corresponding to the commit_hash
