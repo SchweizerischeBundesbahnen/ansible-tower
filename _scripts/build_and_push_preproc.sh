@@ -4,9 +4,9 @@
 # N.B. The environment Variables GIT_BRANCH and GIT_COMMIT are set by the Jenkins Git Plugin,
 # see https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin
 
-echo "GIT_URL=${GIT_URL}"
-echo "GIT_COMMIT=${GIT_COMMIT}"
-echo "GIT_BRANCH=${GIT_BRANCH}"
+echo "GIT_URL=$1"
+echo "GIT_COMMIT=$2"
+echo "GIT_BRANCH=$3"
 
 
 exit
