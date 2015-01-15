@@ -24,9 +24,9 @@ tag="latest"
 
 
 # if we're not on a feature branch...
-if  [[ $feature_branch != *feature* ]]
+if  [[ $GIT_BRANCH != *feature* ]]
 then
-    pr="`python extract_open_pull_request_id.py ${feature_branch} ${GIT_COMMIT}`"
+    pr="`python extract_open_pull_request_id.py ${GIT_BRANCH} ${GIT_COMMIT}`"
     echo "pr=${pr}"
 
     # validate id
