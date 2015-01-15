@@ -13,20 +13,15 @@ echo "GIT_BRANCH=${GIT_BRANCH}"
 
 rm -fR wzu-docker
 git clone ${GIT_URL}
-cd wzu-docker/_scripts
+cd wzu-docker
 git checkout "${GIT_BRANCH}"
 
 
-
-
-tag="latest"
-
-
-
 # if we're not on a feature branch...
+tag="latest"
 if  [[ $GIT_BRANCH != *feature* ]]
 then
-    pr="`python extract_open_pull_request_id.py ${GIT_BRANCH} ${GIT_COMMIT}`"
+    pr="`python _scripts/extract_open_pull_request_id.py ${GIT_BRANCH} ${GIT_COMMIT}`"
     echo "pr=${pr}"
 
     # validate id
@@ -59,5 +54,5 @@ case $branch in
 esac
 
 # call build_and_push
-./build_and_push.sh ${registry} ${tag}
+_scripts/build_and_push.sh ${registry} ${tag}
 
