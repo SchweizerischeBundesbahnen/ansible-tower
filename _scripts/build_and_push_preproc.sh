@@ -8,6 +8,7 @@ echo "GIT_URL=${GIT_URL}"
 echo "GIT_COMMIT=${GIT_COMMIT}"
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
+
 exit
 
 git clone ${GIT_URL}
