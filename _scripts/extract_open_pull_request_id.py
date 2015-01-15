@@ -18,12 +18,13 @@ userid = 'release'
 passwd = 'release'
 auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
 
-#construct the REST URL
+# Construct the REST URL
+# Example: https://code.sbb.ch/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=OUTGOING&order=newest&withAttributes=false&withProperties=false&at=refs%2Fheads%2Ffeature%2FWZU-2994
+# Documentation: https://developer.atlassian.com/static/rest/stash/3.6.0/stash-rest.html#idp2250368
 getUrl = '/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=INCOMING&state=open&order=newest&withAttributes=false&withProperties=false&at=' + urllib.quote_plus( feature_branch )
 
 
-
-#getting the permissions for each repos...
+# Getting the permissions for all repos...
 c=httplib.HTTPSConnection(host)
 c.putrequest('GET', getUrl)
 c.putheader('Authorization', auth )
