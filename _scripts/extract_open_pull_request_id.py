@@ -14,6 +14,7 @@ import urllib
 host = 'code.sbb.ch'
 feature_branch = str(sys.argv[1])
 commit_hash = str(sys.argv[2])
+# is the user safe because of captchas?
 userid = 'release'
 passwd = 'release'
 auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
