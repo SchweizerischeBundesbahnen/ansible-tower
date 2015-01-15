@@ -35,9 +35,9 @@ data = response.read()
 values = json.loads(data).get("values")
 
 #print getUrl
-#print json.dumps(values, sort_keys=True, indent=4)
+print json.dumps(values, sort_keys=True, indent=4)
 
-#...and find the id of the develop branch
+# Find the id of the pull request open on the branch corresponding to the commit_hash
 for value in values:
     if ["latestChangeset"] == commit_hash:
         the_id = value["id"]
