@@ -22,7 +22,7 @@ error=0
 
 # rewrite all tags
 echo "Rewriting docker from"
-$FILELIST=`find ${WORKDIR} -name "Dockerfile" | grep -v "/base/"`
+FILELIST=`find ${WORKDIR} -name "Dockerfile" | grep -v "/base/"`
 for dockerfile in $FILELIST 
 do
   search=`grep "FROM schweizerischebundesbahnen" ${dockerfile}`
