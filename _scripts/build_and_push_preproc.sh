@@ -18,7 +18,7 @@ git checkout "${GIT_BRANCH}"
 
 
 # if we're not on a feature branch...
-tag="latest"
+tag=`basename $GIT_BRANCH`
 if  [[ $GIT_BRANCH != *feature* ]]
 then
     pr="`python _scripts/extract_open_pull_request_id.py ${GIT_BRANCH} ${GIT_COMMIT}`"
