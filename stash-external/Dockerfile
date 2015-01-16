@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/stash-base:3.4.1-2
+FROM schweizerischebundesbahnen/stash-base
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 #Stash Base installed with java and stash in /opt.
