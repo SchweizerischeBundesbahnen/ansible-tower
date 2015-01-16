@@ -1,6 +1,13 @@
 #!/bin/bash
+#
+# Normally executed from jenkins build job with build_and_push_preproc.sh. But can also be used manually
+# in console with two arguments:
+# 1. Hostname of registry to push to ( default: registry-t.sbb.ch )
+# 2. Tag to use for this build ( default: latest )
+#
 
-echo "START-PARAMS: $1 - $2"
+echo "Registry: $1"
+echo "Tag: $2"
 
 REGISTRY=$1
 TAG=":$2"
@@ -8,12 +15,14 @@ TAG=":$2"
 #IMAGELIST=('base' 'jenkins-slave-base' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb' 'confluence' 'jira-standalone' 'jrebellicenseserver' 'stash-base' 'stash-internal' 'stash-external')
 IMAGELIST=('base' 'jenkins-master')
 
+WORKDIR=`pwd`
+echo "Workdir: ${WORKDIR}"
 
 error=0
 
 # rewrite all tags
 echo "Rewriting docker from"
-$FILELIST=`find . -name "Dockerfile" | grep -v "/base/"`
+$FILELIST=`find ${WORKDIR} -name "Dockerfile" | grep -v "/base/"`
 for dockerfile in $FILELIST 
 do
   search=`grep "FROM schweizerischebundesbahnen" ${dockerfile}`
