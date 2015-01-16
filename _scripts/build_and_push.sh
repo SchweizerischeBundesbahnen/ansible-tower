@@ -12,10 +12,14 @@ IMAGELIST=('base' 'jenkins-master')
 error=0
 
 # rewrite all tags
-FILELIST=`find . -name "Dockerfile" | grep -v "/base/"`
+echo "Rewriting docker from"
+$FILELIST=`find . -name "Dockerfile" | grep -v "/base/"`
 for dockerfile in $FILELIST 
 do
   search=`grep "FROM schweizerischebundesbahnen" ${dockerfile}`
+  echo "Dockerfile: ${dockerfile}"
+  echo "Old from: ${search}"
+  echo "New from: ${search}${TAG}"
   sed -ri "s#${search}#${search}${TAG}#g" ${dockerfile}
 done
 
