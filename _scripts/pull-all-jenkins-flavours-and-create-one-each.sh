@@ -1,7 +1,7 @@
 #!/bin/bash
 
 tag=$1
-if [[ ! -z "$tag" ]]; then
+if [[ -z "$tag" ]]; then
     tag="schweizerischebundesbahnen"
 fi
 
