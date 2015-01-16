@@ -12,8 +12,9 @@ echo "Tag: $2"
 REGISTRY=$1
 TAG=":$2"
 
-#IMAGELIST=('base' 'jenkins-slave-base' 'jenkins-master' 'jenkins-slave-base' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb' 'confluence' 'jira-standalone' 'jrebellicenseserver' 'stash-base' 'stash-internal' 'stash-external')
-IMAGELIST=('base' 'jenkins-master')
+# imagelist: Take care of order!
+IMAGELIST=('base' 'jenkins-slave-base' 'jenkins-master' 'jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb' 'jira-standalone' 'jrebellicenseserver' 'confluence' 'stash-base' 'stash-internal' 'stash-external' 'gitrpm')
+#IMAGELIST=('base' 'jenkins-master')
 
 WORKDIR=`pwd`
 echo "Workdir: ${WORKDIR}"
