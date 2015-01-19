@@ -20,22 +20,24 @@ tag=`basename $2`
 ci=$3
 
 error=0
-tasklist=('jenkins-slave-js' 'jenkins-slave-mobile-android' 'jenkins-slave-jee' 'jenkins-slave-wmb')
+declare -A imagelist
+imagelist['jenkins-slave-js']="nodejs"
+imagelist['jenkins-slave-mobile-android']="android"
+imagelist['jenkins-slave-jee']="yves"
+imagelist['jenkins-slave-wmb']="wmb"
 
-for task in "${tasklist[@]}"
+for image in "${!imagelist[@]}"
 do
-  echo "$task"
-  sudo docker pull "${repository}/${task}:${tag}"
+  echo "$image"
+  sudo docker pull "${repository}/${image}:${tag}"
+  sudo docker tag  "${repository}/${image}:${tag}" "schweizerischebundesbahnen/${image}:${tag}"
+  ./create-jenkins-slave.sh ${image} ${ci} ${imagelist[$image]}
   if [ $? -ne 0 ]; then
     echo "PULL failed! Image=${repository}/${task}:${tag}"
     error=1
     break;
   fi
 done
-
-
-# FIXME: start containers with new images
-
 
 
 exit $error
