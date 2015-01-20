@@ -28,12 +28,11 @@ imagelist['jenkins-slave-wmb']="wmb"
 
 for image in "${!imagelist[@]}"
 do
-  echo "$image"
-  sudo docker pull "${repository}/${image}:${tag}"
-  sudo docker tag  "${repository}/${image}:${tag}" "schweizerischebundesbahnen/${image}:${tag}"
-  ./create-jenkins-slave.sh ${image} ${ci} ${imagelist[$image]}
+  echo "Deploying $image"
+  echo "Starting slave with following cmd: ./create-jenkins-slave.sh ${repository} ${image} ${tag} ${ci} ${imagelist[$image]}"
+  ./create-jenkins-slave.sh ${repository} ${image} ${tag} ${ci} ${imagelist[$image]}
   if [ $? -ne 0 ]; then
-    echo "PULL failed! Image=${repository}/${task}:${tag}"
+    echo "Deploy failed! Image=${repository}/${task}:${tag}"
     error=1
     break;
   fi
