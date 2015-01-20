@@ -39,12 +39,24 @@ do
 	sudo docker build --rm  -t schweizerischebundesbahnen/${IMAGE}${TAG} ./${IMAGE}
 	if [ $? -ne 0 ]; then
 		echo "BUILD failed! Image=$IMAGE"
-		error=1
-		break;
+		exit -1
+	fi
+done
+
+# if everything is ok till now: push images to internal registry
+for IMAGE in "${IMAGELIST[@]}"
+do
+	sudo docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}${TAG}"
+	if [ $? -ne 0 ]; then
+		echo "BUILD failed! Tagging image=$IMAGE failed!"
+                exit -2
 	fi
 
-	sudo docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}${TAG}"
 	sudo docker push ${REGISTRY}/${IMAGE}${TAG}
+	if [ $? -ne 0 ]; then
+		echo "BUILD failed! Pushing image=$IMAGE failed!"
+		exit -3
+	fi
 done
 
 # delete images from disk
