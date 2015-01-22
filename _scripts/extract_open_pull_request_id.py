@@ -22,7 +22,7 @@ auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
 # Construct the REST URL
 # Example: https://code.sbb.ch/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=OUTGOING&order=newest&withAttributes=false&withProperties=false&at=refs%2Fheads%2Ffeature%2FWZU-2994
 # Documentation: https://developer.atlassian.com/static/rest/stash/3.6.0/stash-rest.html#idp2250368
-getUrl = '/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=INCOMING&state=open&order=newest&withAttributes=false&withProperties=false&at=' + urllib.quote_plus( feature_branch )
+getUrl = '/rest/api/1.0/projects/kd_wzu/repos/wzu-docker/pull-requests?direction=INCOMING&state=ALL&order=newest&withAttributes=false&withProperties=false&at=' + urllib.quote_plus( feature_branch )
 
 
 # Getting the permissions for all repos...
@@ -42,6 +42,7 @@ values = json.loads(data).get("values")
 
 
 # Find the id of the pull request open on the branch corresponding to the commit_hash
+the_id = ""
 for value in values:
     if value["fromRef"]["latestChangeset"] == commit_hash:
         the_id = value["id"]
