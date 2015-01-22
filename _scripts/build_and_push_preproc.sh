@@ -16,12 +16,17 @@ git clone ${GIT_URL}
 cd wzu-docker
 git checkout "${GIT_BRANCH}"
 
+GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
+echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
+
+
+
 
 # if we're not on a feature branch, we want to find the pull request
 tag=`basename $GIT_BRANCH`
 if  [[ $GIT_BRANCH != *feature* ]]
 then
-    pr="`python _scripts/extract_open_pull_request_id.py "refs/heads/tag" ${GIT_COMMIT}`"
+    pr="`python _scripts/extract_open_pull_request_id.py "refs/heads/tag" ${GIT_COMMIT_BEFORE_LAST}`"
     echo "pr=${pr}"
 
     # validate id
