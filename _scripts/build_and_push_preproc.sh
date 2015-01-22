@@ -17,11 +17,11 @@ cd wzu-docker
 git checkout "${GIT_BRANCH}"
 
 
-# if we're not on a feature branch...
+# if we're not on a feature branch, we want to find the pull request
 tag=`basename $GIT_BRANCH`
 if  [[ $GIT_BRANCH != *feature* ]]
 then
-    pr="`python _scripts/extract_open_pull_request_id.py ${GIT_BRANCH} ${GIT_COMMIT}`"
+    pr="`python _scripts/extract_open_pull_request_id.py "refs/heads/tag" ${GIT_COMMIT}`"
     echo "pr=${pr}"
 
     # validate id

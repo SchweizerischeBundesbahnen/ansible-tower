@@ -12,7 +12,7 @@ import sys
 import urllib
 #general settings
 host = 'code.sbb.ch'
-feature_branch = str(sys.argv[1])
+feature_branch = str(sys.argv[1]) # fully qualified feature branch!
 commit_hash = str(sys.argv[2])
 # is the user safe because of captchas?
 userid = 'release'
