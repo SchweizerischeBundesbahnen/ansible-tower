@@ -51,6 +51,7 @@ else
 
     if [ ${CHANGED_FILE_COUNT} -eq 0 ]; then
       echo "No Docker module files changed! Build not required!"
+      exit 0
     else
       echo "There are changed docker modules!"
     fi
