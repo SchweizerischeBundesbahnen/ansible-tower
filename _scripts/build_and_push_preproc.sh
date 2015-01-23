@@ -24,9 +24,10 @@ echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
 # if we're not on a feature branch, we want to find the pull request
 tag=`basename $GIT_BRANCH`
+echo "tag=${tag}
 if  [[ $GIT_BRANCH != *feature* ]]
 then
-    pr="`python _scripts/extract_open_pull_request_id.py "refs/heads/tag" ${GIT_COMMIT_BEFORE_LAST}`"
+    pr="`python _scripts/extract_open_pull_request_id.py "refs/heads/${tag}" ${GIT_COMMIT_BEFORE_LAST}`"
     echo "pr=${pr}"
 
     # validate id
