@@ -40,6 +40,21 @@ then
 	echo "pr=${pr} is NOT valid!"
 	exit -1
     fi
+else
+    # feature branch: build only if we have changes in a docker module!
+    echo "Building a feature branch: checking changed files"
+    git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST}
+    
+    CHANGED_FILES=`git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST} | grep -v -w '_scripts\|_doc'`
+    echo "Filtered file list: "
+    echo "${CHANGED_FILES}"
+
+    if [ ${#CHANGED_FILES[@]} -eq 0 ]; then
+      echo "No Docker module files changed! Build not required!"
+    else
+      echo "There are changed docker modules!"
+    fi
+
 fi
 
 echo "TAG=${tag}"
