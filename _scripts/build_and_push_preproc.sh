@@ -11,6 +11,7 @@ echo "GIT_URL=${GIT_URL}"
 echo "GIT_COMMIT=${GIT_COMMIT}"
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
+# cleanup and get fresh code
 rm -fR wzu-docker
 git clone ${GIT_URL}
 cd wzu-docker
@@ -24,7 +25,7 @@ echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
 # if we're not on a feature branch, we want to find the pull request
 tag=`basename $GIT_BRANCH`
-echo "tag=${tag}
+echo "tag=${tag}"
 if  [[ $GIT_BRANCH != *feature* ]]
 then
     pr="`python _scripts/extract_open_pull_request_id.py "refs/heads/${tag}" ${GIT_COMMIT_BEFORE_LAST}`"
@@ -39,19 +40,40 @@ then
 	echo "pr=${pr} is NOT valid!"
 	exit -1
     fi
+else
+    # feature branch: build only if we have changes in a docker module!
+    echo "Building a feature branch: checking changed files"
+    git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST}
+    
+    CHANGED_FILE_COUNT=`git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST} | grep -v -w '_scripts\|_doc' | wc -l`
+    echo "Filtered file list count: "
+    echo "${CHANGED_FILE_COUNT}"
+
+    if [ ${CHANGED_FILE_COUNT} -eq 0 ]; then
+      echo "No Docker module files changed! Build not required!"
+      exit 0
+    else
+      echo "There are changed docker modules!"
+    fi
+
 fi
+
+echo "TAG=${tag}"
+
+
 
 # define registry to push to
 # feature -> registry-t
 # branch develop -> registry-i
 # branch master -> registry
 # (pattern matching in case statements: http://docstore.mik.ua/orelly/unix3/upt/ch35_11.htm)
+branch=`basename $GIT_BRANCH`
 registry="registry-t.sbb.ch"
 case $branch in
-  "*master)")
+  *master)
     registry="registry.sbb.ch"
   ;;
-  "*develop)")
+  *develop)
     registry="registry-i.sbb.ch"
   ;;
   *)
