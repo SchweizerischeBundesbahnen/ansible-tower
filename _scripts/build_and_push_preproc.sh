@@ -43,15 +43,15 @@ then
 else
     # feature branch: build only if we have changes in a docker module!
     echo "Building a feature branch: checking changed files"
-    git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST}
+    git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT}
     
-    CHANGED_FILE_COUNT=`git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST} | grep -v -w '_scripts\|_doc' | wc -l`
+    CHANGED_FILE_COUNT=`git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT} | grep -v -w '_scripts\|_doc' | wc -l`
     echo "Filtered file list count: "
     echo "${CHANGED_FILE_COUNT}"
 
     if [ ${CHANGED_FILE_COUNT} -eq 0 ]; then
       echo "No Docker module files changed! Build not required!"
-      exit 0
+      #exit 0
     else
       echo "There are changed docker modules!"
     fi
