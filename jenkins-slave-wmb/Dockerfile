@@ -16,7 +16,7 @@ RUN cd  ${buildtoolsdir}/ &&  wget -qO- ${filerurl}/IIB9002.tgz | tar xfz -
 
 # Create environment file
 RUN  echo "export WMB7RUNTIME=${buildtoolsdir}/wmb/WMBT700" >> ${jenkinshome}/env.sh
-RUN  echo "export IIB9RUNTIME=${buildtoolsdir}/IIB9002" >> ${jenkinshome}/env.sh
+RUN  echo "export IIB9RUNTIME=${buildtoolsdir}/iib9" >> ${jenkinshome}/env.sh
 
 # Chown jenkinshome
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
