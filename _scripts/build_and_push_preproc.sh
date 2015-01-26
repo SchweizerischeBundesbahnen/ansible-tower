@@ -43,9 +43,13 @@ then
 else
     # feature branch: build only if we have changes in a docker module!
     echo "Building a feature branch: checking changed files"
-    git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST}
+    git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT}
     
-    CHANGED_FILE_COUNT=`git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT_BEFORE_LAST} | grep -v -w '_scripts\|_doc' | wc -l`
+    CHANGED_FILE_LIST=`git show --pretty="format:" --name-only ${GIT_COMMIT} | sort | uniq |  grep -v '^$' | grep -v -w '_scripts\|_doc' `
+    echo "Filtered file list: "
+    echo "${CHANGED_FILE_LIST}"
+
+    CHANGED_FILE_COUNT=`git show --pretty="format:" --name-only ${GIT_COMMIT} | sort | uniq |  grep -v '^$' | grep -v -w '_scripts\|_doc' | wc -l `
     echo "Filtered file list count: "
     echo "${CHANGED_FILE_COUNT}"
 
