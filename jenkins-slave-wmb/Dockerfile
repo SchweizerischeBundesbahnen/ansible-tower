@@ -2,9 +2,9 @@
 FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
-ENV labels "wmb"
+ENV labels "iib"
 ENV buildtoolsdir /var/data/jenkins/buildtools
-
+RUN yum install --quiet yum install libXext.i686 -y && yum clean all -y
 # Download and extract wmbt
 RUN cd  ${buildtoolsdir}/ &&  wget -qO- ${filerurl}/wmb.tar.gz | tar xfz - \
     &&  cd /var && wget -qO- ${filerurl}/ibm-wmb.tar.gz | tar xfz -
