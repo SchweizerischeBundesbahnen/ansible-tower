@@ -12,5 +12,7 @@ fsid=`sudo docker inspect -f='{{.Name}}' ${containerid} | awk -F"-" '{print $NF 
 sudo docker rm $containerid
 
 # remove fs
-sudo rm -rf $externalfshome/$fsid
+if [[ ! -z "$fsid" ]]; then
+    sudo rm -rf $externalfshome/$fsid
+fi
 
