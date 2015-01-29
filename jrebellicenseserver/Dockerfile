@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER Christian Eichenberger <u214892@sbb.ch>
 
 #Environment variables
-ENV appversion 3.0.2
+ENV appversion 3.0.4
 ENV appuser jrebellicense
 ENV idoffset 150
 ENV datadir /var/data
