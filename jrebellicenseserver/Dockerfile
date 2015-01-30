@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER Christian Eichenberger <u214892@sbb.ch>
 
 #Environment variables
-ENV appversion 3.0.2
+ENV appversion 3.0.4
 ENV appuser jrebellicense
 ENV idoffset 150
 ENV datadir /var/data
@@ -20,5 +20,5 @@ RUN cd /opt && wget -q "http://dl.zeroturnaround.com/license-server/license-serv
 
 
 # Start the license server in ${apphome}
-CMD /opt/jdk/bin/java -Dhttp.port=8${idoffset} -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
+CMD /opt/jdk/bin/java -Dhttp.port=8${idoffset} -Drebel.ls.loglevel=ERROR -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
 
