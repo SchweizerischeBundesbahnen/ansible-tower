@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM schweizerischebundesbahnen/jenkins-slave-base:WZU-3081
+FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 ENV labels "iib"
