@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM registry-t.sbb.ch/base:WZU-3017
+FROM schweizerischebundesbahnen/base
 MAINTAINER pascal.bieri@sbb.ch
 
 ENV datadir /var/data
@@ -29,5 +29,4 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 
 # start jenkins on container start
 EXPOSE 8080
-#CMD service sshd start && su - jenkins -c "/opt/jdk17/bin/java -Xmx${maxheap} -jar /opt/jenkins.war -server"
 CMD su - jenkins -c "/opt/jdk/bin/java -Xmx${maxheap} -jar /opt/jenkins.war -server"
