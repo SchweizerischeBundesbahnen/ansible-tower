@@ -4,7 +4,7 @@
 #
 # chkconfig: - 85 15
 
-opts=" -p 8040:8040 -p 9040:9040 -v /var/data/confluence:/var/data/confluence -v /var/data/confluence/log:/opt/confluence/logs -d"
+opts=" -p 8040:8040 -p 9040:9040 -e JAVA_XMX=3048m -e JAVA_PERMSIZE=512m  -v /var/data/confluence:/var/data/confluence -v /var/data/confluence/log:/opt/confluence/logs -d"
 containername=confluence
 imagename=schweizerischebundesbahnen/confluence:5.4.4
 
