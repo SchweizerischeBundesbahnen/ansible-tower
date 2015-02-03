@@ -44,10 +44,25 @@ else
     # feature branch: build only if we have changes in a docker module!
     echo "Building a feature branch: checking changed files"
     git diff-tree --no-commit-id --name-only -r ${GIT_COMMIT}
-    
+
     CHANGED_FILE_LIST=`git show --pretty="format:" --name-only ${GIT_COMMIT} | sort | uniq |  grep -v '^$' | grep -v -w '_scripts\|_doc' `
     echo "Filtered file list: "
     echo "${CHANGED_FILE_LIST}"
+
+    # build a list of changed images
+    changed_images=()
+    for file in ${CHANGED_FILE_LIST}
+    do
+        changed_images+=`dirname $file`
+    done
+
+    # cleanup this array (remove dublicates...)
+    changed_images=$(echo $changed_images | tr ' ' '\n' | sort -nu)
+
+    # debug output
+    echo "Changed images"
+    echo $changed_images
+
 
     CHANGED_FILE_COUNT=`git show --pretty="format:" --name-only ${GIT_COMMIT} | sort | uniq |  grep -v '^$' | grep -v -w '_scripts\|_doc' | wc -l `
     echo "Filtered file list count: "
@@ -59,7 +74,6 @@ else
     else
       echo "There are changed docker modules!"
     fi
-
 fi
 
 echo "TAG=${tag}"
