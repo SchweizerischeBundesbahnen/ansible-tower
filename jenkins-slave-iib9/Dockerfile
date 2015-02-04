@@ -12,7 +12,7 @@ RUN cd  ${buildtoolsdir}/ &&  wget -qO- ${filerurl}/IIB9002.tgz | tar xfz - \
 #RUN find ${buildtoolsdir}/wmb | grep mqsicreatebar
 
 # Create environment file
-RUN  echo "export IIB9RUNTIME=${buildtoolsdir}/iib9" >> ${jenkinshome}/env.sh
+RUN  echo "export IIB9RUNTIME=${buildtoolsdir}/iib9/IntegrationToolkit90" >> ${jenkinshome}/env.sh
 
 # Chown jenkinshome
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
