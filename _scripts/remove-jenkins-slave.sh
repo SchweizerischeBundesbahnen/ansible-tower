@@ -14,7 +14,10 @@ then
 		# remove container
 		sudo docker rm $containerid
 		# remove fs
-		sudo rm -rf $externalfshome/$number
+		if [ -d $externalfshome/$number ]
+		then
+			sudo rm -rf $externalfshome/$number
+		fi
 	else
 		echo "could not stop container with id ${containerid}"
 		exit 1
