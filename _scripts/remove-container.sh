@@ -1,6 +1,6 @@
 #!/bin/bash -x
 containerid=$1
-externalfshome=/var/lib/docker/container-ext-filesystems
+externalfshome=/var/data/docker/container-ext-filesystems
 
 if [ ! -z $containerid ]
 then
