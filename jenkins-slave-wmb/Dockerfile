@@ -22,4 +22,4 @@ RUN  echo "export IIB9RUNTIME=${buildtoolsdir}/iib9" >> ${jenkinshome}/env.sh
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Start Slave
-CMD su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -password ${cipassword} -labels ${labels}  -mode exclusive"
+CMD su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels}  -mode exclusive"

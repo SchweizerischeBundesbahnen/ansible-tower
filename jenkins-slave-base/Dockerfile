@@ -21,6 +21,7 @@ ENV executors 1
 ENV filerurl http://wzufiler.sbb.ch
 ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
 ENV labels swarm
+ENV slavename $labels
 
 # Install dev tools
 RUN yum install -q git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
