@@ -22,6 +22,8 @@ ENV filerurl http://wzufiler.sbb.ch
 ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
 ENV labels swarm
 ENV slavename $labels
+ENV externalport 12345 
+ENV host example.sbb.ch 
 
 # Install dev tools
 RUN yum install -q git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
@@ -114,8 +116,6 @@ RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin LC_ALL=en_US.UTF-8' >> ${jenk
 
 # Add environment variables to run on start
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
-	&& wget ${filerurl}/keystore -O ${jenkinshome}/.keystore \
+	&& wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore \
 	&& chmod +x ${jenkinshome}/run.sh
 
-# Chown JENKINS_HOME to jenkins
-#RUN chown -R ${appuser}:${appuser} ${jenkinshome}

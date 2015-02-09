@@ -18,4 +18,4 @@ RUN  echo "export IIB9RUNTIME=${buildtoolsdir}/iib9/IntegrationToolkit90" >> ${j
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
 RUN echo "Xvfb :1 -screen 0 1024x768x16 &> /tmp/xvfb.log &" >> ${jenkinshome}/run.sh && echo "export DISPLAY=:1.0" >> ${jenkinshome}/env.sh
 # Start Slave
-CMD su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -name ${slavename} -password ${cipassword} -labels ${labels}  -mode exclusive"
+CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -name ${slavename} -password ${cipassword} -labels ${labels}  -mode exclusive"
