@@ -25,7 +25,7 @@ RUN mv /opt/confluence/conf/server.xml /opt/confluence/conf/server-backup.xml \
 	&& mv /opt/confluence/bin/setenv.sh /opt/confluence/bin/setenv-backup.sh
 
 # Install JDBC driver
-RUN wget --quiet "http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/confluence/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
+RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/confluence/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
 
 # Exposing Port to make Confluence accessible
 EXPOSE 8040

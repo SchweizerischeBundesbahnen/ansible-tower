@@ -11,7 +11,7 @@ ENV portoffset 70
 ENV appuser jira
 ENV filerurl http://wzufiler.sbb.ch 
 ENV JAVA_HOME /opt/jdk
-ENV mysqlconnectorversion 5.1.32
+ENV mysqlconnectorversion 5.1.34
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jirahome}
@@ -29,7 +29,7 @@ RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassi
 	&& wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml
 
 # Install JDBC driver
-RUN wget --quiet "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=proxy.external.nexus-ext-cache.releases&g=mysql&a=mysql-connector-java&v=${mysqlconnectorversion}&e=jar" -O /opt/jira/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
+RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/jira/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
 
 # Link logs and temp
 RUN rm -rf /opt/jira/{logs,temp} && mkdir -p ${jirahome}/{logs,temp} && ln -sf ${jirahome}/logs /opt/jira/logs && ln -sf ${jirahome}/temp /opt/jira/temp
