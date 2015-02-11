@@ -1,10 +1,10 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 FROM schweizerischebundesbahnen/base
-MAINTAINER Igor Masen <igor.masen2@sbb.ch>
+MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
 #Environment variables
 ENV domain issues-t.sbb.ch
-ENV jiraversion 6.3.7
+ENV jiraversion 6.3.14
 ENV datadir /var/data
 ENV jirahome /var/data/jira
 ENV portoffset 70
