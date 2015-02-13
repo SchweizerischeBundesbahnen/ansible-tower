@@ -4,7 +4,7 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 #Environment Variables
 ENV stashversion 3.4.1
 ENV gitversion 1.8.5.5
-ENV mysqlconnectorversion 5.1.32
+ENV mysqlconnectorversion 5.1.34
 ENV idoffset 120
 ENV appuser stash
 ENV datadir /var/data
@@ -22,7 +22,7 @@ RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlass
 RUN mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml
 
 # Install JDBC driver
-RUN wget --quiet "http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/stash/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
+RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/stash/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
 
 #Setting Java Home and Stash Home in /opt/stash/bin/setenv.sh
 RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n#\n# setting JAVA_HOME\nJAVA_HOME="/opt/jdk",g' /opt/stash/bin/setenv.sh && sed -i 's,#STASH_HOME="",STASH_HOME="/var/data/stash",g' /opt/stash/bin/setenv.sh
