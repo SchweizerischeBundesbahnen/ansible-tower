@@ -114,6 +114,9 @@ RUN cd ${jenkinshome} \
 # Create environment file
 RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
 
+# Disable Hostkeychecks for ssh for enabling batch-based git clones: https://issues.sbb.ch/browse/MWESERVICE-4234
+RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\n">> ~/.ssh/config && chmod 644 ~/.ssh/config
+
 # Add environment variables to run on start
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
 	&& wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore \
