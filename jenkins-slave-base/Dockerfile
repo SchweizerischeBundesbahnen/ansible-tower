@@ -7,7 +7,7 @@ ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
 ENV antversion 1.9.4
-ENV swarmversion 1.16
+ENV swarmversion 1.22
 ENV appuser jenkins
 ENV portoffset 91
 ENV datadir /var/data 
