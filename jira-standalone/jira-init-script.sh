@@ -25,6 +25,12 @@ function reinitialize_container() {
         init_container
 }
 
+function update() {
+  docker pull ${imagename}
+  stop_container
+  reinitialize_container
+}
+
 case "$1" in
   start)
     start_container
@@ -38,10 +44,13 @@ case "$1" in
   reinitialize)
     reinitialize_container
     ;; 
+  update)
+   update
+   ;;
   status)
     docker ps --all
     ;;
   *)
-    echo $"Usage: $0 {start|stop|status|init|reinitialize}"
+    echo $"Usage: $0 {start|stop|status|init|reinitialize|update}"
     exit 2
 esac
