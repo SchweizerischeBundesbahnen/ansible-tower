@@ -2,7 +2,7 @@
 
 numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 
-if [ $numcpus > 30 ]
+if [ $numcpus -gt 30 ]
 	then
 		for i in {1..12}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-jee latest https://ci.sbb.ch jee; done
 		for i in {1..2}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-jee latest https://ci.sbb.ch yves-migration; done
