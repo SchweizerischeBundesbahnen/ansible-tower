@@ -2,6 +2,8 @@
 
 numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 
+sudo docker pull registry.sbb.ch/jenkins-slave-jee && sudo docker pull registry.sbb.ch/jenkins-slave-js && sudo docker pull registry.sbb.ch/jenkins-slave-iib9 && sudo docker pull registry.sbb.ch/jenkins-slave-wmb && sudo docker pull registry.sbb.ch/jenkins-slave-mobile-android
+
 if [ $numcpus > 30 ]
 	then
 		for i in {1..12}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-jee latest https://ci.sbb.ch jee; done
