@@ -2,22 +2,78 @@
 
 master=$1
 numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
+
+# how many slaves do we expect on hardware
+declare -A vmcountHW
+vmcountHW[jee]=12
+vmcountHW[yves-migration]=2
+vmcountHW[nodejs]=2
+vmcountHW[iib9]=4
+vmcountHW[android]=4
+
+# how many slaves do we expect on vm
+declare -A vmcountVM
+vmcountVM[jee]=1
+vmcountVM[yves-migration]=1
+vmcountVM[nodejs]=1
+vmcountVM[iib9]=1
+vmcountVM[android]=3
+
+# which image belongs to which label
+declare -A labelMap
+labelMap[jee]="jenkins-slave-jee"
+labelMap[yves-migration]="jenkins-slave-jee"
+labelMap[nodejs]="jenkins-slave-js"
+labelMap[iib9]="jenkins-slave-iib9"
+labelMap[android]="jenkins-slave-mobile-android"
+
+
+
+# check argument
 if [ ! -z $master ]
 then
+	# get current running count
+        running=`curl -s --data-urlencode script@running_slaves.groovy $master/scriptText --user fsvctip:sommer11`
+        declare -A runningCount
+        for line in $running; do
+        	#echo $line
+                IFS='=' read -a array <<< "$line"
+                runningCount[${array[0]}]=${array[1]}
+	done
+
+	# Hardware or virtualmachine?
+	declare -A vmcount
 	if [ $numcpus -gt 30 ]
 	then
-		for i in {1..12}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-jee latest $master jee; done
-		for i in {1..2}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-jee latest $master yves-migration; done
-		for i in {1..2}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-js latest $master nodejs; done
-		for i in {1..4}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-iib9 latest $master iib9; done
-		for i in {1..4}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-mobile-android latest $master android; done
-	else	
-		for i in {1..1}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-jee latest $master jee; done
-		for i in {1..1}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-jee latest $master yves-migration; done
-		for i in {1..1}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-js latest $master nodejs; done
-		for i in {1..1}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-iib9 latest $master iib9; done
-		for i in {1..1}; do ./create-jenkins-slave.sh registry.sbb.ch jenkins-slave-mobile-android latest $master android; done
+		# copy array instead of assigning the values
+		for key in "${!vmcountHW[@]}"
+		do
+			vmcount["$key"]="${vmcountHW["$key"]}"
+		done
+	else
+		# copy array instead of assigning the values
+                for key in "${!vmcountVM[@]}"
+                do
+                        vmcount["$key"]="${vmcountVM["$key"]}"
+                done
 	fi
+
+		
+	# compare running with expected and start slaves if required
+	for label in "${!vmcount[@]}"
+	do
+		if [ ${runningCount[$label]} -lt  ${vmcount[$label]}  ]; then
+			echo "missing some $label slaves"
+			count=${runningCount[$label]}
+			while [ $count -lt ${vmcount[$label]} ]
+			do
+				echo "starting $label with ${labelMap[$label]}"
+				./create-jenkins-slave.sh registry.sbb.ch ${labelMap[$label]} latest $master $label
+				count=$(($count+1))
+			done
+		fi
+	done
+
 else
 	echo "You need to set the master e.g http://ci-t.sbb.ch"
 	exit 1
