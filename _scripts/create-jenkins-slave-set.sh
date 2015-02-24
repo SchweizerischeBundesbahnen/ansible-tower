@@ -69,6 +69,11 @@ then
 			do
 				echo "starting $label with ${labelMap[$label]}"
 				./create-jenkins-slave.sh registry.sbb.ch ${labelMap[$label]} latest $master $label
+				if [ $? -ne 0 ]; then
+                                        echo "BUILD failed! Image=${labelMap[$label]}"
+                                        exit -1
+                                fi
+
 				count=$(($count+1))
 			done
 		fi
@@ -78,3 +83,5 @@ else
 	echo "You need to set the master e.g http://ci-t.sbb.ch"
 	exit 1
 fi
+
+exit 0
