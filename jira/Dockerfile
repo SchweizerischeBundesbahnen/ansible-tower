@@ -1,23 +1,17 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 FROM schweizerischebundesbahnen/base
-MAINTAINER Igor Masen <igor.masen@sbb.ch>
+MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 #Environment variables
-ENV domain issues-t.sbb.ch
 ENV jiraversion 6.3.14
 ENV datadir /var/data
 ENV jirahome /var/data/jira
-ENV portoffset 70
+ENV idoffset 70
 ENV appuser jira
-ENV filerurl http://wzufiler.sbb.ch 
-ENV JAVA_HOME /opt/jdk
 ENV mysqlconnectorversion 5.1.34
 
 # Create Data directory structure and add user jira to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jirahome}
-
-# Import the default keystore
-RUN wget --quiet ${filerurl}/keystore -O /opt/jdk/jre/lib/security/cacerts
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${jirahome}
 
 # Download jira into /opt
 RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz -O /opt/atlassian-jira-${jiraversion}.tar.gz \
@@ -25,8 +19,7 @@ RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassi
 	&& tar xfz atlassian-jira-${jiraversion}.tar.gz \
 	&& rm -f /opt/atlassian-jira-${jiraversion}.tar.gz \
 	&& ln -s /opt/atlassian-jira* /opt/jira \
-	&& chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk* \
-	&& wget --quiet ${filerurl}/jira/setenv.sh-prod -O /opt/jira/bin/setenv.sh && wget --quiet ${filerurl}/jira/server.xml-prod -O /opt/jira/conf/server.xml
+	&& chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk*
 
 # Install JDBC driver
 RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/jira/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
@@ -40,11 +33,15 @@ EXPOSE 9070
 # Standard JIRA-Port http
 EXPOSE 8070
 
-# Standard JIRA-Port JMX
-EXPOSE 10070
+# Install script for jira
+COPY configs/jira.ini /etc/supervisor/conf.d/
 
-# Create run.sh
-RUN echo "sed -i 's/10.134.205.202/`ifconfig eth0 | grep 'inet addr' | cut -d":" -f2 | cut -d" " -f1`/g' /opt/jira/bin/setenv.sh" >> /root/run.sh && chmod +x /root/run.sh
+# Supervisor can not use env variables
+RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/jira.ini
 
-# Start jira
-CMD /bin/bash /root/run.sh && sed -i "s/issues.sbb.ch/$domain/g" /opt/jira/conf/server.xml && su - jira -c 'export JAVA_HOME=/opt/jdk && /opt/jira/bin/start-jira.sh' && tail -f /opt/jira/logs/catalina.out
+# jira configuration
+COPY configs/server.xml /opt/jira/conf/
+COPY configs/setenv.sh /opt/jira/bin/
+RUN chmod 755  /opt/jira/bin/setenv.sh
+
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
