@@ -43,14 +43,13 @@ do
 done
 
 # build and push images
-sudo docker build --rm  -t schweizerischebundesbahnen/${IMAGE}${TAG} ./${IMAGE}
+sudo docker build --rm --no-cache -t schweizerischebundesbahnen/${IMAGE}${TAG} ./${IMAGE}
 if [ $? -ne 0 ]; then
 	echo "BUILD failed! Image=$IMAGE"
 	exit -1
 fi
 
 # if everything is ok till now: push images to internal registry
-	
 sudo docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}${TAG}"
 if [ $? -ne 0 ]; then
 	echo "BUILD failed! Tagging image=$IMAGE failed!"
@@ -61,6 +60,17 @@ sudo docker push ${REGISTRY}/${IMAGE}${TAG}
 if [ $? -ne 0 ]; then
 	echo "BUILD failed! Pushing image=$IMAGE failed!"
 	exit -3
+fi
+
+# if registry is int or prod, set latest tag also
+if [ "${REGISTRY}" == "registry.sbb.ch" ] || [ "${REGISTRY}" == "registry-i.sbb.ch" ]; then
+	echo "setting latest tag for ${IMAGE}${TAG}"
+	sudo docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}:latest"
+	sudo docker push ${REGISTRY}/${IMAGE}:latest
+	if [ $? -ne 0 ]; then
+        	echo "BUILD failed! Pushing image=$IMAGE failed!"
+	        exit -4
+	fi
 fi
 
 # delete images from disk
