@@ -63,7 +63,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # if registry is int or prod, set latest tag also
-if [ "${REGISTRY}" == "registry.sbb.ch" ] || [ "${REGISTRY}" == "registry-i.sbb.ch" ]; then
+if [ "${REGISTRY}" == "registry.sbb.ch" ]; then
 	echo "setting latest tag for ${IMAGE}${TAG}"
 	sudo docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}:latest"
 	sudo docker push ${REGISTRY}/${IMAGE}:latest
