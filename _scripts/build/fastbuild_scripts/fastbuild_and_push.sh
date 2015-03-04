@@ -43,6 +43,7 @@ do
 done
 
 # build and push images
+echo "docker build --rm --no-cache -t schweizerischebundesbahnen/${IMAGE}${TAG} ./${IMAGE}"
 sudo docker build --rm --no-cache -t schweizerischebundesbahnen/${IMAGE}${TAG} ./${IMAGE}
 if [ $? -ne 0 ]; then
 	echo "BUILD failed! Image=$IMAGE"
@@ -50,12 +51,14 @@ if [ $? -ne 0 ]; then
 fi
 
 # if everything is ok till now: push images to internal registry
+echo "docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}${TAG}""
 sudo docker tag "schweizerischebundesbahnen/${IMAGE}${TAG}" "${REGISTRY}/${IMAGE}${TAG}"
 if [ $? -ne 0 ]; then
 	echo "BUILD failed! Tagging image=$IMAGE failed!"
         exit -2
 fi
 
+echo "docker push ${REGISTRY}/${IMAGE}${TAG}"
 sudo docker push ${REGISTRY}/${IMAGE}${TAG}
 if [ $? -ne 0 ]; then
 	echo "BUILD failed! Pushing image=$IMAGE failed!"
