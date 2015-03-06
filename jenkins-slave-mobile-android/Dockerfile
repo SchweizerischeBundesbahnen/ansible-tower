@@ -8,18 +8,13 @@ ENV labels "swarm android"
 # Install qemu and kvm
 RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
 
-# Get android sdk
-RUN wget --quiet ${filerurl}/android-sdk.tar.gz -O /tmp/android-sdk.tar.gz \
+# Get android sdk from wzufiler
+RUN wget --quiet ${filerurl}/android/android-sdk-linux-latest.tar.gz -O /tmp/android-sdk-linux-latest.tar.gz \
 	&& cd ${jenkinshome}/buildtools \
-	&& tar xfz /tmp/android-sdk.tar.gz \
-	&& rm -f /tmp/android-sdk.tar.gz \
-	&& cd ${jenkinshome}/buildtools/android-sdk-linux \
-	&& wget --quiet ${filerurl}/android-sdk-update.sh -O android-sdk-update.sh \
-	&& chmod +x ./android-sdk-update.sh \
+	&& tar -zxf /tmp/android-sdk-linux-latest.tar.gz \
+	&& rm /tmp/android-sdk-linux-latest.tar.gz \
+	&& mv output/buildtools/android-sdk-linux . \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}
-
-# Update android sdk
-RUN su - ${appuser} -c "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux JAVA_HOME=/opt/jdk && PATH=$PATH:/opt/jdk/bin && ${jenkinshome}/buildtools/android-sdk-linux/android-sdk-update.sh"
 
 # Download Gradle 1
 RUN wget --quiet "https://services.gradle.org/distributions/gradle-${gradle1version}-bin.zip" -O /tmp/gradle-${gradle1version}-bin.zip \
