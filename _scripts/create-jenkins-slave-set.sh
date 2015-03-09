@@ -6,6 +6,7 @@ numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 # how many slaves do we expect on hardware
 declare -A vmcountHW
 vmcountHW[jee]=12
+vmcountHW[wmb]=4
 vmcountHW[yves-migration]=2
 vmcountHW[nodejs]=2
 vmcountHW[iib9]=4
@@ -14,6 +15,7 @@ vmcountHW[android]=4
 # how many slaves do we expect on vm
 declare -A vmcountVM
 vmcountVM[jee]=1
+vmcountVM[wmb]=1
 vmcountVM[yves-migration]=1
 vmcountVM[nodejs]=1
 vmcountVM[iib9]=1
@@ -22,6 +24,7 @@ vmcountVM[android]=3
 # which image belongs to which label
 declare -A labelMap
 labelMap[jee]="jenkins-slave-jee"
+labelMap[wmb]="jenkins-slave-wmb"
 labelMap[yves-migration]="jenkins-slave-jee"
 labelMap[nodejs]="jenkins-slave-js"
 labelMap[iib9]="jenkins-slave-iib9"
