@@ -79,5 +79,5 @@ for library in $repository_dir/*; do
 done
  
 echo -e "\nRemoving images"
-#cat $unused_images | xargs -I{} rm -rf $image_dir/{}
+cat $unused_images | xargs -I{} rm -rf $image_dir/{}
 cat $unused_images
