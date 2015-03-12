@@ -15,7 +15,7 @@ RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${jirah
 
 # Download jira into /opt
 RUN	cd /opt \
-	wget -qO- http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz | tar xfz - \
+	&& wget -qO- http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz | tar xfz - \
 	&& ln -s /opt/atlassian-jira* /opt/jira \
 	&& chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk*
 
