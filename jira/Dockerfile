@@ -14,10 +14,8 @@ ENV mysqlconnectorversion 5.1.34
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${jirahome}
 
 # Download jira into /opt
-RUN wget --quiet http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz -O /opt/atlassian-jira-${jiraversion}.tar.gz \
-	&& cd /opt \
-	&& tar xfz atlassian-jira-${jiraversion}.tar.gz \
-	&& rm -f /opt/atlassian-jira-${jiraversion}.tar.gz \
+RUN	cd /opt \
+	wget -qO- http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz | tar xfz - \
 	&& ln -s /opt/atlassian-jira* /opt/jira \
 	&& chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk*
 
@@ -32,6 +30,9 @@ EXPOSE 9070
 
 # Standard JIRA-Port http
 EXPOSE 8070
+
+# Standard JIRA-Port JMX
+EXPOSE 10070
 
 # Install script for jira
 COPY configs/jira.ini /etc/supervisor/conf.d/
