@@ -57,7 +57,6 @@ RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\n">> ${jenkinshome}/.s
 
 # Add environment variables to run on start
 RUN wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore
-#	&& chmod +x ${jenkinshome}/run.sh
 
 # Start Slave
 CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
