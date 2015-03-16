@@ -2,7 +2,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
-ENV stashversion 3.6.1
+ENV stashversion 3.7.1
 ENV gitversion 1.8.5.5
 ENV mysqlconnectorversion 5.1.34
 ENV idoffset 120

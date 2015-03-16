@@ -11,16 +11,16 @@ ENV plugin_folder ${stash_home}/shared/plugins/installed-plugins
 #Plugin download
 RUN mkdir -p ${plugin_folder}
 
-#Universal Plugin in Version 2.18.1
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138571 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
+#Universal Plugin in Version 2.18.2
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138581 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
 #Categories in Version 1.0
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  ${plugin_folder}/stash-project-categories.jar
-#Workzone in Version 2.1.4
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2001004000 -O ${plugin_folder}/workzone.jar
+#Workzone in Version 2.4.0
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2004000010 -O ${plugin_folder}/workzone.jar
 #Unmerged Branch Hook in Version 1.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
 #Webhook in Version 2.0
-RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/jenkins-push-webhook/2.0.0/jenkins-push-webhook-2.0.0.jar -O ${plugin_folder}/jenkins-push-webhook.jar
+RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/jenkins-push-webhook/2.0.3/jenkins-push-webhook-2.0.3.jar -O ${plugin_folder}/jenkins-push-webhook.jar
 #Commit Enforcer in Version 2.0
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.0/enforce-message-hook-plugin-2.0.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
