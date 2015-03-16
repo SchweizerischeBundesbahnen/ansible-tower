@@ -56,7 +56,6 @@ RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin LC_ALL=en_US.UTF-8' >> ${jenk
 RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\n">> ${jenkinshome}/.ssh/config && chmod 644 ${jenkinshome}/.ssh/config
 
 # Add environment variables to run on start
-#RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
 RUN wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore
 #	&& chmod +x ${jenkinshome}/run.sh
 
