@@ -9,7 +9,7 @@ ENV portoffset 91
 
 VOLUME /output
 
-RUN yum install -q qemu-kvm qemu-kvm-tools expect python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
+RUN yum install -q qemu-kvm qemu-kvm-tools python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
 
 RUN adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && echo "${appuser}:${appuser}" | chpasswd
 
