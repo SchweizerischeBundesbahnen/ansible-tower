@@ -94,7 +94,7 @@ RUN wget --quiet ${filerurl}/oracle-jdk-8.tar.gz -O /tmp/oracle-jdk-8.tar.gz \
 	&& ln -s `ls | grep jdk1.8.0 | grep -v 32b` oracle-jdk-8
 
 # Download the swarm client
-RUN wget --quiet "http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
+RUN wget --quiet "http://repo.sbb.ch/content/repositories/mirror/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
 
 # Legacy stuff
 RUN cd ${jenkinshome} \
@@ -116,6 +116,9 @@ RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin LC_ALL=en_US.UTF-8' >> ${jenk
 
 # Disable Hostkeychecks for ssh for enabling batch-based git clones: https://issues.sbb.ch/browse/MWESERVICE-4234
 RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\n">> ${jenkinshome}/.ssh/config && chmod 644 ${jenkinshome}/.ssh/config
+
+# Git-Setting for Jenkins-User for Ci-based git commits: https://issues.sbb.ch/browse/WZU-3262#
+RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshome}/.gitconfig && chmod 644 ${jenkinshome}/.gitconfig
 
 # Add environment variables to run on start
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
