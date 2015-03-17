@@ -1,4 +1,14 @@
 #!/bin/bash
+
+# safety check: abort if any wzu.docker jobs are running
+running=`curl -s --data-urlencode script@getRunningJobs.groovy https://ci.sbb.ch/scriptText --user fsvctip:sommer11 | grep wzu.docker | wc -l`
+echo "Running wzu.docker jobs: ${running}"
+if [ "$running" != "0" ]; then
+    echo "Too many docker build jobs are running!"
+    exit -1
+fi
+
+echo "No running docker build jobs detected!"
  
 set -eu
 shopt -s nullglob
@@ -69,5 +79,5 @@ for library in $repository_dir/*; do
 done
  
 echo -e "\nRemoving images"
-#cat $unused_images | xargs -I{} rm -rf $image_dir/{}
+cat $unused_images | xargs -I{} rm -rf $image_dir/{}
 cat $unused_images

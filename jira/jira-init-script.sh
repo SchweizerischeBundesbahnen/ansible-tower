@@ -4,9 +4,9 @@
 #
 # chkconfig: - 85 15
 
-opts="-p 8070:8070 -p 9070:9070 -p 10070:10070 -v /var/data/jira:/var/data/jira -d -m 10g -e domain=issues-i.sbb.ch"
+opts="-p 8070:8070 -p 9070:9070 -p 10070:10070 -v /var/data/jira:/var/data/jira -d -e JAVA_XMX=3048m -e JAVA_PERMSIZE=512m"
 containername=jira
-imagename=jira
+imagename=schweizerischebundesbahnen/jira
 
 function start_container() {
 	docker start $containername
@@ -25,6 +25,12 @@ function reinitialize_container() {
         init_container
 }
 
+function update() {
+  docker pull ${imagename}
+  stop_container
+  reinitialize_container
+}
+
 case "$1" in
   start)
     start_container
@@ -38,10 +44,13 @@ case "$1" in
   reinitialize)
     reinitialize_container
     ;; 
+  update)
+   update
+   ;;
   status)
     docker ps --all
     ;;
   *)
-    echo $"Usage: $0 {start|stop|status|init|reinitialize}"
+    echo $"Usage: $0 {start|stop|status|init|reinitialize|update}"
     exit 2
 esac
