@@ -7,7 +7,7 @@ export apphome=/var/data/jrebellicenseserver
 export PATH=/usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 
 function start_container() {
-	/opt/jdk/bin/java -Dhttp.port=9000 -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
+	/opt/jdk/bin/java -Dhttp.port=9000 -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1 &
 }
 
 function stop_container() {

@@ -1,4 +1,7 @@
 #! /bin/bash
+# Installationsskript für JRebel-Lizenzserver
+# Docker simulieren auf RHEL 6.x....
+# @see WZU-3216 Switchover JRebel-Lizenzserver
 
 export appversion=3.0.4
 export appuser=jrebellicense
