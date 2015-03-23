@@ -19,7 +19,7 @@ RUN cd ${jenkinshome}/buildtools && ln -s /opt/was70/java ibm-jdk-was70 && ${jen
 RUN cd ${jenkinshome}/buildtools && ln -s was70 base_v70
 
 # Create environment file
-RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70 >> ${jenkinshome}/env.sh
+RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> ${jenkinshome}/env.sh
 
 # Modify IBM JDK security settings
 COPY java.security /opt/was70/java/jre/lib/security/java.security
