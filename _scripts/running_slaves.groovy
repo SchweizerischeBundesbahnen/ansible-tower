@@ -7,7 +7,7 @@ import javax.activation.*
 jenkins = Hudson.instance
 
 
-minimumRequiredSlavesPerLabel = ['android': 0, 'jee': 0, 'yves-migration': 0, 'iib9': 0, 'nodejs': 0, 'wmb': 0 ]
+minimumRequiredSlavesPerLabel = ['android': 0, 'jee': 0, 'yves-migration': 0, 'iib9': 0, 'nodejs': 0, 'wmb': 0, 'was7': 0, 'was85': 0 ]
 
 def getEnviron(computer) {
     def env
