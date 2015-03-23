@@ -9,7 +9,7 @@ RUN yum install --quiet yum install libXext.i686 libXtst.i686 expect xorg-x11-se
 
 # Download and extract wmb
 RUN cd  ${buildtoolsdir}/ \
-	&&  wget -qO- ${filerurl}/IIB9002.tgz | tar xfz - \
+	&&  wget -qO- ${filerurl}/jenkins-iib9.0.0.201-1.tgz | tar xfz - \
 	&&  mkdir /var/ibm \
 	&& cd /var/ibm \
 	&& wget -qO- ${filerurl}/InstallationManager90.tgz | tar xfz - \

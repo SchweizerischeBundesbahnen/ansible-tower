@@ -16,8 +16,14 @@ RUN yum install -q http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-
 RUN easy_install supervisor
 RUN mkdir -p /etc/supervisor/conf.d
 
-# supervisord: configure service and sshd
+# Supervisord: configure service and sshd
 COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
+
+# Set locale to en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+RUN echo "export LC_ALL=en_US.UTF-8" > /etc/profile.d/lang.sh
+
 
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
@@ -28,5 +34,5 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http:/
 	&& ln -s /opt/jdk1.7* ${JAVA_HOME} \
 	&& rm -rf /opt/*.tar.gz
 
-# install WZU Keystore
+# Install WZU Keystore
 RUN wget --quiet http://wzufiler.sbb.ch/keystore -O /opt/jdk/jre/lib/security/cacerts
