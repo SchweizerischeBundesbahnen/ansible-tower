@@ -4,7 +4,7 @@
 #
 # chkconfig: - 85 15
 
-opts=" - -p 7999:7999 8120:8120 -p 9120:9120 -v /var/data/stash/log:/var/data/stash/log -v /var/data/stash/logs:/opt/stash/logs -v /var/data/stash/shared/data:/var/data/stash/shared/data -v /var/data/stash/conf:/var/data/stash/conf -d"
+opts=" -p 7999:7999 -p 8120:8120 -p 9120:9120 -v /var/data/stash/log:/var/data/stash/log -v /var/data/stash/logs:/opt/stash/logs -v /var/data/stash/shared/data:/var/data/stash/shared/data -v /var/data/stash/conf:/var/data/stash/conf -d"
 containername=stash
 imagename=schweizerischebundesbahnen/stash-internal:latest
 
