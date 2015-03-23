@@ -22,7 +22,7 @@ RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassia
 #Webhook in Version 2.0
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/jenkins-push-webhook/2.0.3/jenkins-push-webhook-2.0.3.jar -O ${plugin_folder}/jenkins-push-webhook.jar
 #Commit Enforcer in Version 2.0
-RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.0/enforce-message-hook-plugin-2.1.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
+RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.1/enforce-message-hook-plugin-2.1.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
 #Getting server.xml
 COPY configs/server.xml /opt/stash/conf/server.xml
