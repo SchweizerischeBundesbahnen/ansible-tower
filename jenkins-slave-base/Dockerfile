@@ -1,5 +1,6 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM schweizerischebundesbahnen/base
+FROM registry.sbb.ch/base
+#FROM schweizerischebundesbahnen/base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 #Environment variables
@@ -110,6 +111,10 @@ RUN cd ${jenkinshome}/buildtools \
 	&& ln -s ibm-jdk-was85 jdk-ibm-1.7.0.2 \
 	&& ln -s was85 base_v85 \
 	&& ln -s was70 base_v70
+
+# Modify IBM JDK security settings
+COPY configs/java.security.was85 ${jenkinshome}/buildtools/ibm-jdk-was85/jre/lib/security/java.security
+COPY configs/java.security.was7 ${jenkinshome}/buildtools/ibm-jdk-was70/jre/lib/security/java.security
 
 # Install python 3.4
 RUN cd /tmp/ \
