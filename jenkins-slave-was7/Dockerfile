@@ -12,12 +12,6 @@ RUN cd /opt \
         && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh \
         && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was70*
 
-# Link WAS70 JDK to the right place
-RUN cd ${jenkinshome}/buildtools && ln -s /opt/was70/java ibm-jdk-was70 && ${jenkinshome}/buildtools/ibm-jdk-was70/bin/java -version
-
-# Legacy stuff
-RUN cd ${jenkinshome}/buildtools && ln -s was70 base_v70
-
 # Create environment file
 RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> ${jenkinshome}/env.sh
 

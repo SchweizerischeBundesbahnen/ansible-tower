@@ -1,6 +1,6 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 FROM schweizerischebundesbahnen/base
-MAINTAINER Igor Masen <igor.masen2@sbb.ch>
+MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
 #Environment variables
 ENV mvn30version 3.0.5
@@ -92,6 +92,40 @@ RUN wget --quiet ${filerurl}/oracle-jdk-8.tar.gz -O /tmp/oracle-jdk-8.tar.gz \
 	&& tar xfz /tmp/oracle-jdk-8.tar.gz \
 	&& rm -f /tmp/oracle-jdk-8.tar.gz \
 	&& ln -s `ls | grep jdk1.8.0 | grep -v 32b` oracle-jdk-8
+
+# Install IBM JDK 1.6
+RUN cd ${jenkinshome}/buildtools \
+        && wget -qO- ${filerurl}/was70-jdk.tar.gz | tar xfz - \
+        && ln -s jdk-ibm-1.6* ibm-jdk-was70 \
+	&& ${jenkinshome}/buildtools/ibm-jdk-was70/bin/java -version
+
+# Install IBM JDK 1.7
+RUN cd ${jenkinshome}/buildtools \
+        && wget -qO- ${filerurl}/was85-jdk.tar.gz | tar xfz - \
+        && ln -s jdk-ibm-1.7* ibm-jdk-was85 \
+	&& ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
+
+# Legacy stuff
+RUN cd ${jenkinshome}/buildtools \
+	&& ln -s ibm-jdk-was85 jdk-ibm-1.7.0.2 \
+	&& ln -s was85 base_v85 \
+	&& ln -s was70 base_v70
+
+# Modify IBM JDK security settings
+COPY configs/java.security.was85 ${jenkinshome}/buildtools/ibm-jdk-was85/jre/lib/security/java.security
+COPY configs/java.security.was7 ${jenkinshome}/buildtools/ibm-jdk-was70/jre/lib/security/java.security
+
+# Install python 3.4
+RUN cd /tmp/ \
+	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-tools-3.4.3-1.ius.centos7.x86_64.rpm \
+	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-tkinter-3.4.3-1.ius.centos7.x86_64.rpm \
+	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-setuptools-12.2-1.ius.centos7.noarch.rpm \
+	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-pip-6.0.8-1.ius.centos7.noarch.rpm \
+	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-libs-3.4.3-1.ius.centos7.x86_64.rpm \
+	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-3.4.3-1.ius.centos7.x86_64.rpm \
+	&& yum localinstall *.rpm -y \
+	&& yum clean all \
+	&& rm -f /tmp/*.rpm
 
 # Download the swarm client
 RUN wget --quiet "http://repo.sbb.ch/content/repositories/mirror/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar

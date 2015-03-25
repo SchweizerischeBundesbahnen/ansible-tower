@@ -11,12 +11,6 @@ RUN cd /opt \
         && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh \
         && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was85*
 
-# Link WAS85 JDK to the right place
-RUN cd ${jenkinshome}/buildtools && ln -s /opt/was85/java_1.7_64 ibm-jdk-was85 && ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
-
-# Legacy stuff
-RUN cd ${jenkinshome}/buildtools && ln -s ibm-jdk-was85 jdk-ibm-1.7.0.2 && ln -s was85 base_v85
-
 # Create environment file
 RUN echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 
