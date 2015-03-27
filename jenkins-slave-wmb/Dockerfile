@@ -1,6 +1,6 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 FROM schweizerischebundesbahnen/jenkins-slave-base
-MAINTAINER Igor Masen <igor.masen2@sbb.ch>
+MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
 ENV labels "wmb"
 ENV buildtoolsdir /var/data/jenkins/buildtools

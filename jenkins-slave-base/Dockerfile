@@ -115,18 +115,6 @@ RUN cd ${jenkinshome}/buildtools \
 COPY configs/java.security.was85 ${jenkinshome}/buildtools/ibm-jdk-was85/jre/lib/security/java.security
 COPY configs/java.security.was7 ${jenkinshome}/buildtools/ibm-jdk-was70/jre/lib/security/java.security
 
-# Install python 3.4
-RUN cd /tmp/ \
-	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-tools-3.4.3-1.ius.centos7.x86_64.rpm \
-	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-tkinter-3.4.3-1.ius.centos7.x86_64.rpm \
-	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-setuptools-12.2-1.ius.centos7.noarch.rpm \
-	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-pip-6.0.8-1.ius.centos7.noarch.rpm \
-	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-libs-3.4.3-1.ius.centos7.x86_64.rpm \
-	&& wget http://p2.sbb.ch/content/sites/site.wzu-rpms/python34u-3.4.3-1.ius.centos7.x86_64.rpm \
-	&& yum localinstall *.rpm -y \
-	&& yum clean all \
-	&& rm -f /tmp/*.rpm
-
 # Download the swarm client
 RUN wget --quiet "http://repo.sbb.ch/content/repositories/mirror/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
 
