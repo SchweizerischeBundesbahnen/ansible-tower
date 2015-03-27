@@ -17,7 +17,7 @@ LIBRARIES=`curl -s -X GET https://${REGISTRY}/v1/search | jq '.results[].name'`
 
 for LIBRARY in $LIBRARIES; do
 
-  echo "delete ${TAG} in ${LIBRARY:1:-1}"
-  curl -X DELETE https://${REGISTRY}/v1/repositories/${LIBRARY:1:-1}/tags/${TAG}
+  echo "delete ${TAG} in ${LIBRARY//\"}"
+  curl -X DELETE https://${REGISTRY}/v1/repositories/${LIBRARY//\"}/tags/${TAG}
   echo " "
 done
