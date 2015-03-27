@@ -1,7 +1,6 @@
 # Jenkins slave build node configured with a WAS 8.5 environment for Maven release tasks.
 FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
-MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV labels "was85"
 
@@ -11,12 +10,6 @@ RUN cd /opt \
         && ln -s /opt/was85 ${jenkinshome}/buildtools/was85 \
         && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh \
         && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was85*
-
-# Link WAS85 JDK to the right place
-RUN cd ${jenkinshome}/buildtools && ln -s /opt/was85/java_1.7_64 ibm-jdk-was85 && ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
-
-# Legacy stuff
-RUN cd ${jenkinshome}/buildtools && ln -s ibm-jdk-was85 jdk-ibm-1.7.0.2 && ln -s was85 base_v85
 
 # Create environment file
 RUN echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
