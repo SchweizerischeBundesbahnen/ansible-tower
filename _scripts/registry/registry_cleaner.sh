@@ -38,6 +38,8 @@ if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
   echo "Branches in git repo"
   echo $tag_list
 
+  cd ..
+  cd ..
 fi
 
 #
@@ -88,7 +90,6 @@ done
 
 # cleanup
 if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
-  cd ..
   rm -rf wzu-docker
 fi
 
