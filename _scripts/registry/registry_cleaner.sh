@@ -4,7 +4,7 @@ readonly base_dir=/var/data/docker/storage
 readonly repository_dir=$base_dir/repositories
 readonly image_dir=$base_dir/images
 
-TMPDIR="/tmp"
+TMPDIR="tmp-cleaner"
 NEWLINE=$'\n'
 
 # check if we run on a registry server
@@ -24,6 +24,7 @@ REGISTRY_TO_CLEAN=$1
 #
 # get active branches in git
 if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
+  mkdir $TMPDIR
   cd $TMPDIR
   git clone https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
   cd wzu-docker
@@ -40,6 +41,7 @@ if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
 
   cd ..
   cd ..
+  rm -rf $TMPDIR
 fi
 
 #
@@ -87,12 +89,6 @@ for tag in $clean_tags; do
                 fi
         fi
 done
-
-# cleanup
-if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
-  rm -rf wzu-docker
-fi
-
 
 exit 0
 
