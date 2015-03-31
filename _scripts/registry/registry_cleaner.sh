@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 readonly base_dir=/var/data/docker/storage
 readonly repository_dir=$base_dir/repositories
@@ -9,33 +9,44 @@ NEWLINE=$'\n'
 
 # check if we run on a registry server
 if [ ! -d "$repository_dir" ]; then
-	echo "please run this tool on a registry server!"
-	exit -1
+        echo "please run this tool on a registry server!"
+        exit -1
 fi
 
+# check if we have the registry argument
+if [ $# -ne 1 ]; then
+        echo "usage: registry_cleaner.sh registry-t.sbb.ch"
+        exit -1
+fi
+
+REGISTRY_TO_CLEAN=$1
+
+#
 # get active branches in git
-cd $TMPDIR
-git clone https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
-cd wzu-docker
-branch_list=`git branch -a | grep remotes | grep -v develop | grep -v master`
-#cd ..
-#rm -rf wzu-docker
+if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
+  cd $TMPDIR
+  git clone https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
+  cd wzu-docker
+  branch_list=`git branch -a | grep remotes | grep -v develop | grep -v master`
 
-tag_list=""
-for branch in $branch_list; do
-	tag=`basename $branch`
-	tag_list="${tag_list}tag_${tag}${NEWLINE}"
-done
+  tag_list=""
+  for branch in $branch_list; do
+        tag=`basename $branch`
+        tag_list="${tag_list}tag_${tag}${NEWLINE}"
+  done
 
-echo "Branches in git repo"
-echo $tag_list
+  echo "Branches in git repo"
+  echo $tag_list
 
+fi
+
+#
 # get tags in registry
 used_tags=""
 for library in $repository_dir/*; do
     for repo in $library/*; do
         for tag in $repo/tag_*; do
-	    used_tags="${used_tags}${NEWLINE}$(basename $tag)"
+            used_tags="${used_tags}${NEWLINE}$(basename $tag)"
         done
     done
 done
@@ -46,32 +57,41 @@ echo "$used_tags"
 
 echo "------------------"
 echo "Tags in registry"
-#clean_tags=`echo $used_tags|tr " " "\n"|grep -v *|grep -v latest|sort|uniq|tr "\n" " "` 
-#clean_tags=`echo $used_tags|tr " " "\n"|grep -v *`
-clean_tags=`echo $used_tags|tr " " "\n"|grep -v latest|sort|uniq|tr "\n" " "`
+clean_tags=`echo $used_tags|tr " " "\n"|grep -v latest| grep -i WZU|sort -r|uniq|tr "\n" " "`
 
 echo $clean_tags
 
 echo "------------------"
 # iterate trough lists
+buildCount=0
 for tag in $clean_tags; do
-	# check if tag exists as branch, if not so, delete tag
-	exist=0;
-	for branch in $tag_list; do
-		if [ "$tag" == "$branch" ] || [ "$tag" == "tag_*" ]; then
-			exist=1
-		fi
-	done
-	if [ $exist -eq 0 ]; then
-		echo "going to delete ${tag:4}"
-		
-		./_scripts/registry/remove-tag.sh ${tag:4} $1	
-	fi
+        if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
+                # check if tag exists as branch, if not so, delete tag
+                exist=0;
+                for branch in $tag_list; do
+                        if [ "$tag" == "$branch" ] || [ "$tag" == "tag_*" ]; then
+                                exist=1
+                        fi
+                done
+                if [ $exist -eq 0 ]; then
+                        echo "going to delete ${tag:4}"
+                        #./_scripts/registry/remove-tag.sh ${tag:4} $1
+                fi
+        else
+                let buildCount=buildCount+1
+                if [ $buildCount -gt 10 ]; then
+                        echo "going to delete ${tag:4}"
+                        #./_scripts/registry/remove-tag.sh ${tag:4} $1
+                fi
+        fi
 done
 
 # cleanup
-cd ..
-rm -rf wzu-docker
+if [ "${REGISTRY_TO_CLEAN}" == "registry-t.sbb.ch" ]; then
+  cd ..
+  rm -rf wzu-docker
+fi
 
 
 exit 0
+
