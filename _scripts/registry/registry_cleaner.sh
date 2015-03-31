@@ -75,13 +75,13 @@ for tag in $clean_tags; do
                 done
                 if [ $exist -eq 0 ]; then
                         echo "going to delete ${tag:4}"
-                        #./_scripts/registry/remove-tag.sh ${tag:4} $1
+                        ./remove-tag.sh ${tag:4} $1
                 fi
         else
                 let buildCount=buildCount+1
                 if [ $buildCount -gt 10 ]; then
                         echo "going to delete ${tag:4}"
-                        #./_scripts/registry/remove-tag.sh ${tag:4} $1
+                        ./remove-tag.sh ${tag:4} $1
                 fi
         fi
 done
