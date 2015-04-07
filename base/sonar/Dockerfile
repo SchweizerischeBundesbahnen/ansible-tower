@@ -1,0 +1,106 @@
+FROM schweizerischebundesbahnen/base
+
+MAINTAINER u214892@sbb.ch
+
+#Environment Variables
+ENV sonarversion 5.1
+
+ENV idoffset 120
+ENV appuser sonar
+ENV datadir /var/data
+ENV sonar_home /var/data/sonar
+ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
+
+RUN yum install -y git && yum clean all -q
+
+# Create Data directory structure and add user jira to the image
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 1${idoffset} --home ${sonar_home} && mkdir -p ${sonar_home}/shared
+
+# Get Sonar distro and unpack everything
+RUN cd /opt && wget -q "http://dist.sonar.codehaus.org/sonarqube-${sonarversion}.zip"  -O sonarqube-${sonarversion}.zip && unzip sonarqube-${sonarversion}.zip && rm sonarqube-${sonarversion}.zip && ln -s sonarqube-${sonarversion} sonar
+RUN sed -ri "s#wrapper.java.command=java#wrapper.java.command=/opt/jdk/jre/bin/java#g" /opt/sonar/conf/wrapper.conf
+COPY configs/sonar.properties /opt/sonar/conf/sonar.properties
+
+# Plugins as in production
+# sonar-branding-plugin-0.5.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-branding-plugin/0.5/sonar-branding-plugin-0.5.jar
+
+# sonar-checkstyle-plugin-2.1.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-checkstyle-plugin/2.1/sonar-checkstyle-plugin-2.1.jar
+
+# sonar-cobertura-plugin-1.6.2.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-cobertura-plugin/1.6.2/sonar-cobertura-plugin-1.6.2.jar
+
+# sonar-emma-plugin-1.3.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-emma-plugin/1.3/sonar-emma-plugin-1.3.jar
+
+# sonar-findbugs-plugin-3.0.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-findbugs-plugin/3.0/sonar-findbugs-plugin-3.0.jar
+
+# sonar-java-plugin-2.4.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-java-plugin/2.4/sonar-java-plugin-2.4.jar
+
+# sonar-javascript-plugin-2.1.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.1/sonar-javascript-plugin-2.1.jar
+
+# sonar-ldap-plugin-1.4.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-ldap-plugin/1.4/sonar-ldap-plugin-1.4.jar
+
+# sonar-motion-chart-plugin-1.7.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-motion-chart-plugin/1.7/sonar-motion-chart-plugin-1.7.jar
+
+# sonar-pmd-plugin-2.2.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-pmd-plugin/2.2/sonar-pmd-plugin-2.2.jar
+
+# sonar-scm-activity-plugin-1.8.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/scm-activity/sonar-scm-activity-plugin/1.8/sonar-scm-activity-plugin-1.8.jar
+
+# sonar-sigmm-plugin-1.0.1.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sigmm-plugin/1.0.1/sonar-sigmm-plugin-1.0.1.jar
+
+# sonar-sonargraph-plugin-3.3-SNAPSHOT.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sonargraph-plugin/3.3/sonar-sonargraph-plugin-3.3.jar
+
+# sonar-sqale-plugin-2.3.jar
+RUN cd /opt && wget -q http://dist.sonarsource.com/sqale/download/sonar-sqale-plugin-2.3.jar
+
+# sonar-views-plugin-2.5.jar
+RUN cd /opt && wget -q http://dist.sonarsource.com/views/download/sonar-views-plugin-2.5.jar
+
+# sonar-web-plugin-2.2.jar
+RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-web-plugin/2.2/sonar-web-plugin-2.2.jar
+
+
+# RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.4/sonar-javascript-plugin-2.4.jar -O /opt/sonar/extensions/plugins/sonar-javascript-plugin-2.4.jar
+
+# install script for sonar
+COPY configs/sonar.ini /etc/supervisor/conf.d/
+
+# supervisor can not use env variables
+RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/sonar.ini
+
+
+RUN chown -R ${appuser}:${appuser} $sonar_home
+
+ENV MYSQL_HOST localhost
+ENV MYSQL_DBNAME sonar
+ENV MYSQL_USER sonar
+ENV MYSQL_PASSWORD sonartest
+
+EXPOSE 9002
+
+CMD sed -ri "s#MYSQL_HOST#${MYSQL_HOST}#g" /opt/sonar/conf/sonar.properties && \
+    sed -ri "s#MYSQL_USER#${MYSQL_USER}#g" /opt/sonar/conf/sonar.properties && \
+    sed -ri "s#MYSQL_DBNAME#${MYSQL_DBNAME}#g" /opt/sonar/conf/sonar.properties && \
+    sed -ri "s#MYSQL_PASSWORD#${MYSQL_PASSWORD}#g" /opt/sonar/conf/sonar.properties && cat /opt/sonar/conf/sonar.properties && \
+    /opt/sonar/bin/linux-x86-64/sonar.sh start && \
+    tail -f /opt/sonar/logs/sonar.log
+
+# TODO supervisor why does it not work?
+#CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+
+# docker build --tag sonarjs .
+# root@v00964 sonar# docker run --name sonarjs -p 9002:9002 -e MYSQL_HOST=v00748.sbb.ch -e MYSQL_DBNAME=sonarJS -e MYSQL_USER=sonarJS -e MYSQL_PASSWORD=sonarJStest -d sonarjs
+# sonar:sonar -Dsonar.userHome=/var/data/jenkins/temp/.sonar -Dsonar.jdbc.driver=com.mysql.jdbc.Driver -Dsonar.jdbc.url=jdbc:mysql://v00748.sbb.ch:3306/sonarJS?useUnicode=true&characterEncoding=utf8 -Dsonar.jdbc.username=sonarJS -Dsonar.jdbc.password=sonarJStest -Dsonar.host.url=http://v00964.sbb.ch:9002
+
+
