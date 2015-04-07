@@ -18,9 +18,14 @@ foldersTouched=`git show --pretty="format:" --name-only`
 #For each folder, store only the path to the folder since only files are modified.
 for f in $foldersTouched ; do
 	dir=`dirname $f`;
+  #If commit occurs in "config"-folder, treat it like it occured in the root-folder to pass the check against the folder-structure.
+  base=`basename $dir`;
+  if [ "$base" == "configs" ]; then
+    dir=`dirname $dir`;
+  fi  
 	#since git show respects the hierarchy, check if already touched folder is in list is sufficient to reduce any duplicates
 	if [[ "$images" != *"$dir"* ]]; then
-		#Exclude some folders from the search like .git, config, scripts..
+		#Exclude some folders from the search like .git, _scripts..everything where commits do not affect images should be ignored.
 		images="$images `find $dir -type d -print | grep -v -E ".git|_doc|_scripts|configs"`";
 	fi
 done
@@ -28,7 +33,7 @@ done
 images=`echo $images | tr -d "\n"`
 #If a build occurs on an excluded folder, exit gracefully
 if [ -z "$images" ]; then
-    echo "images is empty, skipping build"
+  echo "images is empty, skipping build"
 	exit 0
 fi
 
