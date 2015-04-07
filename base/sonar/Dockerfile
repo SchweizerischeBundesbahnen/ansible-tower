@@ -23,52 +23,52 @@ COPY configs/sonar.properties /opt/sonar/conf/sonar.properties
 
 # Plugins as in production
 # sonar-branding-plugin-0.5.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-branding-plugin/0.5/sonar-branding-plugin-0.5.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-branding-plugin/0.5/sonar-branding-plugin-0.5.jar
 
 # sonar-checkstyle-plugin-2.1.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-checkstyle-plugin/2.1/sonar-checkstyle-plugin-2.1.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-checkstyle-plugin/2.1/sonar-checkstyle-plugin-2.1.jar
 
 # sonar-cobertura-plugin-1.6.2.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-cobertura-plugin/1.6.2/sonar-cobertura-plugin-1.6.2.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-cobertura-plugin/1.6.2/sonar-cobertura-plugin-1.6.2.jar
 
 # sonar-emma-plugin-1.3.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-emma-plugin/1.3/sonar-emma-plugin-1.3.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-emma-plugin/1.3/sonar-emma-plugin-1.3.jar
 
 # sonar-findbugs-plugin-3.0.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-findbugs-plugin/3.0/sonar-findbugs-plugin-3.0.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-findbugs-plugin/3.0/sonar-findbugs-plugin-3.0.jar
 
 # sonar-java-plugin-2.4.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-java-plugin/2.4/sonar-java-plugin-2.4.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-java-plugin/2.4/sonar-java-plugin-2.4.jar
 
 # sonar-javascript-plugin-2.1.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.1/sonar-javascript-plugin-2.1.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.1/sonar-javascript-plugin-2.1.jar
 
 # sonar-ldap-plugin-1.4.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-ldap-plugin/1.4/sonar-ldap-plugin-1.4.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-ldap-plugin/1.4/sonar-ldap-plugin-1.4.jar
 
 # sonar-motion-chart-plugin-1.7.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-motion-chart-plugin/1.7/sonar-motion-chart-plugin-1.7.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-motion-chart-plugin/1.7/sonar-motion-chart-plugin-1.7.jar
 
 # sonar-pmd-plugin-2.2.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-pmd-plugin/2.2/sonar-pmd-plugin-2.2.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-pmd-plugin/2.2/sonar-pmd-plugin-2.2.jar
 
 # sonar-scm-activity-plugin-1.8.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/scm-activity/sonar-scm-activity-plugin/1.8/sonar-scm-activity-plugin-1.8.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/scm-activity/sonar-scm-activity-plugin/1.8/sonar-scm-activity-plugin-1.8.jar
 
 # sonar-sigmm-plugin-1.0.1.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sigmm-plugin/1.0.1/sonar-sigmm-plugin-1.0.1.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sigmm-plugin/1.0.1/sonar-sigmm-plugin-1.0.1.jar
 
 # sonar-sonargraph-plugin-3.3-SNAPSHOT.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sonargraph-plugin/3.3/sonar-sonargraph-plugin-3.3.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sonargraph-plugin/3.3/sonar-sonargraph-plugin-3.3.jar
 
 # sonar-sqale-plugin-2.3.jar
-RUN cd /opt && wget -q http://dist.sonarsource.com/sqale/download/sonar-sqale-plugin-2.3.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/sqale/download/sonar-sqale-plugin-2.3.jar
 
 # sonar-views-plugin-2.5.jar
-RUN cd /opt && wget -q http://dist.sonarsource.com/views/download/sonar-views-plugin-2.5.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/views/download/sonar-views-plugin-2.5.jar
 
 # sonar-web-plugin-2.2.jar
-RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-web-plugin/2.2/sonar-web-plugin-2.2.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-web-plugin/2.2/sonar-web-plugin-2.2.jar
 
 
 # RUN cd /opt && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.4/sonar-javascript-plugin-2.4.jar -O /opt/sonar/extensions/plugins/sonar-javascript-plugin-2.4.jar
