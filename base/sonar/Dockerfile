@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER u214892@sbb.ch
 
 #Environment Variables
-ENV sonarversion 5.1
+ENV sonarversion 4.5.4
 
 ENV idoffset 120
 ENV appuser sonar
