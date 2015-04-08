@@ -19,6 +19,7 @@ then
 	TAG=${PR}
 else
 	echo "pr=${PR} is NOT valid, exiting..."
+	TAG=89
 	exit -1
 fi
 
@@ -47,7 +48,8 @@ if [ "$REGISTRY" = "INVALID" ]; then
 fi
 
 FILELIST=`find base -type d -print | grep -v -E ".git|_doc|_scripts|configs"`
-echo "Building all images: $FILELIST"
+echo "Building the following images: $FILELIST"
+
 for TOBUILD in $FILELIST 
 do
 	DOCKERFILE=$TOBUILD/Dockerfile
