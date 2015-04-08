@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER u214892@sbb.ch
 
 #Environment Variables
-ENV sonarversion 4.5.4
+ENV sonarversion 4.4
 
 ENV idoffset 120
 ENV appuser sonar
@@ -62,6 +62,7 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/o
 RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sonargraph-plugin/3.3/sonar-sonargraph-plugin-3.3.jar
 
 # sonar-sqale-plugin-2.3.jar
+# http://sonarqube.15.x6.nabble.com/DataBase-Migration-failed-td5019158.html
 RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/sqale/download/sonar-sqale-plugin-2.3.jar
 
 # sonar-views-plugin-2.5.jar
