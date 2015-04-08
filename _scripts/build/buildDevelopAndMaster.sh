@@ -69,7 +69,7 @@ do
 	fi
 
 	# if everything is ok till now: push images to internal registry
-	echo "docker tag "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:${TAG}""
+	echo "docker tag -f "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:${TAG}""
 	sudo docker tag "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:${TAG}"
 	if [ $? -ne 0 ]; then
 		echo "BUILD failed! Tagging image=$IMAGE failed!"
@@ -84,7 +84,7 @@ do
 	fi
 
 	echo "setting latest tag for ${IMAGE}:${TAG}"
-	sudo docker tag "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:latest"
+	sudo docker tag -f "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:latest"
 	sudo docker push ${REGISTRY}/${IMAGE}:latest
 	if [ $? -ne 0 ]; then
 			echo "BUILD failed! Pushing image=$IMAGE failed!"
