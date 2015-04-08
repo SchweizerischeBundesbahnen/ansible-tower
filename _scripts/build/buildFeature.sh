@@ -65,30 +65,31 @@ for path in $images do
 			search2=`grep "FROM registry-t.sbb.ch" ${dockerfile}`
 			echo "New from: ${search2}:${tag}"
 		fi
-		#else, the referring parent is registry.sbb.ch
+		#else, the referring parent is registry-i.sbb.ch
 	done
+
 	image=`basename $path`
 	# build and push images
 	echo "docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}"
 	sudo docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}
 	if [ $? -ne 0 ]; then
-	echo "BUILD failed! Image=$IMAGE"
-	exit -1
+		echo "BUILD failed! Image=$IMAGE"
+		exit -1
 	fi
+
 	# if everything is ok till now: push images to internal registry
-	echo "docker tag "schweizerischebundesbahnen/${image}:${tag}" "registry-t.sbb.ch/${image}:${tag}""
-	sudo docker tag "schweizerischebundesbahnen/${image}:${tag}" "regist
-	ry-t.sbb.ch/${image}:${tag}"
+	echo "docker tag schweizerischebundesbahnen/${image}:${tag} registry-t.sbb.ch/${image}:${tag}"
+	sudo docker tag "schweizerischebundesbahnen/${image}:${tag}" "registry-t.sbb.ch/${image}:${tag}"
 	if [ $? -ne 0 ]; then
-	echo "BUILD failed! Tagging image=$image failed!"
-				exit -2
+		echo "BUILD failed! Tagging image=$image failed!"
+		exit -2
 	fi
 
 	echo "docker push registry-t.sbb.ch/${image}:${tag}"
 	sudo docker push registry-t.sbb.ch/${image}:${tag}
 	if [ $? -ne 0 ]; then
-	echo "BUILD failed! Pushing image=$image failed!"
-	exit -3
+		echo "BUILD failed! Pushing image=$image failed!"
+		exit -3
 	fi
 
 	# delete images from disk, if succesful. Exit otherwise
