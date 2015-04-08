@@ -2,8 +2,6 @@
 #
 
 GIT_BRANCH=$1
-
-echo "STATIC BUILD SCRIPT"
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
 # since we're on a feature branch, we want to find the suffix

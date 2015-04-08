@@ -2,7 +2,6 @@
 #
 
 GIT_BRANCH=$1
-
 git checkout "${GIT_BRANCH}"
 
 GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
