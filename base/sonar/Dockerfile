@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER u214892@sbb.ch
 
 #Environment Variables
-ENV sonarversion 4.4
+ENV sonarversion 5.1
 
 ENV idoffset 120
 ENV appuser sonar
@@ -41,7 +41,8 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/o
 RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-java-plugin/2.4/sonar-java-plugin-2.4.jar
 
 # sonar-javascript-plugin-2.1.jar
-RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.1/sonar-javascript-plugin-2.1.jar
+# SonarQube 5.1 verlangt >= 2.4
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.4/sonar-javascript-plugin-2.4.jar
 
 # sonar-ldap-plugin-1.4.jar
 RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-ldap-plugin/1.4/sonar-ldap-plugin-1.4.jar
@@ -50,10 +51,12 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/o
 RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-motion-chart-plugin/1.7/sonar-motion-chart-plugin-1.7.jar
 
 # sonar-pmd-plugin-2.2.jar
-RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-pmd-plugin/2.2/sonar-pmd-plugin-2.2.jar
+# SonarQube 5.1 verlangt >= 2.3
+RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/java/sonar-pmd-plugin/2.3/sonar-pmd-plugin-2.3.jar
 
 # sonar-scm-activity-plugin-1.8.jar
-RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/scm-activity/sonar-scm-activity-plugin/1.8/sonar-scm-activity-plugin-1.8.jar
+# Wird im in 5.1 im SonarQube-Core ausgeliefert
+# RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/scm-activity/sonar-scm-activity-plugin/1.8/sonar-scm-activity-plugin-1.8.jar
 
 # sonar-sigmm-plugin-1.0.1.jar
 RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sigmm-plugin/1.0.1/sonar-sigmm-plugin-1.0.1.jar
@@ -62,11 +65,13 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/o
 RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-sonargraph-plugin/3.3/sonar-sonargraph-plugin-3.3.jar
 
 # sonar-sqale-plugin-2.3.jar
+# SonarQube 5.1 verlangt >= 2.6
 # http://sonarqube.15.x6.nabble.com/DataBase-Migration-failed-td5019158.html
-RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/sqale/download/sonar-sqale-plugin-2.3.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/sqale/download/sonar-sqale-plugin-2.6.jar
 
 # sonar-views-plugin-2.5.jar
-RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/views/download/sonar-views-plugin-2.5.jar
+# SonarQube 5.1 verlangt >= 2.8
+RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/views/download/sonar-views-plugin-2.8.jar
 
 # sonar-web-plugin-2.2.jar
 RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-web-plugin/2.2/sonar-web-plugin-2.2.jar
