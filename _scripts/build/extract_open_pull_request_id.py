@@ -50,7 +50,7 @@ for value in values:
 
 # for the rare case that 2 automerge requests follow each other
 if the_id == "":
-    #print 'id not found yet....'
+#    print 'id not found yet....'
     for value in values:
         if value["toRef"]["latestChangeset"] == commit_hash:
             the_id = value["id"]
