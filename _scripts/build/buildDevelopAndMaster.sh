@@ -47,6 +47,7 @@ if [ "$REGISTRY" = "INVALID" ]; then
 fi
 
 FILELIST=`find base -type d -print | grep -v -E ".git|_doc|_scripts|configs"`
+echo "Building all images: $FILELIST"
 for TOBUILD in $FILELIST 
 do
 	DOCKERFILE=$TOBUILD/Dockerfile
@@ -91,11 +92,5 @@ do
 			exit -4
 	fi
 
-	# delete images from disk
-	if [ $error -eq 0 ]; then
-	 sudo docker rmi -f "${REGISTRY}/${IMAGE}:${TAG}"
-	 sudo docker rmi -f "schweizerischebundesbahnen/${IMAGE}:${TAG}"
-	 sudo docker rmi -f "${REGISTRY}/${IMAGE}:latest"
-	fi
 done
 
