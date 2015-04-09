@@ -63,6 +63,8 @@ do
 	IMAGE=`basename $TOBUILD`
 
 	# build and push images
+	echo "Cleaning up possibly existing images for schweizerischebundesbahnen/${IMAGE}:${TAG}"
+	sudo docker rmi -f schweizerischebundesbahnen/${IMAGE}:${TAG} && true
 	echo "docker build --rm --no-cache -t schweizerischebundesbahnen/${IMAGE}:${TAG} ./${TOBUILD}"
 	sudo docker build --rm --no-cache -t schweizerischebundesbahnen/${IMAGE}:${TAG} ./${TOBUILD}
 	if [ $? -ne 0 ]; then
