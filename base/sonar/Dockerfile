@@ -36,7 +36,7 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/o
 
 # sonar-emma-plugin-1.3.jar
 # This plugin is deprecated since SonarQube 4.2. Use JaCoCo instead for Java projects or the Android plugin to import Emma 2.0 reports.
-RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-emma-plugin/1.3/sonar-emma-plugin-1.3.jar
+#RUN cd /opt/sonar/extensions/plugins && wget -q http://repository.codehaus.org/org/codehaus/sonar-plugins/sonar-emma-plugin/1.3/sonar-emma-plugin-1.3.jar
 
 # sonar-findbugs-plugin-3.0.jar
 # SonarQube 5.1 verlangt >= 3.2
