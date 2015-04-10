@@ -11,7 +11,7 @@ RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- ${filerurl}/android/android-sdk-linux-latest.tar.gz | tar xfz - \
 	&& mv output/buildtools/android-sdk-linux . \
-	&& rm -rf output \ 
+	&& rm -rf output \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}/m2  ${jenkinshome}/temp  ${jenkinshome}/workspace
 
 # Add ANDROID_HOME to environment 
