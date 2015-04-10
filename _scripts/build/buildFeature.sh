@@ -52,9 +52,9 @@ for path in $images ; do
     currentparent=`basename $( echo $search | cut -d " " -f2 )`
     #Iterate through all images to build to adapt parent-reference if necessary.
     #This means, the parent is build if the parent is also part of this build.
-    for parentname in $imagenames do
+    for parentname in $imagenames ; do
         #If parent is always built, point to the image to be build in this job. Adapting dockerfile over here.
-        if [ "$parentname" = "$currentparent" ] ; then
+        if [ "$parentname" = "$currentparent" ]; then
             echo "found $parentname"
             echo "Dockerfile: ${dockerfile}"
             echo "Old from: ${search}"
