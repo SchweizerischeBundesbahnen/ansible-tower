@@ -44,7 +44,7 @@ echo "Pushing to registry-t.sbb.ch"
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
 #Adapt the dockerfiles to point to registry-t and to point to adjacent parents included in this build, if necessary.
-for path in $images do
+for path in $images ; do
     dockerfile=$path/Dockerfile
     #Always referring to prod-registry.
     sed -ri "s#FROM schweizerischebundesbahnen#FROM registry-i.sbb.ch#g" ${dockerfile}
@@ -54,7 +54,7 @@ for path in $images do
     #This means, the parent is build if the parent is also part of this build.
     for parentname in $imagenames do
         #If parent is always built, point to the image to be build in this job. Adapting dockerfile over here.
-        if [ "$parentname" = "$currentparent" ]; then
+        if [ "$parentname" = "$currentparent" ] ; then
             echo "found $parentname"
             echo "Dockerfile: ${dockerfile}"
             echo "Old from: ${search}"
