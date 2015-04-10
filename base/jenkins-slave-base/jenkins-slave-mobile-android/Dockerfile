@@ -1,6 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-#FROM schweizerischebundesbahnen/jenkins-slave-base
-FROM registry.sbb.ch/jenkins-slave-base
+FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV labels "swarm android"
@@ -14,7 +13,6 @@ RUN cd ${jenkinshome}/buildtools \
 	&& mv output/buildtools/android-sdk-linux . \
 	&& rm -rf output \ 
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}/m2  ${jenkinshome}/temp  ${jenkinshome}/workspace
-#        && chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Add ANDROID_HOME to environment 
 RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${jenkinshome}/env.sh
