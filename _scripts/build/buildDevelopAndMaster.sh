@@ -47,18 +47,33 @@ if [ "$REGISTRY" = "INVALID" ]; then
     exit -1
 fi
 
+echo ""
+echo ""
+echo "-------------------------------------"
+echo "Start if list of images to Build to push to $REGISTRY"
+echo "-------------------------------------"
+echo ""
+echo ""
 FILELIST=`find base -type d -print | grep -v -E ".git|_doc|_scripts|configs"`
-echo "Building the following images: $FILELIST"
+echo "$FILELIST"
+echo ""
+echo ""
+echo "-------------------------------------"
+echo "End if list of images to Build to push to $REGISTRY, starting building and pushing"
+echo "-------------------------------------"
+echo ""
+echo ""
 
-for TOBUILD in $FILELIST 
+
+for TOBUILD in $FILELIST ; 
 do
-    echo "\n"
-    echo "\n"
+    echo ""
+    echo ""
     echo "-------------------------------------"
     echo "Start of push and build of ${TOBUILD}"
     echo "-------------------------------------"
-    echo "\n"
-    echo "\n"
+    echo ""
+    echo ""
     
     DOCKERFILE=$TOBUILD/Dockerfile
     SEARCH=`grep "FROM schweizerischebundesbahnen" ${DOCKERFILE}`
@@ -83,7 +98,7 @@ do
 
     # if everything is ok till now: push images to internal registry
     echo "docker tag -f "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:${TAG}""
-    sudo docker tag "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:${TAG}"
+    sudo docker tag -f "schweizerischebundesbahnen/${IMAGE}:${TAG}" "${REGISTRY}/${IMAGE}:${TAG}"
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Tagging image=$IMAGE failed!"
            exit -2
@@ -103,12 +118,13 @@ do
             echo "BUILD failed! Pushing image=$IMAGE failed!"
             exit -4
     fi
-    echo "\n"
-    echo "\n"
+    
+    echo ""
+    echo ""
     echo "-------------------------------------"
     echo "End of push and build of ${TOBUILD}"
     echo "-------------------------------------"
-    echo "\n"
-    echo "\n"
+    echo ""
+    echo ""
 done
 
