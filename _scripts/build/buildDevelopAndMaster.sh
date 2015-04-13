@@ -19,8 +19,7 @@ then
     TAG=${PR}
 else
     echo "pr=${PR} is NOT valid, exiting..."
-    TAG="90" 
-    #exit -1
+    exit -1
 fi
 
 # define registry to push to
