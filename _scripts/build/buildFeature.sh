@@ -14,7 +14,7 @@ echo "TAG=${tag}"
 #Order is always respecting hierarchy since git show orders after find.
 foldersTouched=`git show --pretty="format:" --name-only`
 #For each folder, store only the path to the folder since only files are modified.
-for f in $foldersTouched ; 
+for f in $foldersTouched ;
 do
     dir=`dirname $f`;
     #If commit occurs in "config"-folder, treat it like it occured in the root-folder to pass the check against the folder-structure.
@@ -38,15 +38,35 @@ fi
 
 #Build-PartStarting.
 #Show what we build!
-echo "Building the following images"
+echo ""
+echo ""
+echo "-------------------------------------"
+echo "Start if list of images to Build to push to registry-t.sbb.ch"
+echo "-------------------------------------"
+echo ""
+echo ""
 echo "${images}"
-echo "Pushing to registry-t.sbb.ch"
+echo ""
+echo ""
+echo "-------------------------------------"
+echo "End if list of images to Build to push to $REGISTRY, starting building and pushing"
+echo "-------------------------------------"
+echo ""
+echo ""
 
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
 #Adapt the dockerfiles to point to registry-t and to point to adjacent parents included in this build, if necessary.
 for path in $images ;
 do
+    echo ""
+    echo ""
+    echo "-------------------------------------"
+    echo "Start of push and build of ${path}"
+    echo "-------------------------------------"
+    echo ""
+    echo ""
+    
     dockerfile=$path/Dockerfile
     #Always referring to prod-registry.
     sed -ri "s#FROM schweizerischebundesbahnen#FROM registry-i.sbb.ch#g" ${dockerfile}
@@ -54,8 +74,7 @@ do
     currentparent=`basename $( echo $search | cut -d " " -f2 )`
     #Iterate through all images to build to adapt parent-reference if necessary.
     #This means, the parent is build if the parent is also part of this build.
-    for parentname in $imagenames ;
-    do
+    for parentname in $imagenames do
         #If parent is always built, point to the image to be build in this job. Adapting dockerfile over here.
         if [ "$parentname" = "$currentparent" ]; then
             echo "found $parentname"
@@ -70,6 +89,9 @@ do
     done
 
     image=`basename $path`
+    # build and push images
+    echo "Cleaning up possibly existing images for schweizerischebundesbahnen/${IMAGE}:${TAG}"
+    sudo docker rmi -f schweizerischebundesbahnen/${IMAGE}:${TAG} && true
     # build and push images
     echo "docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}"
     sudo docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}
@@ -100,6 +122,13 @@ do
     else
         exit $error
     fi
-
+    
+    echo ""
+    echo ""
+    echo "-------------------------------------"
+    echo "End of push and build of ${TOBUILD}"
+    echo "-------------------------------------"
+    echo ""
+    echo ""
 done
 exit $error
