@@ -8,7 +8,7 @@
 TAG=47
 
 # generate image list
-MODULE_LIST=`find . -maxdepth 1 -type d ! -name "_doc" ! -name "_scripts" ! -name ".*"`
+MODULE_LIST=`find . -type d -print | grep -v -E ".git|_doc|_scripts|configs"`
 
 for image in $MODULE_LIST; do
 	
