@@ -110,11 +110,9 @@ CMD sed -ri "s#MYSQL_HOST#${MYSQL_HOST}#g" /opt/sonar/conf/sonar.properties && \
     sed -ri "s#MYSQL_USER#${MYSQL_USER}#g" /opt/sonar/conf/sonar.properties && \
     sed -ri "s#MYSQL_DBNAME#${MYSQL_DBNAME}#g" /opt/sonar/conf/sonar.properties && \
     sed -ri "s#MYSQL_PASSWORD#${MYSQL_PASSWORD}#g" /opt/sonar/conf/sonar.properties && cat /opt/sonar/conf/sonar.properties && \
-    /opt/sonar/bin/linux-x86-64/sonar.sh start && \
-    tail -f /opt/sonar/logs/sonar.log
+    sed -ri "s#wrapper.daemonize=TRUE# wrapper.daemonize=FALSE#g" && \
+     ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
-# TODO supervisor why does it not work?
-#CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
 # docker build --tag sonarjs .
 # root@v00964 sonar# docker run --name sonarjs -p 9002:9002 -e MYSQL_HOST=v00748.sbb.ch -e MYSQL_DBNAME=sonarJS -e MYSQL_USER=sonarJS -e MYSQL_PASSWORD=sonarJStest -d sonarjs
