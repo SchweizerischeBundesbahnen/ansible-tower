@@ -49,6 +49,7 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-config.properties
 
 #Exposing Port to make Stash accessible
+EXPOSE 7999
 EXPOSE 8120
 EXPOSE 9120
 
