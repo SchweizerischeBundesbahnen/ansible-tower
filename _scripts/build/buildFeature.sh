@@ -101,8 +101,8 @@ do
     fi
 
     # if everything is ok till now: push images to internal registry
-    echo "docker tag schweizerischebundesbahnen/${image}:${tag} registry-t.sbb.ch/${image}:${tag}"
-    sudo docker tag "schweizerischebundesbahnen/${image}:${tag}" "registry-t.sbb.ch/${image}:${tag}"
+    echo "docker tag -f schweizerischebundesbahnen/${image}:${tag} registry-t.sbb.ch/${image}:${tag}"
+    sudo docker tag -f "schweizerischebundesbahnen/${image}:${tag}" "registry-t.sbb.ch/${image}:${tag}"
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Tagging image=$image failed!"
         exit -2
