@@ -5,7 +5,7 @@ ENV filerurl http://wzufiler.sbb.ch/was85.tar.gz
 ENV scripturl http://wzufiler.sbb.ch/me.tar.gz
 ENV appuser asrun
 
-#  Create directories and add user to the image
+# Create directories and add user to the image
 RUN adduser ${appuser} \
 	&& echo "${appuser}:${appuser}" | chpasswd \
 	&& mkdir /home/${appuser}/.ssh
