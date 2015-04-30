@@ -3,12 +3,12 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 #Environment variables
-ENV jiraversion 6.3.15
+ENV jiraversion 6.4.3
 ENV datadir /var/data
 ENV jirahome /var/data/jira
 ENV idoffset 70
 ENV appuser jira
-ENV mysqlconnectorversion 5.1.34
+ENV mysqlconnectorversion 5.1.35
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${jirahome}
