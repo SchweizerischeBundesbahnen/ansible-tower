@@ -6,7 +6,7 @@
 
 opts="-p 8070:8070 -p 9070:9070 -p 10070:10070 -v /var/data/jira:/var/data/jira -d -e JAVA_XMX=3048m -e JAVA_PERMSIZE=512m"
 containername=jira
-imagename=schweizerischebundesbahnen/jira
+imagename=registry.sbb.ch/jira
 
 function start_container() {
 	docker start $containername
