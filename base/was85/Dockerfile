@@ -1,9 +1,10 @@
 FROM schweizerischebundesbahnen/base
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
-ENV filerurl http://wzufiler.sbb.ch/was85.tar.gz
+ENV filerurl http://wzufiler.sbb.ch/was85dev.tar.gz
 ENV scripturl http://wzufiler.sbb.ch/me.tar.gz
 ENV appuser asrun
+ENV profileName AppSrv01
 
 # Create directories and add user to the image
 RUN adduser ${appuser} \
@@ -37,9 +38,15 @@ RUN yum install openssh-server openssh-clients -y \
 COPY configs/was85.ini /etc/supervisor/conf.d/
 COPY configs/sshd.ini /etc/supervisor/conf.d/
 
+RUN /opt/was85/bin/managesdk.sh -setNewProfileDefault -sdkName 1.7_64 \
+        && /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default \
+                -profileName ${profileName} -profilePath /opt/was85/profiles/${profileName} -isDefault
+
 RUN mkdir -pv /opt/source/delivery \
         && chown ${appuser}:${appuser} /opt/source \
-        && chown ${appuser}:${appuser} /opt/source/delivery
+        && chown ${appuser}:${appuser} /opt/source/delivery \
+        && chown -R ${appuser}:${appuser} /opt/was85 \
+        && chown -R ${appuser}:${appuser} /opt/was85_shared
 
 #SSH,SOAP_CONNECTOR_ADDRESS,SIP_DEFAULTHOST_SECURE,SIP_DEFAULTHOST,SIB_ENDPOINT_ADDRESS,WC_defaulthost_secure,DCS_UNICAST_ADDRESS
 #SIB_MQ_ENDPOINT_SECURE_ADDRESS,WC_adminhost_secure,CSIV2_SSL_MUTUALAUTH_LISTENER_ADDRESS,ORB_LISTENER_ADDRESS,
