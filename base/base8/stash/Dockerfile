@@ -2,7 +2,7 @@ FROM schweizerischebundesbahnen/base8
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
-ENV stashversion 3.7.1
+ENV stashversion 3.8.0
 ENV gitversion 1.8.5.5
 ENV mysqlconnectorversion 5.1.35
 ENV idoffset 120
@@ -29,17 +29,17 @@ RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlass
 # Install JDBC driver
 RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/stash/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
 
-#Universal Plugin in Version 2.18.2
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138581 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
+#Universal Plugin in Version 2.18.4
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138601 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
 #Categories in Version 1.0
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  ${plugin_folder}/stash-project-categories.jar
-#Workzone in Version 2.4.0
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2004000010 -O ${plugin_folder}/workzone.jar
+#Workzone in Version 2.4.3
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2004003020 -O ${plugin_folder}/workzone.jar
 #Unmerged Branch Hook in Version 1.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
-#Webhook in Version 2.1
+#Webhook in Version 2.0.3
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/jenkins-push-webhook/2.0.3/jenkins-push-webhook-2.0.3.jar -O ${plugin_folder}/jenkins-push-webhook.jar
-#Commit Enforcer in Version 2.0
+#Commit Enforcer in Version 2.1
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.1/enforce-message-hook-plugin-2.1.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
 #Setting Java Home and Stash Home in /opt/stash/bin/setenv.sh
