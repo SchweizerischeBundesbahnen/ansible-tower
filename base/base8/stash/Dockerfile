@@ -2,7 +2,8 @@ FROM schweizerischebundesbahnen/base8
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
-ENV stashversion 3.8.0
+
+ENV stashversion 3.9.1
 ENV gitversion 1.8.5.5
 ENV mysqlconnectorversion 5.1.35
 ENV idoffset 120
@@ -49,9 +50,7 @@ RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n
 RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-config.properties
 
 #Exposing Port to make Stash accessible
-EXPOSE 7999
-EXPOSE 8120
-EXPOSE 9120
+EXPOSE 7999 8120 9120 10120 11120
 
 # install script for stash
 COPY configs/stash.ini /etc/supervisor/conf.d/
