@@ -104,7 +104,7 @@ ENV MYSQL_DBNAME sonar
 ENV MYSQL_USER sonar
 ENV MYSQL_PASSWORD sonartest
 
-EXPOSE 9002
+EXPOSE 8110 9110 10110
 
 CMD sed -ri "s#MYSQL_HOST#${MYSQL_HOST}#g" /opt/sonar/conf/sonar.properties && \
     sed -ri "s#MYSQL_USER#${MYSQL_USER}#g" /opt/sonar/conf/sonar.properties && \
