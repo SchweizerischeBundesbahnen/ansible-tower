@@ -24,6 +24,20 @@ RUN cd / \
         && cd /opt \
         && chown -R ${appuser}:${appuser} me
 
+# Add the files for the installation in unmanaged WAS (=developer edition) using the postdev ..
+# ... and patch ant_task_lib.xml with
+COPY configs/ant_task_lib.patch /opt/me/res/ant/ant_task_lib.patch
+RUN cd /opt/me/res/jython && \
+      curl https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/hotdeploy/src/main/resources/scripts/jython/postdev_general.py?raw -o postdev_general.py && \
+      curl https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/hotdeploy/src/main/resources/scripts/jython/predev_general.py?raw -o predev_general.py && \
+      curl https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/hotdeploy/src/main/resources/om.profile/jython/devbase.py?raw -o devbase.py && \
+      cd /opt/me/res/ant && \
+      cp ant_task_lib.xml ant_task_lib.xml.orig && \
+      head -n $(expr $(grep -n "</project>" ant_task_lib.xml | sed -e 's$\(.*\):</project>$\1$') - 1 ) ant_task_lib.xml > ant_task_lib.xml.new && \
+      cat ant_task_lib.patch >> ant_task_lib.xml.new && \
+      echo "</project>" >> ant_task_lib.xml.new && \
+      mv ant_task_lib.xml.new ant_task_lib.xml
+
 # Add scripts
 COPY configs/run.sh /opt/run.sh
 RUN chmod +x /opt/run.sh
@@ -36,6 +50,10 @@ RUN yum install openssh-server openssh-clients -y \
 # Add supervisor configuration
 COPY configs/was85.ini /etc/supervisor/conf.d/
 COPY configs/sshd.ini /etc/supervisor/conf.d/
+
+
+
+
 
 EXPOSE 22
 EXPOSE 9080
