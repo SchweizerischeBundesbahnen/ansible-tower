@@ -26,7 +26,7 @@ done
 ant -Dwas.host=v00964.sbb.ch -Dwas.sshport=${RANDOMINT_SSH} -Dwas.user=asrun -Dwas.password=asrun -buildfile build.xml install
 
 echo "Docker available by ssh asrun@v00964.sbb.ch  -p ${RANDOMINT_SSH}"
-echo "Admin console available at http://v00964.sbb.ch:${RANDOMINT_WASADMIN}/ibm/console/logon.jsp"
+echo "Admin console available at https://v00964.sbb.ch:${RANDOMINT_WASADMIN}/ibm/console/"
 echo "Application availabla at  http://v00964.sbb.ch:${RANDOMINT_WAS}/wzuself/"
 
 # do something.....
