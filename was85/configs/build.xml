@@ -12,7 +12,9 @@
 	</taskdef>
 
 	<target name="install" description="Install packages">
-		<sshexec host="${was.host}" username="${was.user}"
+		<sshexec host="${was.host}"
+				 port="${was.sshport}"
+				 username="${was.user}"
 				 password="${was.password}"
 				 command="mkdir -p /opt/source/delivery/server1/0.1.13"
 				 trust="true" failonerror="false"/>
