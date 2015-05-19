@@ -21,3 +21,10 @@ done
 echo "Docker available by ssh asrun@v00964.sbb.ch  -p $RANDOMINT_SSH"
 echo "Admin console available at https://v00964.sbb.ch:$RANDOMINT_WASADMIN/ibm/console/logon.jsp"
 echo "Application availabla at  https://v00964.sbb.ch:$RANDOMINT_WAS/application"
+
+ant -Dwas.host=v00964.sbb.ch -Dwas.user=asrun -Dwas.password=asrun -buildfile build.xml install
+
+
+# stop container
+#sudo docker stop $NAME
+#sudo docker rm $NAME
