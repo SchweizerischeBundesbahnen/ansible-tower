@@ -5,6 +5,22 @@ ENV filerurl http://wzufiler.sbb.ch/was85.tar.gz
 ENV scripturl http://wzufiler.sbb.ch/me.tar.gz
 ENV appuser asrun
 
+# Add scripts
+COPY configs/run.sh /opt/run.sh
+RUN chmod +x /opt/run.sh
+
+# Add sshd
+RUN yum install openssh-server openssh-clients -y \
+	&& yum clean all \
+	&& /usr/bin/ssh-keygen -A
+
+# Add supervisor configuration
+COPY configs/was85.ini /etc/supervisor/conf.d/
+COPY configs/sshd.ini /etc/supervisor/conf.d/
+
+EXPOSE 22
+EXPOSE 9080
+
 # Create directories and add user to the image
 RUN adduser ${appuser} \
 	&& echo "${appuser}:${appuser}" | chpasswd \
@@ -43,29 +59,11 @@ RUN cd /opt/me/res/jython && \
 # ... and create profile AppSrv01
       /opt/was85/bin/manageprofiles.sh -deleteAll && \
       /opt/was85/bin/managesdk.sh -setNewProfileDefault -sdkName 1.7_64 && \
-      /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default -profileName AppSrv01 -profilePath /opt/was85/profiles/AppSrv01 -isDefault && chown -R ${appuser}:${appuser} /opt/was85 \
+      /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default -profileName AppSrv01 -profilePath /opt/was85/profiles/AppSrv01 -isDefault && chown -R ${appuser}:${appuser} /opt/was85 && \
 #
       mkdir -p /opt/source/delivery && chown -R ${appuser}:${appuser} /opt/source
 
 
-# Add scripts
-COPY configs/run.sh /opt/run.sh
-RUN chmod +x /opt/run.sh
 
-# Add sshd
-RUN yum install openssh-server openssh-clients -y \
-	&& yum clean all \
-	&& /usr/bin/ssh-keygen -A
-
-# Add supervisor configuration
-COPY configs/was85.ini /etc/supervisor/conf.d/
-COPY configs/sshd.ini /etc/supervisor/conf.d/
-
-
-
-
-
-EXPOSE 22
-EXPOSE 9080
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
