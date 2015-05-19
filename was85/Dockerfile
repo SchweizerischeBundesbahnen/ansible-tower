@@ -5,10 +5,6 @@ ENV filerurl http://wzufiler.sbb.ch/was85.tar.gz
 ENV scripturl http://wzufiler.sbb.ch/me.tar.gz
 ENV appuser asrun
 
-# Add scripts
-COPY configs/run.sh /opt/run.sh
-RUN chmod +x /opt/run.sh
-
 # Add sshd
 RUN yum install openssh-server openssh-clients -y \
 	&& yum clean all \
@@ -64,6 +60,8 @@ RUN cd /opt/me/res/jython && \
       mkdir -p /opt/source/delivery && chown -R ${appuser}:${appuser} /opt/source
 
 
-
+# Add scripts
+COPY configs/run.sh /opt/run.sh
+RUN chmod +x /opt/run.sh
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
