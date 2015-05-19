@@ -36,7 +36,13 @@ RUN cd /opt/me/res/jython && \
       head -n $(expr $(grep -n "</project>" ant_task_lib.xml | sed -e 's$\(.*\):</project>$\1$') - 1 ) ant_task_lib.xml > ant_task_lib.xml.new && \
       cat ant_task_lib.patch >> ant_task_lib.xml.new && \
       echo "</project>" >> ant_task_lib.xml.new && \
-      mv ant_task_lib.xml.new ant_task_lib.xml
+      mv ant_task_lib.xml.new ant_task_lib.xml && \
+      chown -R ${appuser}:${appuser} * && \
+      sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh && \
+      /opt/was85/bin/manageprofiles.sh -deleteAll && \
+      /opt/was85/bin/managesdk.sh -setNewProfileDefault -sdkName 1.7_64 && \
+      /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default -profileName AppSrv01 -profilePath /opt/was85/profiles/AppSrv01 -isDefault
+
 
 # Add scripts
 COPY configs/run.sh /opt/run.sh
