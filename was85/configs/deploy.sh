@@ -19,8 +19,8 @@ until [ ${RET} -eq 22 ]; do
 done
 
 echo "Docker available by ssh asrun@v00964.sbb.ch  -p ${RANDOMINT_SSH}"
-echo "Admin console available at https://v00964.sbb.ch:${RANDOMINT_WASADMIN}/ibm/console/logon.jsp"
-echo "Application availabla at  https://v00964.sbb.ch:${RANDOMINT_WAS}/application"
+echo "Admin console available at http://v00964.sbb.ch:${RANDOMINT_WASADMIN}/ibm/console/logon.jsp"
+echo "Application availabla at  http://v00964.sbb.ch:${RANDOMINT_WAS}/application"
 
 # Auf dem Docker-Host muss ant installiert sein: yum install ant ant-jsch
 ant -Dwas.host=v00964.sbb.ch -Dwas.sshport=${RANDOMINT_SSH} -Dwas.user=asrun -Dwas.password=asrun -buildfile build.xml install
