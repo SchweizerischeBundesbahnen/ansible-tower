@@ -5,14 +5,12 @@
 	<property environment="env"/>
 	<property name="base.directory" location="."/>
 
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
+	<!--taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
 			<pathelement location="lib/ant-contrib-1.0b3.jar"/>
 		</classpath>
-	</taskdef>
+	</taskdef-->
 
-	<cluster.name>mpm_cl</cluster.name>
-	<was.deliverypath></was.deliverypath>
 
 	<target name="install" description="Install packages">
 		<sshexec host="${was.host}"
