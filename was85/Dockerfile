@@ -25,12 +25,12 @@ RUN cd / \
         && chown -R ${appuser}:${appuser} me
 
 # Add the files for the installation in unmanaged WAS (=developer edition) using the postdev ..
-# ... and patch ant_task_lib.xml with
 COPY configs/ant_task_lib.patch /opt/me/res/ant/ant_task_lib.patch
 RUN cd /opt/me/res/jython && \
       curl https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/hotdeploy/src/main/resources/scripts/jython/postdev_general.py?raw -o postdev_general.py && \
       curl https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/hotdeploy/src/main/resources/scripts/jython/predev_general.py?raw -o predev_general.py && \
       curl https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/hotdeploy/src/main/resources/om.profile/jython/devbase.py?raw -o devbase.py && \
+# ... and patch ant_task_lib.xml with dev additions
       cd /opt/me/res/ant && \
       cp ant_task_lib.xml ant_task_lib.xml.orig && \
       head -n $(expr $(grep -n "</project>" ant_task_lib.xml | sed -e 's$\(.*\):</project>$\1$') - 1 ) ant_task_lib.xml > ant_task_lib.xml.new && \
@@ -38,10 +38,14 @@ RUN cd /opt/me/res/jython && \
       echo "</project>" >> ant_task_lib.xml.new && \
       mv ant_task_lib.xml.new ant_task_lib.xml && \
       chown -R ${appuser}:${appuser} * && \
+# ... and builder.sh
       sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh && \
+# ... and create profile AppSrv01
       /opt/was85/bin/manageprofiles.sh -deleteAll && \
       /opt/was85/bin/managesdk.sh -setNewProfileDefault -sdkName 1.7_64 && \
-      /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default -profileName AppSrv01 -profilePath /opt/was85/profiles/AppSrv01 -isDefault
+      /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default -profileName AppSrv01 -profilePath /opt/was85/profiles/AppSrv01 -isDefault && \
+#
+      mkdir -p /opt/source/delivery && chown -R ${appuser}:${appuser} /opt/source
 
 
 # Add scripts
