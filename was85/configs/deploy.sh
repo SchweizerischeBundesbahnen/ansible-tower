@@ -18,14 +18,19 @@ until [ ${RET} -eq 22 ]; do
     sleep 5
 done
 
-echo "Docker available by ssh asrun@v00964.sbb.ch  -p ${RANDOMINT_SSH}"
-echo "Admin console available at http://v00964.sbb.ch:${RANDOMINT_WASADMIN}/ibm/console/logon.jsp"
-echo "Application availabla at  http://v00964.sbb.ch:${RANDOMINT_WAS}/application"
 
+
+# run the deployment script startwzuself.sh in the Docker container (use ant to use sshexec)
 # Auf dem Docker-Host muss ant installiert sein: yum install ant ant-jsch
 ant -Dwas.host=v00964.sbb.ch -Dwas.sshport=${RANDOMINT_SSH} -Dwas.user=asrun -Dwas.password=asrun -buildfile build.xml install
 
+echo "Docker available by ssh asrun@v00964.sbb.ch  -p ${RANDOMINT_SSH}"
+echo "Admin console available at http://v00964.sbb.ch:${RANDOMINT_WASADMIN}/ibm/console/logon.jsp"
+echo "Application availabla at  http://v00964.sbb.ch:${RANDOMINT_WAS}/wzuself"
+
+# do something.....
+sleep 5000
 
 # stop container
-#sudo docker stop $NAME
-#sudo docker rm $NAME
+sudo docker stop $NAME
+sudo docker rm $NAME
