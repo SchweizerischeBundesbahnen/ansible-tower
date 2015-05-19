@@ -43,7 +43,7 @@ RUN cd /opt/me/res/jython && \
 # ... and create profile AppSrv01
       /opt/was85/bin/manageprofiles.sh -deleteAll && \
       /opt/was85/bin/managesdk.sh -setNewProfileDefault -sdkName 1.7_64 && \
-      /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default -profileName AppSrv01 -profilePath /opt/was85/profiles/AppSrv01 -isDefault && \
+      /opt/was85/bin/manageprofiles.sh -create -templatePath /opt/was85/profileTemplates/default -profileName AppSrv01 -profilePath /opt/was85/profiles/AppSrv01 -isDefault && chown -R ${appuser}:${appuser} /opt/was85 \
 #
       mkdir -p /opt/source/delivery && chown -R ${appuser}:${appuser} /opt/source
 
