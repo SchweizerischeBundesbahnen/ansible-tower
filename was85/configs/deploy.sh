@@ -1,5 +1,6 @@
 # init some variables
 IMAGE=schweizerischebundesbahnen/was85
+# IMAGE=registry-t.sbb.ch/was85:WZU-3257
 RANDOMINT_WAS=`shuf -i 40000-65000 -n1`
 RANDOMINT_SSH=`shuf -i 40000-65000 -n1`
 RANDOMINT_WASADMIN=`shuf -i 40000-65000 -n1`
@@ -26,7 +27,7 @@ ant -Dwas.host=v00964.sbb.ch -Dwas.sshport=${RANDOMINT_SSH} -Dwas.user=asrun -Dw
 
 echo "Docker available by ssh asrun@v00964.sbb.ch  -p ${RANDOMINT_SSH}"
 echo "Admin console available at http://v00964.sbb.ch:${RANDOMINT_WASADMIN}/ibm/console/logon.jsp"
-echo "Application availabla at  http://v00964.sbb.ch:${RANDOMINT_WAS}/wzuself"
+echo "Application availabla at  http://v00964.sbb.ch:${RANDOMINT_WAS}/wzuself/"
 
 # do something.....
 sleep 5000
