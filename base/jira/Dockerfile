@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 #Environment variables
-ENV jiraversion 6.4.3
+ENV jiraversion 6.4.4
 ENV datadir /var/data
 ENV jirahome /var/data/jira
 ENV idoffset 70
