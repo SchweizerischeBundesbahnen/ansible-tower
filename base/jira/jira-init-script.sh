@@ -13,7 +13,8 @@ function start_container() {
 }
 
 function init_container() {
-	docker run $opts --name $containername $imagename 
+	mkdir -p /var/data/jira/{logs,temp}
+	docker run $opts --name $containername $imagename
 }
 
 function stop_container() {
