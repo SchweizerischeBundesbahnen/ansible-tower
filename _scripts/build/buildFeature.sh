@@ -81,7 +81,7 @@ do
             echo "Dockerfile: ${dockerfile}"
             echo "Old from: ${search}"
             sed -ri "s#${search}#${search}:${tag}#g" ${dockerfile}
-            sed -ri "s#FROM registry.sbb.ch#FROM registry-t.sbb.ch#g" ${dockerfile}
+            sed -ri "s#FROM registry-i.sbb.ch#FROM registry-t.sbb.ch#g" ${dockerfile}
             search2=`grep "FROM registry-t.sbb.ch" ${dockerfile}`
             echo "New from: ${search2}:${tag}"
         fi
