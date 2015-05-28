@@ -26,4 +26,3 @@ RUN echo "export LC_ALL=en_US.UTF-8" > /etc/profile.d/lang.sh
 
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
-
