@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen:base7
+FROM schweizerischebundesbahnen/base8
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
