@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base7
+FROM schweizerischebundesbahnen:base7
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV HOME /root

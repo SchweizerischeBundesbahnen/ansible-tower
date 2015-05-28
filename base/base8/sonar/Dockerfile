@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base7
+FROM schweizerischebundesbahnen:base7
 
 MAINTAINER u214892@sbb.ch
 

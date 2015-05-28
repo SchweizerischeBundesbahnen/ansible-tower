@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base7
+FROM schweizerischebundesbahnen:base7
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV filerurl http://wzufiler.sbb.ch/was85dev.tar.gz

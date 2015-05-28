@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM schweizerischebundesbahnen/base7
+FROM schweizerischebundesbahnen:base7
 MAINTAINER pascal.bieri@sbb.ch
 
 ENV datadir /var/data
