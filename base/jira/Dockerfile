@@ -6,7 +6,7 @@ MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 ENV jiraversion 6.4.4
 ENV datadir /var/data
 ENV jirahome /var/data/jira
-ENV idoffset 70
+ENV idoffset 20
 ENV appuser jira
 ENV mysqlconnectorversion 5.1.35
 
