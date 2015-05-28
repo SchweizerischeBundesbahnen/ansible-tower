@@ -4,7 +4,9 @@
 #
 # chkconfig: - 85 15
 
-opts="-p 8070:8070 -p 9070:9070 -p 10070:10070 -v /var/data/jira:/var/data/jira -d -e JAVA_XMX=3048m -e JAVA_PERMSIZE=512m"
+offset=20
+apphome=/var/data/jira
+opts="-p 80${offset}:80${offset} -p 90${offset}:90${offset} -p 100${offset}:100${offset} -v ${apphome}:/var/data/jira -d -e JAVA_XMX=3048m -e JAVA_PERMSIZE=512m"
 containername=jira
 imagename=registry.sbb.ch/jira
 
@@ -13,7 +15,8 @@ function start_container() {
 }
 
 function init_container() {
-	mkdir -p /var/data/jira/{logs,temp}
+	mkdir -p ${apphome}/{logs,temp}
+	chown -R 10${offset}:10${offset} ${apphome}
 	docker run $opts --name $containername $imagename
 }
 
