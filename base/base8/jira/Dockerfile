@@ -26,13 +26,7 @@ RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector
 RUN rm -rf /opt/jira/{logs,temp} && mkdir -p ${jirahome}/{logs,temp} && ln -sf ${jirahome}/logs /opt/jira/logs && ln -sf ${jirahome}/temp /opt/jira/temp
 
 # Standard JIRA-Port AJP
-EXPOSE 9070
-
-# Standard JIRA-Port http
-EXPOSE 8070
-
-# Standard JIRA-Port JMX
-EXPOSE 10070
+EXPOSE 8020 9020 10020
 
 # Install script for jira
 COPY configs/jira.ini /etc/supervisor/conf.d/
