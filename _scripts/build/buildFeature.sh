@@ -12,7 +12,7 @@ echo "TAG=${tag}"
 
 #Find out what to build
 #Order is always respecting hierarchy since git show orders after find.
-foldersTouched=`git show --pretty="format:" --name-only`
+foldersTouched=`git show --pretty="format:" --name-only develop..origin/^Cature/WZU-3553 | perl -lne 'print tr:/::, " $_"' | sort -n | uniq | grep -v '^$' | cut -d' ' -f2`
 #For each folder, store only the path to the folder since only files are modified.
 for f in $foldersTouched ;
 do
