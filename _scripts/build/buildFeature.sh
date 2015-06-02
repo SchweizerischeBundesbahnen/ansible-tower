@@ -10,11 +10,11 @@ error=0
 
 echo "TAG=${tag}"
 
-#Find out what to build
-#Order is always respecting hierarchy since git show orders after find.
-foldersTouched=`git show --pretty="format:" --name-only develop..origin/^Cature/WZU-3553 | perl -lne 'print tr:/::, " $_"' | sort -n | uniq | grep -v '^$' | cut -d' ' -f2`
+#Find all files changed with respect to develop and order them breadth-first order
+# http://stackoverflow.com/questions/539583/how-do-i-recursively-list-all-directories-at-a-location-breadth-first
+filesTouched=`git show --pretty="format:" --name-only develop..${tag} | perl -lne 'print tr:/::, " $_"' | sort -n | uniq | grep -v '^$' | cut -d' ' -f2`
 #For each folder, store only the path to the folder since only files are modified.
-for f in $foldersTouched ;
+for f in $filesTouched ;
 do
     dir=`dirname $f`;
     #If commit occurs in "config"-folder, treat it like it occured in the root-folder to pass the check against the folder-structure.
