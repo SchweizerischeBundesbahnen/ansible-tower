@@ -73,14 +73,16 @@ do
     echo ""
     
     dockerfile=$path/Dockerfile
+    #if [ "${path}" != "base" ]; then
     #Always referring to prod-registry.
     sed -ri "s#FROM schweizerischebundesbahnen#FROM registry-i.sbb.ch#g" ${dockerfile}
     search=`grep "FROM registry-i.sbb.ch" ${dockerfile}`
     currentparent=`basename $( echo $search | cut -d " " -f2 )`
+
     #Iterate through all images to build to adapt parent-reference if necessary.
-    #This means, the parent is build if the parent is also part of this build.
+    #This means, the parent is built if the parent is also part of this build.
     for parentname in $imagenames ; do
-        #If parent is always built, point to the image to be build in this job. Adapting dockerfile over here.
+        #If parent is always built, point to the image to be built in this job. Adapting dockerfile over here.
         if [ "$parentname" = "$currentparent" ]; then
             echo "found $parentname"
             echo "Dockerfile: ${dockerfile}"
@@ -92,16 +94,17 @@ do
         fi
         #else, the referring parent is registry-i.sbb.ch
     done
+    #fi 
 
     image=`basename $path`
     # build and push images
-    echo "Cleaning up possibly existing images for schweizerischebundesbahnen/${IMAGE}:${TAG}"
-    sudo docker rmi -f schweizerischebundesbahnen/${IMAGE}:${TAG} && true
+    echo "Cleaning up possibly existing images for schweizerischebundesbahnen/${image}:${TAG}"
+    sudo docker rmi -f schweizerischebundesbahnen/${image}:${TAG} && true
     # build and push images
     echo "docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}"
     sudo docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}
     if [ $? -ne 0 ]; then
-        echo "BUILD failed! Image=$IMAGE"
+        echo "BUILD failed! Image=$image"
         exit -1
     fi
 
