@@ -24,8 +24,11 @@ do
     fi  
     #since git show respects the hierarchy, check if already touched folder is in list is sufficient to reduce any duplicates
     if [[ "$images" != *"$dir"* ]]; then
-        #Exclude some folders from the search like .git, _scripts..everything where commits do not affect images should be ignored.
-        images="$images `find $dir -type d -print | grep -v -E ".git|_doc|_scripts|configs"`";
+        if [[ -d "$dir" ]]; then
+          #Exclude some folders from the search like .git, _scripts..everything where commits do not affect images should be ignored.
+          #If directory does not exist any more, it's been git-mved away (in this case, it will show up in the list, too, so skip it in this case)
+          images="$images `find $dir -type d -print | grep -v -E ".git|_doc|_scripts|configs"`";
+        fi
     fi
 done
 #From here on, we have the images in a list depth-first order
@@ -35,6 +38,7 @@ if [ -z "$images" ]; then
     echo "images is empty, skipping build"
     exit 0
 fi
+
 
 #Build-PartStarting.
 #Show what we build!
@@ -53,6 +57,7 @@ echo "End if list of images to Build to push to $REGISTRY, starting building and
 echo "-------------------------------------"
 echo ""
 echo ""
+
 
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
