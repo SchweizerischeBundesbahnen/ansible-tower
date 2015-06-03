@@ -1,12 +1,12 @@
 #Docker image for jenkins master
-FROM schweizerischebundesbahnen/base
+FROM schweizerischebundesbahnen/base7
  
 MAINTAINER igor.masen2@sbb.ch
  
 ENV datadir /var/data
 ENV appname jenkins
 ENV appuser jenkins
-ENV appversion 1.596.2
+ENV appversion 1.596.3
 ENV offset 50
 ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=${datadir}/${appname}
 ENV JAVA_HOME /opt/jdk

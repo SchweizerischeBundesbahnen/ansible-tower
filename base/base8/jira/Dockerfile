@@ -1,12 +1,12 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM schweizerischebundesbahnen/base
+FROM schweizerischebundesbahnen/base8
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 #Environment variables
-ENV jiraversion 6.4.3
+ENV jiraversion 6.4.4
 ENV datadir /var/data
 ENV jirahome /var/data/jira
-ENV idoffset 70
+ENV idoffset 20
 ENV appuser jira
 ENV mysqlconnectorversion 5.1.35
 
@@ -26,13 +26,7 @@ RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector
 RUN rm -rf /opt/jira/{logs,temp} && mkdir -p ${jirahome}/{logs,temp} && ln -sf ${jirahome}/logs /opt/jira/logs && ln -sf ${jirahome}/temp /opt/jira/temp
 
 # Standard JIRA-Port AJP
-EXPOSE 9070
-
-# Standard JIRA-Port http
-EXPOSE 8070
-
-# Standard JIRA-Port JMX
-EXPOSE 10070
+EXPOSE 8020 9020 10020
 
 # Install script for jira
 COPY configs/jira.ini /etc/supervisor/conf.d/

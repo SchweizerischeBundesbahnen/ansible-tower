@@ -1,12 +1,12 @@
-FROM schweizerischebundesbahnen/base
+FROM schweizerischebundesbahnen/base8
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV idoffset 40
 ENV appuser confluence
 ENV datadir /var/data
-ENV confluence_version 5.7.1
+ENV confluence_version 5.7.4
 ENV confluence_home /var/data/confluence
-ENV mysqlconnectorversion 5.1.34
+ENV mysqlconnectorversion 5.1.35
 
 # Create Data directory structure and add user to the image
 RUN mkdir -p ${datadir} \
