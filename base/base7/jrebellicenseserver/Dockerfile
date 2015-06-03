@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM schweizerischebundesbahnen/base
+FROM schweizerischebundesbahnen/base7
 MAINTAINER Christian Eichenberger <u214892@sbb.ch>
 
 #Environment variables
