@@ -3,8 +3,8 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
 
-ENV stashversion 3.9.1
 ENV gitversion 1.8.5.5
+ENV stashversion 3.9.2
 ENV mysqlconnectorversion 5.1.35
 ENV idoffset 120
 ENV appuser stash
