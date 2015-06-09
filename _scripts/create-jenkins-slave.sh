@@ -26,7 +26,7 @@ function check_reserved() {
 }
 
 function create_directories() {
-	sudo mkdir -p $externalfshome/$randomint/mavenrepo $externalfshome/$randomint/tmp $externalfshome/$randomint/workspace $externalfshome/$randomint/.jenkins $externalfshome/$randomint/.temp $externalfshome/$randomint/.sonar
+	sudo mkdir -p $externalfshome/$randomint/mavenrepo $externalfshome/$randomint/tmp $externalfshome/$randomint/workspace $externalfshome/$randomint/.jenkins $externalfshome/$randomint/temp $externalfshome/$randomint/.sonar
         sudo chown -R 1091:1091 $externalfshome/$randomint
 }
 
