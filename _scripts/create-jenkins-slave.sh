@@ -26,12 +26,12 @@ function check_reserved() {
 }
 
 function create_directories() {
-	sudo mkdir -p $externalfshome/$randomint/mavenrepo $externalfshome/$randomint/tmp $externalfshome/$randomint/workspace $externalfshome/$randomint/.jenkins $externalfshome/$randomint/temp $externalfshome/$randomint/.sonar
+	sudo mkdir -p $externalfshome/$randomint/mavenrepo $externalfshome/$randomint/tmp $externalfshome/$randomint/workspace $externalfshome/$randomint/.jenkins $externalfshome/$randomint/temp $externalfshome/$randomint/.sonar $externalfshome/$randomint/.gradle
         sudo chown -R 1091:1091 $externalfshome/$randomint
 }
 
 function create_privileged_container() {
-	sudo docker run --privileged -d -p $randomint:$randomint -v "$externalfshome/$randomint/mavenrepo:/var/data/jenkins/m2/repository" -v "$externalfshome/$randomint/tmp:/tmp" -v "$externalfshome/$randomint/workspace:/var/data/jenkins/workspace" -v "$externalfshome/$randomint/.jenkins:/var/data/jenkins/.jenkins" -v "$externalfshome/$randomint/temp:/var/data/jenkins/temp" -v "$externalfshome/$randomint/.sonar:/var/data/jenkins/.sonar" -e master=$master -e executors=1 -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$imagename-$randomint-`echo $HOSTNAME | cut -d"." -f1` -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME --name $imagename-$randomint ${registry}/${imagename}:${tag}
+	sudo docker run --privileged -d -p $randomint:$randomint -v "$externalfshome/$randomint/mavenrepo:/var/data/jenkins/m2/repository" -v "$externalfshome/$randomint/tmp:/tmp" -v "$externalfshome/$randomint/workspace:/var/data/jenkins/workspace" -v "$externalfshome/$randomint/.jenkins:/var/data/jenkins/.jenkins" -v "$externalfshome/$randomint/temp:/var/data/jenkins/temp" -v "$externalfshome/$randomint/.sonar:/var/data/jenkins/.sonar" -v "$externalfshome/$randomint/.gradle:/var/data/jenkins/.gradle" -e master=$master -e executors=1 -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$imagename-$randomint-`echo $HOSTNAME | cut -d"." -f1` -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME --name $imagename-$randomint ${registry}/${imagename}:${tag}
 }
 
 function create_container() {
