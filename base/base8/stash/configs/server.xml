@@ -68,18 +68,15 @@
              If you change this port, you have to update scripts.cfg as well
              to have the same port configuration.
         -->
-<Connector protocol="HTTP/1.1"
+    <Connector protocol="HTTP/1.1"
            port="8120"
            scheme="http"
-           proxyName="gugus-t.sbb.ch"
-           proxyPort="80"
            connectionTimeout="20000"
            useBodyEncodingForURI="true"
-           redirectPort="8443"
            compression="on"
            compressableMimeType="text/html,text/xml,text/plain,text/css,application/json,application/javascript,application/x-javascript"/>
 
-<Connector port="9120" enableLookups="false" protocol="AJP/1.3" URIEncoding="UTF-8"/>
+    <Connector port="9120" enableLookups="false" protocol="AJP/1.3" URIEncoding="UTF-8"/>
 
         <!-- A "Connector" using the shared thread pool-->
         <!--
