@@ -4,12 +4,12 @@ MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 ENV labels "iib"
 ENV buildtoolsdir /var/data/jenkins/buildtools
-
+ENV iib9version "9.0.0.201-1"
 RUN yum install --quiet yum install libXext.i686 libXtst.i686 expect xorg-x11-server-Xvfb gtk2.i686 -y && yum clean all -y
 
 # Download and extract wmb
 RUN cd  ${buildtoolsdir}/ \
-	&&  wget -qO- ${filerurl}/jenkins-iib9.0.0.201-1.tgz | tar xfz - \
+	&&  wget -qO- ${filerurl}/jenkins-iib${iib9version}.tgz | tar xfz - \
 	&&  mkdir /var/ibm \
 	&& cd /var/ibm \
 	&& wget -qO- ${filerurl}/InstallationManager90.tgz | tar xfz - \
