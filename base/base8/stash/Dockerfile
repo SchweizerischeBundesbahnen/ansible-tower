@@ -40,8 +40,8 @@ RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.w
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
 #Webhook in Version 2.1.1
 RUN wget --quiet http://repo.sbb.ch/content/repositories/hosted.mwe-wzu.releases/ch/sbb/stash/jenkins-push-webhook/2.1.2/jenkins-push-webhook-2.1.2.jar -O ${plugin_folder}/jenkins-push-webhook.jar
-#Commit Enforcer in Version 2.1
-RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.1/enforce-message-hook-plugin-2.1.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
+#Commit Enforcer in Version 2.2
+RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.2/enforce-message-hook-plugin-2.2.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
 #Setting Java Home and Stash Home in /opt/stash/bin/setenv.sh
 RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n#\n# setting JAVA_HOME\nJAVA_HOME="/opt/jdk"\nSTASH_HOME="/var/data/stash"\n\n,g' /opt/stash/bin/setenv.sh 
