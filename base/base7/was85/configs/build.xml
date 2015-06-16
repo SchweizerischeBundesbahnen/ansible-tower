@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="install" basedir="." name="eaio-installer">
+
+	<property file="eaio.properties"/>
+	<property environment="env"/>
+	<property name="base.directory" location="."/>
+
+	<!--taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="lib/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef-->
+
+
+	<target name="install" description="Install packages">
+		<sshexec host="${was.host}"
+				 port="${was.sshport}"
+				 username="${was.user}"
+				 password="${was.password}"
+				 commandResource="startwzuself.sh"
+				 trust="true" failonerror="false"/>
+		</target>
+	</project>

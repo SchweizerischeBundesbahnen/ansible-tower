@@ -127,3 +127,20 @@ do
     echo ""
 done
 
+
+# if we reach this point, everything went fine and we can delete all images
+echo ""
+echo ""
+echo "-------------------------------------"
+echo "Delete all images"
+echo "-------------------------------------"
+echo ""
+echo ""
+for TOBUILD in $FILELIST ;
+do
+  IMAGE=`basename ${TOBUILD}`
+  echo "Deleting ${IMAGE}"
+  sudo docker rmi -f schweizerischebundesbahnen/${IMAGE}:${TAG}
+  sudo docker rmi -f ${REGISTRY}/${IMAGE}:latest
+  sudo docker rmi -f ${REGISTRY}/${IMAGE}:${TAG}
+done
