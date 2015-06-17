@@ -4,6 +4,8 @@ MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV labels "was7"
+ENV additional_args ""
+
 
 # Download and extract WAS 70 and create profile
 RUN cd /opt \
@@ -19,4 +21,4 @@ RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> ${jenkinshom
 COPY java.security /opt/was70/java/jre/lib/security/java.security
 
 # Start Slave
-CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
+CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive ${additional_args}"

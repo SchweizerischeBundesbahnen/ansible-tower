@@ -5,6 +5,7 @@ MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 ENV labels "iib"
 ENV buildtoolsdir /var/data/jenkins/buildtools
 ENV iib9version "9.0.0.201-1"
+ENV additional_args ""
 RUN yum install --quiet yum install libXext.i686 libXtst.i686 expect xorg-x11-server-Xvfb gtk2.i686 -y && yum clean all -y
 
 # Download and extract wmb
@@ -22,4 +23,4 @@ RUN  echo "export IIB9RUNTIME=${buildtoolsdir}/iib9/IntegrationToolkit90" >> ${j
 RUN echo "Xvfb :1 -screen 0 1024x768x16 &> /tmp/xvfb.log &" >> ${jenkinshome}/run.sh && echo "export DISPLAY=:1.0" >> ${jenkinshome}/env.sh
 
 # Start Slave
-CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -name ${slavename} -password ${cipassword} -labels ${labels}  -mode exclusive"
+CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -username ${ciuser} -name ${slavename} -password ${cipassword} -labels ${labels}  -mode exclusive ${additional_args}"
