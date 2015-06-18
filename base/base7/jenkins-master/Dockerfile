@@ -38,8 +38,6 @@ EXPOSE 8050
 EXPOSE 9050
 # expose port for slave communication JNLP
 EXPOSE 9051
-# expose port for slave communication swarm (use "-tunnel: 48649" for the slaves)
-EXPOSE 48649
 
 # supervisord: configure
 COPY configs/jenkins.ini /etc/supervisor/conf.d/
