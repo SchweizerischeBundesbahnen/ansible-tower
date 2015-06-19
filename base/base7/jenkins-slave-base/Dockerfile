@@ -146,4 +146,3 @@ RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshom
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
 	&& wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore \
 	&& chmod +x ${jenkinshome}/run.sh
-
