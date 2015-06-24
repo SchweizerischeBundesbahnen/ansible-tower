@@ -4,7 +4,7 @@ MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 ENV labels "iib"
 ENV buildtoolsdir /var/data/jenkins/buildtools
-ENV iib9version "9.0.0.201-1"
+ENV iib9version "9.0.0.3-1"
 RUN yum install --quiet yum install libXext.i686 libXtst.i686 expect xorg-x11-server-Xvfb gtk2.i686 -y && yum clean all -y
 
 # Download and extract wmb
