@@ -16,8 +16,8 @@ vmcountHW[android]=4
 # how many slaves do we expect on vm
 declare -A vmcountVM
 vmcountVM[jee]=1
-vmcountHW[was7]=1
-vmcountHW[was85]=1
+vmcountVM[was7]=1
+vmcountVM[was85]=1
 vmcountVM[wmb]=1
 vmcountVM[nodejs]=1
 vmcountVM[iib9]=1
