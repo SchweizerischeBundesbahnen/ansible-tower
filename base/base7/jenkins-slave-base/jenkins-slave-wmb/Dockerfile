@@ -5,12 +5,13 @@ MAINTAINER Igor Masen <igor.masen@sbb.ch>
 ENV labels "wmb"
 ENV buildtoolsdir /var/data/jenkins/buildtools
 ENV wmbversion "7.0.0"
+ENV wmbInstallerVersion "7.0"
 
 # Download and extract wmb
 RUN cd  ${buildtoolsdir}/ \
 	&&  wget -qO- ${filerurl}/wmb-${wmbversion}.tar.gz | tar xfz - \
 	&&  cd /var \
-	&& wget -qO- ${filerurl}/ibm-wmb.tar.gz | tar xfz - \
+	&& wget -qO- ${filerurl}/ibm-wmb-${wmbInstallerVersion}.tar.gz | tar xfz - \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Create environment file

@@ -3,10 +3,11 @@ FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV labels "was85"
+ENV was8version "8.5-OM08"
 
 # Download and extract WAS 85 and create profile
 RUN cd /opt \
-        &&  wget -qO- ${filerurl}/was85.tar.gz | tar xfz - \
+        &&  wget -qO- ${filerurl}/was-${was8version}.tar.gz | tar xfz - \
         && ln -s /opt/was85 ${jenkinshome}/buildtools/was85 \
         && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh \
         && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was85*
