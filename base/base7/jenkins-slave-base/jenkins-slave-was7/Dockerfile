@@ -4,10 +4,11 @@ MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV labels "was7"
+ENV was7version "70"
 
 # Download and extract WAS 70 and create profile
 RUN cd /opt \
-        &&  wget -qO- ${filerurl}/was70.tar.gz | tar xfz - \
+        &&  wget -qO- ${filerurl}/was-${was7version}.tar.gz | tar xfz - \
         && ln -s /opt/was70 ${jenkinshome}/buildtools/was70 \
         && /bin/bash ${jenkinshome}/buildtools/was70/profiles/default/bin/versionInfo.sh \
         && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was70*
