@@ -13,5 +13,8 @@ su - ${appuser} -c "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-li
 # compress to tarball
 tar -zcf /output/android-sdk-linux-latest.tar.gz /output/buildtools
 
+# create md5sum for log
+md5sum /output/android-sdk-linux-latest.tar.gz
+
 # upload to wzufiler
 curl -T /output/android-sdk-linux-latest.tar.gz ${filerurl}/android/

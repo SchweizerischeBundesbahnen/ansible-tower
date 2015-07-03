@@ -4,6 +4,7 @@ MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV labels "swarm nodejs"
 
+
 # Install js binaries for build
 RUN yum update -q -y && yum install -q nodejs npm -y && yum clean all -q 
 

@@ -9,9 +9,11 @@ RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
 
 # Get android sdk from wzufiler
 RUN cd ${jenkinshome}/buildtools \
-	&& wget -qO- ${filerurl}/android/android-sdk-linux-latest.tar.gz | tar xfz - \
+	&& wget -q ${filerurl}/android/android-sdk-linux-latest.tar.gz \
+	&& md5sum android-sdk-linux-latest.tar.gz \
+	&& tar xfz android-sdk-linux-latest.tar.gz \
 	&& mv output/buildtools/android-sdk-linux . \
-	&& rm -rf output \
+	&& rm -rf output android-sdk-linux-latest.tar.gz \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}/m2  ${jenkinshome}/temp  ${jenkinshome}/workspace
 
 # Add ANDROID_HOME to environment 

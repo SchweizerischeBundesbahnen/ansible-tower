@@ -87,6 +87,10 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com
 # SonarQube 5.1 verlangt >= 2.3
 RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/sonar-web-plugin/2.3/sonar-web-plugin-2.3.jar
 
+# / MWESERVICE-6014
+# sonar-groovy-plugin-1.1.1.jar
+RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/sonar-groovy-plugin/1.1.1/sonar-groovy-plugin-1.1.1.jar
+# \ MWESERVICE-6014
 
 # RUN cd /opt && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.4/sonar-javascript-plugin-2.4.jar -O /opt/sonar/extensions/plugins/sonar-javascript-plugin-2.4.jar
 

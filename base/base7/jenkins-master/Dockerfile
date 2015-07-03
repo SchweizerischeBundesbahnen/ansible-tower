@@ -36,7 +36,7 @@ RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.
 EXPOSE 8050
 # expose port 9050 for jenkins ajp
 EXPOSE 9050
-# expose port for slave communication
+# expose port for slave communication JNLP
 EXPOSE 9051
 
 # supervisord: configure
