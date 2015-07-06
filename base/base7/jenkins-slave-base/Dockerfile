@@ -31,6 +31,10 @@ RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && echo "${appuser}:${appuser}" | chpasswd
 
+# Adding Jenkins SSH Keys for access to Stash: https://issues.sbb.ch/browse/MWESERVICE-6123 
+COPY configs/id_rsa* ${jenkinshome}/.ssh
+RUN chown -R ${appuser}:${appuser} ${jenkinshome}/.ssh && chmod 700 ${jenkinshome}/.ssh && chmod 600 ${jenkinshome}/.ssh/* 
+
 # Download Ant 1
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- ${filerurl}/apache-ant-1.8.tar.gz | tar xfz - \
