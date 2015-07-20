@@ -1,6 +1,5 @@
 #!/bin/bash -x
 containerid=$1
-externalfshome=/var/data/docker/container-ext-filesystems
 
 if [ ! -z $containerid ]
 then
@@ -13,11 +12,6 @@ then
 		number=`sudo docker inspect -f='{{.Name}}' ${containerid} | awk -F "-" '{ print $NF }'`
 		# remove container
 		sudo docker rm $containerid
-		# remove fs
-		if [ -d $externalfshome/$number ]
-		then
-			sudo rm -rf $externalfshome/$number
-		fi
 	else
 		echo "could not stop container with id ${containerid}"
 		exit 1
