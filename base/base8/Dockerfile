@@ -4,6 +4,7 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV jdkurl http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-x64.tar.gz 
+ENV keystore keystore-20150722
 
 # Get and Install Java
 RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdkurl} -o /opt/jdk.tar.gz \
@@ -12,4 +13,4 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdku
 	&& rm -rf /opt/*.tar.gz
 
 # Install WZU Keystore
-RUN wget --quiet http://wzufiler.sbb.ch/keystore -O /opt/jdk/jre/lib/security/cacerts
+RUN wget --quiet http://wzufiler.sbb.ch/${keystore} -O /opt/jdk/jre/lib/security/cacerts

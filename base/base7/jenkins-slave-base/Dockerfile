@@ -24,6 +24,7 @@ ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345 
 ENV host example.sbb.ch 
+ENV keystore keystore-20150722
 
 # Install dev tools
 RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
@@ -148,5 +149,5 @@ RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshom
 
 # Add environment variables to run on start
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
-	&& wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore \
+	&& wget --quiet ${filerurl}/${keystore} -O ${jenkinshome}/.keystore \
 	&& chmod +x ${jenkinshome}/run.sh
