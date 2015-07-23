@@ -19,6 +19,7 @@ ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345 
 ENV host example.sbb.ch
+ENV keystore keystore-20150722
 
 
 # install stuff for docker installation
@@ -48,7 +49,7 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http:/
 	&& rm -rf /opt/*.tar.gz
 
 # Install WZU Keystore
-RUN wget --quiet http://wzufiler.sbb.ch/keystore -O /opt/jdk/jre/lib/security/cacerts
+RUN wget --quiet http://wzufiler.sbb.ch/${keystore} -O /opt/jdk/jre/lib/security/cacerts
 
 # stuff from slave-base
 # Create Data directory structure and add user jenkins to the image
@@ -78,7 +79,7 @@ RUN echo "[http]\n\tsslVerify = false">> ${jenkinshome}/.gitconfig
 RUN echo "jenkins ALL=(ALL:ALL) NOPASSWD: ALL">> /etc/sudoers
 
 # Add environment variables to run on start
-RUN wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore
+RUN wget --quiet ${filerurl}/${keystore} -O ${jenkinshome}/.keystore
 
 # Start Slave
 CMD /usr/local/bin/start-slave.sh ${externalport} ${host} ${jenkinshome} ${appuser} ${executors} ${master} ${slavename} ${ciuser} ${cipassword} ${labels}
