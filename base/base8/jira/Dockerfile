@@ -9,6 +9,7 @@ ENV jirahome /var/data/jira
 ENV idoffset 20
 ENV appuser jira
 ENV mysqlconnectorversion 5.1.35
+ENV JAVA_XMX 4096m
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${jirahome}
@@ -28,15 +29,10 @@ RUN rm -rf /opt/jira/{logs,temp} && mkdir -p ${jirahome}/{logs,temp} && ln -sf $
 # Standard JIRA-Port AJP
 EXPOSE 8020 9020 10020
 
-# Install script for jira
-COPY configs/jira.ini /etc/supervisor/conf.d/
-
-# Supervisor can not use env variables
-RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/jira.ini
-
 # jira configuration
 COPY configs/server.xml /opt/jira/conf/
 COPY configs/setenv.sh /opt/jira/bin/
 RUN chmod 755  /opt/jira/bin/setenv.sh
 
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# run jira
+CMD export JAVA_XMX && /opt/jira/bin/start-jira.sh -fg
