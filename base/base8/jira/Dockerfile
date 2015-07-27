@@ -35,4 +35,4 @@ COPY configs/setenv.sh /opt/jira/bin/
 RUN chmod 755  /opt/jira/bin/setenv.sh
 
 # run jira
-CMD export JAVA_XMX && /opt/jira/bin/start-jira.sh -fg
+CMD sudo -u jira "export JAVA_XMX && /opt/jira/bin/start-jira.sh -fg"
