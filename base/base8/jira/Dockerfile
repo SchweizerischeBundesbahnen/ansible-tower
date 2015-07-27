@@ -8,7 +8,7 @@ ENV datadir /var/data
 ENV jirahome /var/data/jira
 ENV idoffset 20
 ENV appuser jira
-ENV mysqlconnectorversion 5.1.35
+ENV mysqlconnectorversion 5.1.36
 ENV JAVA_XMX 4096m
 
 # Create Data directory structure and add user jira to the image
