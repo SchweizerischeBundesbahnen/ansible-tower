@@ -153,9 +153,9 @@ RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassw
 	&& chmod +x ${jenkinshome}/run.sh
 
 # Use our ultimate keystrore in all jdks
-RUN  cd /var/data/jenkins \
-	&& rm ./jdk1.6.0_45-32b/jre/lib/security/cacerts \
-	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.6.0_45-32b/jre/lib/security/cacerts \
+RUN  cd ${jenkinshome}/buildtools \
+	&& rm ./oracle-jdk-6-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-6-32b/jre/lib/security/cacerts \
 	&& rm ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
 	&& rm ./jdk1.8.0_20-32b/jre/lib/security/cacerts \
