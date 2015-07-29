@@ -151,3 +151,22 @@ RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshom
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
 	&& wget --quiet ${filerurl}/${keystore} -O ${jenkinshome}/.keystore \
 	&& chmod +x ${jenkinshome}/run.sh
+
+# Use our ultimate keystrore in all jdks
+RUN  cd /var/data/jenkins \
+	&& rm ./jdk1.6.0_45-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.6.0_45-32b/jre/lib/security/cacerts \
+	&& rm ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
+	&& rm ./jdk1.8.0_20-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_20-32b/jre/lib/security/cacerts \
+	&& rm ./jdk1.6.0_45/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.6.0_45/jre/lib/security/cacerts \
+	&& rm ./jdk1.7.0_67/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.7.0_67/jre/lib/security/cacerts \
+	&& rm ./jdk1.8.0_20/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_20/jre/lib/security/cacerts \
+	&& rm ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
+	&& rm ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts
