@@ -24,6 +24,7 @@ ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345 
 ENV host example.sbb.ch 
+ENV keystore keystore-20150722
 
 # Install dev tools
 RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
@@ -148,5 +149,24 @@ RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshom
 
 # Add environment variables to run on start
 RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
-	&& wget --quiet ${filerurl}/keystore -O ${jenkinshome}/.keystore \
+	&& wget --quiet ${filerurl}/${keystore} -O ${jenkinshome}/.keystore \
 	&& chmod +x ${jenkinshome}/run.sh
+
+# Use our ultimate keystrore in all jdks
+RUN  cd ${jenkinshome}/buildtools \
+	&& rm ./oracle-jdk-6-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-6-32b/jre/lib/security/cacerts \
+	&& rm ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
+	&& rm ./jdk1.8.0_20-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_20-32b/jre/lib/security/cacerts \
+	&& rm ./jdk1.6.0_45/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.6.0_45/jre/lib/security/cacerts \
+	&& rm ./jdk1.7.0_67/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.7.0_67/jre/lib/security/cacerts \
+	&& rm ./jdk1.8.0_20/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_20/jre/lib/security/cacerts \
+	&& rm ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
+	&& rm ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts
