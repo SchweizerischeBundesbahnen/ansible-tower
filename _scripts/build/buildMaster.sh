@@ -88,8 +88,8 @@ do
     # build and push images
     echo "Cleaning up possibly existing images for schweizerischebundesbahnen/${IMAGE}:${TAG}"
     sudo docker rmi -f schweizerischebundesbahnen/${IMAGE}:${TAG} && true
-    echo "docker pull registry-i.sbb.ch/${IMAGE}:lastest"
-    sudo docker pull registry-i.sbb.ch/${IMAGE}:lastest
+    echo "docker pull registry-i.sbb.ch/${IMAGE}:latest"
+    sudo docker pull registry-i.sbb.ch/${IMAGE}:latest
     if [ $? -ne 0 ]; then
         echo "PULL failed! Image=$IMAGE"
         exit -1
