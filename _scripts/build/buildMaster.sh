@@ -140,7 +140,7 @@ for TOBUILD in $FILELIST ;
 do
   IMAGE=`basename ${TOBUILD}`
   echo "Deleting ${IMAGE}"
-  sudo docker rmi -f registry-i.sbb.ch/${IMAGE}:${TAG}
+  sudo docker rmi -f registry-i.sbb.ch/${IMAGE}:latest
   sudo docker rmi -f ${REGISTRY}/${IMAGE}:latest
   sudo docker rmi -f ${REGISTRY}/${IMAGE}:${TAG}
 done
