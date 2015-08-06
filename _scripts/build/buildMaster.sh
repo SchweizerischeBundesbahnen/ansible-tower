@@ -23,28 +23,7 @@ else
 fi
 
 # define registry to push to
-# branch develop -> registry-i
-# branch master -> registry
-# everything else -> fail
-# (pattern matching in case statements: http://docstore.mik.ua/orelly/unix3/upt/ch35_11.htm)
-REGISTRY="INVALID"
-case $BRANCH in
-  *master)
-    REGISTRY="registry.sbb.ch"
-  ;;
-  *develop)
-    REGISTRY="registry-i.sbb.ch"
-  ;;
-  *)
-    REGISTRY="INVALID"
-  ;;
-esac
-
-#Check if we are on a valid branch (develop or master)
-if [ "$REGISTRY" = "INVALID" ]; then
-    echo "Branch $GIT_BRANCH invalid, exiting..."
-    exit -1
-fi
+REGISTRY="registry.sbb.ch"
 
 echo ""
 echo ""
@@ -74,15 +53,6 @@ do
     echo ""
     echo ""
     
-#    DOCKERFILE=$TOBUILD/Dockerfile
-#    SEARCH=`grep "FROM schweizerischebundesbahnen" ${DOCKERFILE}`
-#    echo "Dockerfile: ${DOCKERFILE}"
-#    echo "Old from: ${SEARCH}"
-#    sed -ri "s#${SEARCH}#${SEARCH}:${TAG}#g" ${DOCKERFILE}
-#    sed -ri "s#schweizerischebundesbahnen#${REGISTRY}#g" ${DOCKERFILE}
-#    SEARCH=`grep "FROM ${REGISTRY}" ${DOCKERFILE}`
-#    echo "New from: ${SEARCH}"
-
     IMAGE=`basename $TOBUILD`
 
     # build and push images
@@ -103,6 +73,7 @@ do
            exit -2
     fi
 
+    # push layers to registry
     echo "docker push ${REGISTRY}/${IMAGE}:${TAG}"
     sudo docker push ${REGISTRY}/${IMAGE}:${TAG}
     if [ $? -ne 0 ]; then
@@ -110,6 +81,7 @@ do
         exit -3
     fi
 
+    # set latest tag
     echo "setting latest tag for ${IMAGE}:${TAG}"
     sudo docker tag -f "registry-i.sbb.ch/${IMAGE}:latest" "${REGISTRY}/${IMAGE}:latest"
     sudo docker push ${REGISTRY}/${IMAGE}:latest
@@ -129,7 +101,6 @@ done
 
 
 # if we reach this point, everything went fine and we can delete all images
-echo ""
 echo ""
 echo "-------------------------------------"
 echo "Delete all images"
