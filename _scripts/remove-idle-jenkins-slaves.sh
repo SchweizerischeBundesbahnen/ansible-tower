@@ -28,12 +28,11 @@ for container in $OLD_CONTAINERS; do
   # check if busy
   idle=`curl -s --data-urlencode script@idle_slaves.groovy $master/scriptText --user fsvctip:sommer11 |  grep ${container:14: -10} | wc -l`
   if [ "$idle" == "1" ]; then 
-#    echo "$container is idle"
     container_id=`sudo docker ps | grep $container | awk '{print $1}'`
     echo "stopping container with id=$container_id"
 
-#    sudo docker stop $container_id
-#    sudo docker rm $container_id
+    sudo docker stop $container_id
+    sudo docker rm $container_id
   fi
 
 done
