@@ -18,5 +18,6 @@ http://wzuscheduler.sbb.ch/job/kd.wzu.docker-was85.deploytest
 
 Authors
 -------
-u203257 (Christoph Glanzmann)
-u214892 (Christian Eichenberger)
+
+* u203257 (Christoph Glanzmann)
+* u214892 (Christian Eichenberger)
