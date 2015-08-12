@@ -1,6 +1,6 @@
 # init some variables
 #IMAGE=schweizerischebundesbahnen/was85
-IMAGE=registry-t.sbb.ch/was85:WZU-3257
+IMAGE=registry.sbb.ch/was85
 RANDOMINT_WAS=`shuf -i 40000-65000 -n1`
 RANDOMINT_SSH=`shuf -i 40000-65000 -n1`
 RANDOMINT_WASADMIN=`shuf -i 40000-65000 -n1`
