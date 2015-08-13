@@ -2,7 +2,9 @@
 FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
+ENV gradle2version 2.5
 ENV labels "swarm android"
+ENV ANDROID_HOME ${jenkinshome}/buildtools/android-sdk-linux
 
 # Install qemu and kvm
 RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
@@ -15,6 +17,14 @@ RUN cd ${jenkinshome}/buildtools \
 	&& mv output/buildtools/android-sdk-linux . \
 	&& rm -rf output android-sdk-linux-latest.tar.gz \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}/m2  ${jenkinshome}/temp  ${jenkinshome}/workspace
+
+# Download Gradle
+RUN wget --quiet "https://services.gradle.org/distributions/gradle-${gradle2version}-bin.zip" -O /tmp/gradle-${gradle2version}-bin.zip \
+	&& cd ${jenkinshome}/buildtools \
+	&& unzip -q /tmp/gradle-${gradle2version}-bin.zip \
+	&& rm -f /tmp/gradle-${gradle2version}-bin.zip \
+	&& ln -s ${jenkinshome}/buildtools/gradle-${gradle2version} ${jenkinshome}/buildtools/gradle \
+	&& chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Add ANDROID_HOME to environment 
 RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${jenkinshome}/env.sh
