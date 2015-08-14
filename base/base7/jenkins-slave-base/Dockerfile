@@ -6,6 +6,7 @@ MAINTAINER Igor Masen <igor.masen@sbb.ch>
 ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
+ENV mvn33version 3.3.3
 ENV antversion 1.9.4
 ENV swarmversion 1.22
 ENV appuser jenkins
@@ -55,6 +56,11 @@ RUN cd ${jenkinshome}/buildtools \
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn32version}/binaries/apache-maven-${mvn32version}-bin.tar.gz" | tar xfz - \
 	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml` 
+
+# Download Maven 3.3
+RUN cd ${jenkinshome}/buildtools \
+        && wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn33version}/binaries/apache-maven-${mvn33version}-bin.tar.gz" | tar xfz - \
+        && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Get Oracle 6 32 Bit JDK
 RUN wget --quiet ${filerurl}/oracle-jdk-6-32b.tar.gz -O /tmp/oracle-jdk-6-32b.tar.gz  \
@@ -158,14 +164,14 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-6-32b/jre/lib/security/cacerts \
 	&& rm ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.7.0_67-32b/jre/lib/security/cacerts \
-	&& rm ./jdk1.8.0_20-32b/jre/lib/security/cacerts \
-	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_20-32b/jre/lib/security/cacerts \
+	&& rm ./jdk1.8.0_51-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_51-32b/jre/lib/security/cacerts \
 	&& rm ./jdk1.6.0_45/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.6.0_45/jre/lib/security/cacerts \
 	&& rm ./jdk1.7.0_67/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.7.0_67/jre/lib/security/cacerts \
-	&& rm ./jdk1.8.0_20/jre/lib/security/cacerts \
-	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_20/jre/lib/security/cacerts \
+	&& rm ./jdk1.8.0_51/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_51/jre/lib/security/cacerts \
 	&& rm ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
 	&& rm ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts \
