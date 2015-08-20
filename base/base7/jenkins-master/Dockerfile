@@ -39,12 +39,4 @@ EXPOSE 9050
 # expose port for slave communication JNLP
 EXPOSE 9051
 
-# supervisord: configure
-COPY configs/jenkins.ini /etc/supervisor/conf.d/
-
-# supervisor can not use env variables
-RUN sed -ri "s#JAVA_PATH#${JAVA_HOME}/bin/java#g" /etc/supervisor/conf.d/jenkins.ini
-RUN sed -ri "s#JAVA_OPTS#${JAVA_OPTIONS}#g" /etc/supervisor/conf.d/jenkins.ini 
-RUN sed -ri "s/APP_USER/${appname}/g" /etc/supervisor/conf.d/jenkins.ini
-
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["$JAVA_PATH","$JAVA_OPTS","-jar","/opt/jenkins.war","--httpPort=8050","--ajp13Port=9050"]

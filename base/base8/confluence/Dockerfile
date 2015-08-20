@@ -31,12 +31,6 @@ RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector
 EXPOSE 8040
 EXPOSE 9040
 
-# Install script for confluence
-COPY configs/confluence.ini /etc/supervisor/conf.d/
-
-# Supervisor can not use env variables
-RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/confluence.ini
-
 # Confluence configuration
 COPY configs/server.xml /opt/confluence/conf/
 COPY configs/setenv.sh /opt/confluence/bin/
@@ -47,4 +41,4 @@ RUN echo "confluence.home=/var/data/confluence" >  /opt/confluence/confluence/WE
 
 RUN chown -R ${appuser}:${appuser} $confluence_home
 
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/opt/confluence/bin/start-confluence.sh", "-fg"]

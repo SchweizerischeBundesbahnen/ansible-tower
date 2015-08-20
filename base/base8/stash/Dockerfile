@@ -52,15 +52,9 @@ RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-
 #Exposing Port to make Stash accessible
 EXPOSE 7999 8120 9120 10120 11120
 
-# install script for stash
-COPY configs/stash.ini /etc/supervisor/conf.d/
-
 #Getting server.xml
 COPY configs/server.xml /opt/stash/conf/server.xml
 
 RUN chown -R ${appuser}:${appuser} $stash_home
 
-# supervisor can not use env variables
-RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/stash.ini
-
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/opt/stash/bin/start-stash.sh", "-fg"]
