@@ -1,6 +1,6 @@
 <Server port="8000" shutdown="SHUTDOWN" debug="0">
     <Service name="Tomcat-Standalone">
-        <Connector port="8090" connectionTimeout="20000" redirectPort="8443"
+        <Connector port="8040" connectionTimeout="20000" redirectPort="8443"
                 maxThreads="200" minSpareThreads="10"
                 enableLookups="false" acceptCount="10" debug="0" URIEncoding="UTF-8" />
 
