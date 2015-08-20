@@ -94,13 +94,6 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com
 
 # RUN cd /opt && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.4/sonar-javascript-plugin-2.4.jar -O /opt/sonar/extensions/plugins/sonar-javascript-plugin-2.4.jar
 
-# install script for sonar
-COPY configs/sonar.ini /etc/supervisor/conf.d/
-
-# supervisor can not use env variables
-RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/sonar.ini
-
-
 RUN chown -R ${appuser}:${appuser} $sonar_home
 
 ENV MYSQL_HOST localhost
@@ -115,12 +108,3 @@ CMD sed -ri "s#MYSQL_HOST#${MYSQL_HOST}#g" /opt/sonar/conf/sonar.properties && \
     sed -ri "s#MYSQL_DBNAME#${MYSQL_DBNAME}#g" /opt/sonar/conf/sonar.properties && \
     sed -ri "s#MYSQL_PASSWORD#${MYSQL_PASSWORD}#g" /opt/sonar/conf/sonar.properties && cat /opt/sonar/conf/sonar.properties && \
     /opt/sonar/bin/linux-x86-64/sonar.sh start && tail -f /opt/sonar/logs/sonar.log
-#    sed -ri "s#wrapper.daemonize=TRUE# wrapper.daemonize=FALSE#g" /opt/sonar/bin/linux-x86-64/sonar.sh && \
-#    supervisord -c /etc/supervisor/supervisord.conf
-
-
-# docker build --tag sonarjs .
-# root@v00964 sonar# docker run --name sonarjs -p 9002:9002 -e MYSQL_HOST=v00748.sbb.ch -e MYSQL_DBNAME=sonarJS -e MYSQL_USER=sonarJS -e MYSQL_PASSWORD=sonarJStest -d sonarjs
-# sonar:sonar -Dsonar.userHome=/var/data/jenkins/temp/.sonar -Dsonar.jdbc.driver=com.mysql.jdbc.Driver -Dsonar.jdbc.url=jdbc:mysql://v00748.sbb.ch:3306/sonarJS?useUnicode=true&characterEncoding=utf8 -Dsonar.jdbc.username=sonarJS -Dsonar.jdbc.password=sonarJStest -Dsonar.host.url=http://v00964.sbb.ch:9002
-
-
