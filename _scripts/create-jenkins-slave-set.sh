@@ -8,7 +8,7 @@ declare -A vmcountHW
 vmcountHW[was7]=2
 vmcountHW[was85]=16
 vmcountHW[wmb]=2
-vmcountHW[nodejs]=2
+vmcountHW[nodejs]=4
 vmcountHW[iib9]=4
 vmcountHW[android]=4
 
