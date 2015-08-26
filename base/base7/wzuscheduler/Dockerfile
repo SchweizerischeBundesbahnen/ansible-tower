@@ -4,7 +4,7 @@ MAINTAINER pascal.bieri@sbb.ch
 
 ENV datadir /var/data
 ENV appname jenkins
-ENV appversion 1.596.1
+ENV appversion 1.609.2
 ENV portoffset 90
 ENV maxheap 2048m
 ENV JENKINS_HOME ${datadir}/${appname}
@@ -19,7 +19,7 @@ RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
 RUN echo "jenkins:jenkins" | chpasswd
 
 # install basic tools
-RUN yum install --quiet git git-svn subversion openldap-clients openssl xmlstarlet -y && yum clean all -y
+RUN yum install --quiet s3cmd git git-svn subversion openldap-clients openssl xmlstarlet -y && yum clean all -y
 
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
