@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
-ENV jdkurl http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-x64.tar.gz 
+ENV jdkurl http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz 
 ENV keystore keystore-20150722
 
 # Get and Install Java
