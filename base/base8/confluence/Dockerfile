@@ -1,4 +1,4 @@
-FROM registry.sbb.ch/base8
+FROM schweizerischebundesbahnen/base8
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV idoffset 40

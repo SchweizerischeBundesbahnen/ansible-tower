@@ -7,7 +7,7 @@
 APP_URL=ci-t.sbb.ch
 opts="-p 8050:8050 -p 9050:9050 -e APP_URL=${APP_URL} -v /var/data/jenkins-master:/var/data/jenkins-master -d"
 containername=jenkins-master
-imagename=jenkins-master
+imagename=schweizerischebundesbahnen/jenkins-master
 
 function start_container() {
 	docker start $containername
