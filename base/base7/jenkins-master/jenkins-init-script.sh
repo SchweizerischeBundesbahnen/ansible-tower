@@ -4,8 +4,8 @@
 #
 # chkconfig: - 85 15
 
-# Set the App_id 
-opts='-p 8050:8050 -p 9050:9050 -e APP_ID=ci_t -v /var/data/jenkins-master:/var/data/jenkins-master -d'
+APP_URL=ci-t.sbb.ch
+opts="-p 8050:8050 -p 9050:9050 -e APP_URL=${APP_URL} -v /var/data/jenkins-master:/var/data/jenkins-master -d"
 containername=jenkins-master
 imagename=jenkins-master
 
