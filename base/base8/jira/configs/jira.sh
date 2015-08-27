@@ -1,6 +1,5 @@
 #!/bin/bash
-ENV_SRV_URL=http://wzufiler.sbb.ch/
-APP_NAME=issues
+ENV_SRV_URL="https://s3.eu-central-1.amazonaws.com/wzu-config/config/"
 # Graceful shutfown
 _term() {
   echo "Caught SIGTERM signal!"
@@ -16,17 +15,25 @@ function getGlobalEnvParams {
 
 # Download env file
 function getStageEnvParams {
-	wget ${ENV_SRV_URL}/${APP_NAME}_${STAGE} -O /tmp/env_stage.sh
-	source /tmp/env_stage.sh
+        echo "Getting app_url variables from ${ENV_SRV_URL}/${APP_URL}"
+        wget ${ENV_SRV_URL}/${APP_URL}.config -O ${CNF_NAME}
+        # If file does not exist,quit
+        if [ $? -ne 0 ]; then
+                echo "Configfile for APP_URL ${APP_URL} not found but APP_URL was set! exiting"
+                exit 1
+        fi
+        source ${CNF_NAME}
 }
 
 trap _term SIGTERM
 
 getGlobalEnvParams
+# If app_url is set, try to get it
+if [ -n "${APP_URL}" ]; then
+        getStageEnvParams
+fi
 
-getStageEnvParams
-
-echo "Starting Application ${APP_NAME}";
+echo "Starting Application";
 /opt/jira/bin/start-jira.sh -fg &
 
 child=$! 

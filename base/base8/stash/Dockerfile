@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base8
+FROM registry.sbb.ch/base8
 MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
@@ -56,5 +56,6 @@ EXPOSE 7999 8120 9120 10120 11120
 COPY configs/server.xml /opt/stash/conf/server.xml
 
 RUN chown -R ${appuser}:${appuser} $stash_home
-
-CMD ["/opt/stash/bin/start-stash.sh", "-fg"]
+COPY configs/stash.sh /opt/stash/stash.sh
+USER stash
+CMD "/opt/stash/stash.sh"

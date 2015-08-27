@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base8
+FROM registry.sbb.ch/base8
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV idoffset 40
@@ -40,5 +40,6 @@ RUN chmod 755  /opt/confluence/bin/setenv.sh
 RUN echo "confluence.home=/var/data/confluence" >  /opt/confluence/confluence/WEB-INF/classes/confluence-init.properties
 
 RUN chown -R ${appuser}:${appuser} $confluence_home
-
-CMD ["/opt/confluence/bin/start-confluence.sh", "-fg"]
+COPY configs/confluence.sh /opt/confluence/confluence.sh
+USER confluence
+CMD "/opt/confluence/confluence.sh"

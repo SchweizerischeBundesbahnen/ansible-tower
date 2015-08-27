@@ -1,14 +1,13 @@
 #Docker image for jenkins master
-FROM schweizerischebundesbahnen/base7
+FROM registry.sbb.ch/base7
  
 MAINTAINER igor.masen2@sbb.ch
  
 ENV datadir /var/data
-ENV appname jenkins
+ENV appname jenkins-master
 ENV appuser jenkins
 ENV appversion 1.596.3
 ENV offset 50
-ENV JAVA_OPTIONS -Xmx1024m -DJENKINS_HOME=${datadir}/${appname}
 ENV JAVA_HOME /opt/jdk
 ENV jenkinshome ${datadir}/${appname}
 
@@ -26,17 +25,18 @@ RUN yum install --quiet git -y \
 	&& yum clean all -y
  
 # add java opts to .bashrc file
-RUN echo "export JAVA_OPTIONS=${JAVA_OPTIONS}" >> ${jenkinshome}/.bashrc
+RUN echo "export JAVA_HOME=${JAVA_HOME}" >> ${jenkinshome}/.bashrc
 
 # download jenkins war
 RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.war -O /opt/jenkins.war \
-	&& chown ${appname}:${appname} /opt/jenkins.war
+	&& chown ${appuser}:${appuser} /opt/jenkins.war
 
 # expose port 8050 for jenkins
 EXPOSE 8050
 # expose port 9050 for jenkins ajp
 EXPOSE 9050
 # expose port for slave communication JNLP
-EXPOSE 9051
-
-CMD ["$JAVA_PATH","$JAVA_OPTS","-jar","/opt/jenkins.war","--httpPort=8050","--ajp13Port=9050"]
+EXPOSE 10050
+COPY configs/jenkins.sh /opt/jenkins.sh
+USER jenkins
+CMD "/opt/jenkins.sh"

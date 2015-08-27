@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base8
+FROM registry.sbb.ch/base8
 
 MAINTAINER u214892@sbb.ch
 
@@ -17,7 +17,7 @@ RUN yum install -y git && yum clean all -q
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 1${idoffset} --home ${sonar_home} && mkdir -p ${sonar_home}/shared
 
 # Get Sonar distro and unpack everything
-RUN cd /opt && wget -q "http://dist.sonar.codehaus.org/sonarqube-${sonarversion}.zip"  -O sonarqube-${sonarversion}.zip && unzip sonarqube-${sonarversion}.zip && rm sonarqube-${sonarversion}.zip && ln -s sonarqube-${sonarversion} sonar
+RUN cd /opt && wget -q "http://dist.sonar.codehaus.org/sonarqube-${sonarversion}.zip"  -O sonarqube-${sonarversion}.zip && unzip sonarqube-${sonarversion}.zip && rm sonarqube-${sonarversion}.zip && ln -s sonarqube-${sonarversion} sonar && chown -R sonar:sonar sonar sonarqube-${sonarversion}
 RUN sed -ri "s#wrapper.java.command=java#wrapper.java.command=/opt/jdk/jre/bin/java#g" /opt/sonar/conf/wrapper.conf
 COPY configs/sonar.properties /opt/sonar/conf/sonar.properties
 
@@ -95,16 +95,12 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com
 # RUN cd /opt && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.4/sonar-javascript-plugin-2.4.jar -O /opt/sonar/extensions/plugins/sonar-javascript-plugin-2.4.jar
 
 RUN chown -R ${appuser}:${appuser} $sonar_home
-
+USER sonar
 ENV MYSQL_HOST localhost
 ENV MYSQL_DBNAME sonar
 ENV MYSQL_USER sonar
 ENV MYSQL_PASSWORD sonartest
 
 EXPOSE 8110 9110 10110
-
-CMD sed -ri "s#MYSQL_HOST#${MYSQL_HOST}#g" /opt/sonar/conf/sonar.properties && \
-    sed -ri "s#MYSQL_USER#${MYSQL_USER}#g" /opt/sonar/conf/sonar.properties && \
-    sed -ri "s#MYSQL_DBNAME#${MYSQL_DBNAME}#g" /opt/sonar/conf/sonar.properties && \
-    sed -ri "s#MYSQL_PASSWORD#${MYSQL_PASSWORD}#g" /opt/sonar/conf/sonar.properties && cat /opt/sonar/conf/sonar.properties && \
-    /opt/sonar/bin/linux-x86-64/sonar.sh start && tail -f /opt/sonar/logs/sonar.log
+COPY configs/sonar.sh /opt/sonar/sonar.sh
+CMD /opt/sonar/sonar.sh

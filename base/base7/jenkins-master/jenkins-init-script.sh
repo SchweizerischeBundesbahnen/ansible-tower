@@ -3,9 +3,9 @@
 #               the confluence container.
 #
 # chkconfig: - 85 15
-JENKINS_JAVA_OPTS="-XX:MaxPermSize=256m -Xms1024m -Xmx1024m -Xss1m -Dfile.encoding=utf-8 -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=false -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Dcom.sun.management.jmxremote.port=10050 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dorg.eclipse.jetty.server.Request.maxFormKeys=10000 -Dorg.eclipse.jetty.server.Request.maxFormContentSize=500000 -DJENKINS_HOME=/var/data/jenkins-master"
-JENKINS_ARGS="--ajp13Port=9050 --handlerCountMax=600 --httpPort=8050"
-opts='-p 8050:8050 -p 9050:9050 -e JENKINS_JAVA_OPTS="$JENKINS_JAVA_OPTS" -e JENKINS_ARGS="$JENKINS_ARGS" -v /var/data/jenkins-master:/var/data/jenkins-master -d'
+
+# Set the App_id 
+opts='-p 8050:8050 -p 9050:9050 -e APP_ID=ci_t -v /var/data/jenkins-master:/var/data/jenkins-master -d'
 containername=jenkins-master
 imagename=jenkins-master
 
