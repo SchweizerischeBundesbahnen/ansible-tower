@@ -32,7 +32,10 @@ EXPOSE 8020 9020 10020
 # jira configuration
 COPY configs/server.xml /opt/jira/conf/
 COPY configs/setenv.sh /opt/jira/bin/
-RUN chmod 755  /opt/jira/bin/setenv.sh
+RUN chmod 755  /opt/jira/bin/setenv.sh && chown jira:jira /opt/jira/bin/setenv.sh
+
+# switch user
+USER jira
 
 # run jira
-CMD sudo -H -u jira bash -c "export JAVA_XMX=${JAVA_XMX} && /opt/jira/bin/start-jira.sh -fg"
+CMD "export JAVA_XMX=${JAVA_XMX} && /opt/jira/bin/start-jira.sh -fg"
