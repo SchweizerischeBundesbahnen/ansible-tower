@@ -38,4 +38,4 @@ RUN chmod 755  /opt/jira/bin/setenv.sh && chown jira:jira /opt/jira/bin/setenv.s
 USER jira
 
 # run jira
-CMD "export JAVA_XMX=${JAVA_XMX} && /opt/jira/bin/start-jira.sh -fg"
+CMD ["/opt/jira/bin/start-jira.sh","-fg"]
