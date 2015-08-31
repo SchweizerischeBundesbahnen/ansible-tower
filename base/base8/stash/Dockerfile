@@ -55,7 +55,7 @@ EXPOSE 7999 8120 9120 10120 11120
 #Getting server.xml
 COPY configs/server.xml /opt/stash/conf/server.xml
 
-RUN chown -R ${appuser}:${appuser} $stash_home
+RUN chown -R ${appuser}:${appuser} ${stash_home}
 COPY configs/stash.sh /opt/stash/stash.sh
 USER stash
 CMD "/opt/stash/stash.sh"

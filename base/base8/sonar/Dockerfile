@@ -94,7 +94,7 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com
 
 # RUN cd /opt && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/javascript/sonar-javascript-plugin/2.4/sonar-javascript-plugin-2.4.jar -O /opt/sonar/extensions/plugins/sonar-javascript-plugin-2.4.jar
 
-RUN chown -R ${appuser}:${appuser} $sonar_home
+RUN chown -R ${appuser}:${appuser} ${sonar_home}
 USER sonar
 ENV MYSQL_HOST localhost
 ENV MYSQL_DBNAME sonar
