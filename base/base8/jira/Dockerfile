@@ -31,9 +31,19 @@ EXPOSE 8020 9020 10020
 # jira configuration
 COPY configs/server.xml /opt/jira/conf/
 COPY configs/setenv.sh /opt/jira/bin/
+<<<<<<< HEAD
 RUN chmod 755  /opt/jira/bin/setenv.sh
 COPY configs/jira.sh /opt/jira/jira.sh
 USER jira
 
 # run jira
 CMD "/opt/jira/jira.sh"
+=======
+RUN chmod 755  /opt/jira/bin/setenv.sh && chown jira:jira /opt/jira/bin/setenv.sh
+
+# switch user
+USER jira
+
+# run jira
+CMD ["/opt/jira/bin/start-jira.sh","-fg"]
+>>>>>>> FETCH_HEAD

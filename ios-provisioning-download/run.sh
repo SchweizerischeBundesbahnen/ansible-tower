@@ -36,7 +36,8 @@ DOWNLOAD_FOLDER="$WORKING_DIRECTORY/$ARCHIVE_NAME"
 mkdir -p $DOWNLOAD_FOLDER
 cd $DOWNLOAD_FOLDER
 echo "Downloading new provisioning profiles with Ruby version `ruby -v` and Cupertino version `ios --version` ..."
-ios profiles:download:all --type ${TYPE} -u ${USERNAME} -p ${PASSWORD} --trace --debug
+ios profiles:download:all --type distribution -u ${USERNAME} -p ${PASSWORD} --trace --debug
+ios profiles:download:all --type development -u ${USERNAME} -p ${PASSWORD} --trace --debug
 
 # Check return code
 if [ $? -ne 0 ]; then
