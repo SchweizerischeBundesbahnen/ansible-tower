@@ -1,5 +1,5 @@
 #!/bin/bash
-ENV_SRV_URL=http://wzufiler.sbb.ch/
+ENV_SRV_URL="https://s3.eu-central-1.amazonaws.com/wzu-config/config"
 CNF_NAME="/tmp/env_stage.sh"
 # Graceful shutfown
 _term() {
