@@ -37,10 +37,3 @@ USER jira
 
 # run jira
 CMD "/opt/jira/jira.sh"
-RUN chmod 755  /opt/jira/bin/setenv.sh && chown jira:jira /opt/jira/bin/setenv.sh
-
-# switch user
-USER jira
-
-# run jira
-CMD ["/opt/jira/bin/start-jira.sh","-fg"]
