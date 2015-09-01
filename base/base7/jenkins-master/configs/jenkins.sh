@@ -1,5 +1,6 @@
 #!/bin/bash
 ENV_SRV_URL=http://wzufiler.sbb.ch/
+CNF_NAME="/tmp/env_stage.sh"
 # Graceful shutfown
 _term() {
   echo "Caught SIGTERM signal!"
