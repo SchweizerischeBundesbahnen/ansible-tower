@@ -5,7 +5,7 @@
 # chkconfig: - 85 15
 
 APP_URL=ci-t.sbb.ch
-opts="-p 8050:8050 -p 9050:9050 -e APP_URL=${APP_URL} -v /var/data/jenkins-master:/var/data/jenkins-master -d"
+opts="-p 8050:8050 -p 9050:9050 -p 9051:9051 -e APP_URL=${APP_URL} -v /var/data/jenkins-master:/var/data/jenkins-master -d"
 containername=jenkins-master
 imagename=schweizerischebundesbahnen/jenkins-master
 

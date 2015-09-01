@@ -38,7 +38,7 @@ EXPOSE 9050
 # expose port for JMX
 EXPOSE 10050
 # expose port for slave communication jnlp
-EXPOSE 9091
+EXPOSE 9051
 COPY configs/jenkins.sh /opt/jenkins.sh
 USER jenkins
 CMD "/opt/jenkins.sh"
