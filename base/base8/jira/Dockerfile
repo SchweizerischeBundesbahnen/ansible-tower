@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base8
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 #Environment variables
-ENV jiraversion 6.4.10
+ENV jiraversion 6.4.11
 ENV datadir /var/data
 ENV jirahome /var/data/jira
 ENV idoffset 20
@@ -32,7 +32,10 @@ EXPOSE 8020 9020 10020
 # jira configuration
 COPY configs/server.xml /opt/jira/conf/
 COPY configs/setenv.sh /opt/jira/bin/
-RUN chmod 755  /opt/jira/bin/setenv.sh
+RUN chmod 755  /opt/jira/bin/setenv.sh && chown jira:jira /opt/jira/bin/setenv.sh
+
+# switch user
+USER jira
 
 # run jira
-CMD sudo -u jira "export JAVA_XMX=${JAVA_XMX} && /opt/jira/bin/start-jira.sh -fg"
+CMD ["/opt/jira/bin/start-jira.sh","-fg"]
