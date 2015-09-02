@@ -1,12 +1,13 @@
 #!/bin/bash
-# stash        This shell script takes care of starting and stopping
-#               the stash container.
+# confluence    This shell script takes care of starting and stopping
+#               the confluence container.
 #
 # chkconfig: - 85 15
-APP_URL=code-t.sbb.ch
-opts=" -p 7999:7999 -p 8120:8120 -p 9120:9120 -p 10120:10120 -p 11120:11120 -e APP_URL=${APP_URL} -v /var/data/stash/log:/var/data/stash/log -v /var/data/stash/logs:/opt/stash/logs -v /var/data/stash/shared/data:/var/data/stash/shared/data -v /var/data/stash/conf:/var/data/stash/conf -d"
-containername=stash
-imagename=schweizerischebundesbahnen/stash:latest
+
+APP_URL=ci-t.sbb.ch
+opts="-p 8050:8050 -p 9050:9050 -p 9051:9051 -e APP_URL=${APP_URL} -v /var/data/jenkins-master:/var/data/jenkins-master -d"
+containername=jenkins-master
+imagename=schweizerischebundesbahnen/jenkins-master
 
 function start_container() {
 	docker start $containername
@@ -43,14 +44,14 @@ case "$1" in
     ;;
   reinitialize)
     reinitialize_container
-    ;; 
+    ;;
   update)
-    update
+   update 
    ;;
   status)
     docker ps --all
     ;;
   *)
-    echo $"Usage: $0 {start|stop|status|init|reinitialize}"
+    echo $"Usage: $0 {start|stop|status|init|reinitialize|update}"
     exit 2
 esac

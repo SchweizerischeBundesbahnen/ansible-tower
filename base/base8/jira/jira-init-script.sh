@@ -4,12 +4,12 @@
 #
 # chkconfig: - 85 15
 
+APP_URL=issues-t.sbb.ch
 offset=20
 apphome=/var/data/jira
-opts="-p 80${offset}:80${offset} -p 90${offset}:90${offset} -p 100${offset}:100${offset} -v ${apphome}:/var/data/jira -d -e JAVA_XMX=3048m -e JAVA_PERMSIZE=512m"
+opts="-p 80${offset}:80${offset} -p 90${offset}:90${offset} -p 100${offset}:100${offset} -v ${apphome}:/var/data/jira -e APP_URL=${APP_URL} -d"
 containername=jira
 imagename=registry.sbb.ch/jira
-
 function start_container() {
 	docker start $containername
 }
