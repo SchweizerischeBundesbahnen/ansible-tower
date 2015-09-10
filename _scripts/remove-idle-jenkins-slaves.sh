@@ -4,7 +4,7 @@
 master=$1
 
 # definition of old
-old=" days"
+old=" hours"
 
 
 function usage() {
