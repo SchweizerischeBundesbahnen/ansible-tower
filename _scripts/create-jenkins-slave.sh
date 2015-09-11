@@ -18,6 +18,7 @@ labels=$5
 additional_args=$6
 randomint=`shuf -i 40000-65000 -n1`
 master_hostname=`echo $master | awk -F/ '{print $3}' | awk -F: '{print $1}'`
+android_memory_limit=10g
 
 function check_reserved() {
 
@@ -28,6 +29,10 @@ function check_reserved() {
                 randomint=`shuf -i 40000-65000 -n1`
                 USED_PORTS=`netstat -ln | grep ':$randomint ' | grep LISTEN | wc -l`
         done
+}
+
+function create_android_container() {
+	sudo docker run --privileged -d -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=1 -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1` -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $imagename-$randomint-$master_hostname ${registry}/${imagename}:${tag} 
 }
 
 function create_privileged_container() {
@@ -52,7 +57,7 @@ check_reserved
 
 if [[ $imagename =~ .*android.* ]]
 then
-        create_privileged_container
+        create_android_container
 else
         create_container
 fi

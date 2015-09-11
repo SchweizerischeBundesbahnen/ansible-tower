@@ -8,9 +8,9 @@ declare -A vmcountHW
 vmcountHW[was7]=2
 vmcountHW[was85]=16
 vmcountHW[wmb]=2
-vmcountHW[nodejs]=4
-vmcountHW[iib9]=4
-vmcountHW[android]=4
+vmcountHW[nodejs]=2
+vmcountHW[iib9]=0
+vmcountHW[android]=2
 
 # how many slaves do we expect on vm
 declare -A vmcountVM

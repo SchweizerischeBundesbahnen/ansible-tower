@@ -30,12 +30,7 @@ RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector
 # Exposing Port to make Confluence accessible
 EXPOSE 8040
 EXPOSE 9040
-
-# Install script for confluence
-COPY configs/confluence.ini /etc/supervisor/conf.d/
-
-# Supervisor can not use env variables
-RUN sed -ri "s/APP_USER/${appuser}/g" /etc/supervisor/conf.d/confluence.ini
+EXPOSE 10040
 
 # Confluence configuration
 COPY configs/server.xml /opt/confluence/conf/
@@ -45,6 +40,7 @@ RUN chmod 755  /opt/confluence/bin/setenv.sh
 # Set confluence home in properties file
 RUN echo "confluence.home=/var/data/confluence" >  /opt/confluence/confluence/WEB-INF/classes/confluence-init.properties
 
-RUN chown -R ${appuser}:${appuser} $confluence_home
-
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+RUN chown -R ${appuser}:${appuser} ${confluence_home}
+COPY configs/confluence.sh /opt/confluence/confluence.sh
+USER confluence
+CMD "/opt/confluence/confluence.sh"
