@@ -4,7 +4,7 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 ENV idoffset 40
 ENV appuser confluence
 ENV datadir /var/data
-ENV confluence_version 5.7.4
+ENV confluence_version 5.8.10
 ENV confluence_home /var/data/confluence
 ENV mysqlconnectorversion 5.1.35
 
