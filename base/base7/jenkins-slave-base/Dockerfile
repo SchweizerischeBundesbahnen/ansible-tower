@@ -176,3 +176,9 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
 	&& rm ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts
+	
+# Add security limits for jenkins user
+RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
+	&& echo "jenkins	hard nproc	10000" >> /etc/security/limits.conf \
+	&& echo "jenkins	soft nofile	10000" >> /etc/security/limits.conf \
+	&& echo "jenkins	hard nofile	10000" >> /etc/security/limits.conf
