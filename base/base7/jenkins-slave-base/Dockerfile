@@ -130,14 +130,14 @@ COPY configs/java.security.was7 ${jenkinshome}/buildtools/ibm-jdk-was70/jre/lib/
 RUN wget --quiet "http://repo.sbb.ch/content/repositories/mirror/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
 
 # Install sqlplus
-RUN wget -qnc http://wzufiler.sbb.ch/oracle/oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
-        && wget -qnc http://wzufiler.sbb.ch/oracle/oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm \
+RUN wget -q ${filerurl}/oracle/oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
+        && wget -q ${filerurl}/oracle/oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm \
         && rpm -ivh oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
         && rpm -ivh oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm \
-        && echo "ORACLE_HOME=/usr/lib/oracle/12.1/client64" >> ${jenkinshome}/env.sh \
-        && echo "LD_LIBRARY_PATH=/usr/lib/oracle/12.1/client64/lib" >> ${jenkinshome}/env.sh \
-        && echo "export ORACLE_HOME" >> ${jenkinshome}/env.sh \
-        && echo "export LD_LIBRARY_PATH" >> ${jenkinshome}/env.sh
+        && echo "export ORACLE_HOME=/usr/lib/oracle/12.1/client64" >> ${jenkinshome}/env.sh \
+        && echo "export LD_LIBRARY_PATH=/usr/lib/oracle/12.1/client64/lib" >> ${jenkinshome}/env.sh \
+	&& rm -fr oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
+	&& rm -fr oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm
 
 # Legacy stuff
 RUN cd ${jenkinshome} \
