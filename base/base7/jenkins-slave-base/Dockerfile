@@ -28,7 +28,7 @@ ENV host example.sbb.ch
 ENV keystore keystore-20150722
 
 # Install dev tools
-RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect sqlplus libaio -y && yum clean all -q 
+RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio -y && yum clean all -q 
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && echo "${appuser}:${appuser}" | chpasswd
