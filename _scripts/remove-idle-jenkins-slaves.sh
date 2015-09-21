@@ -26,7 +26,7 @@ for container in $OLD_CONTAINERS; do
   #echo "processing: $container"
   
   # check if busy
-  idle=`curl -s --data-urlencode script@idle_slaves.groovy $master/scriptText --user fsvctip:sommer11 |  grep ${container:14: -10} | wc -l`
+  idle=`curl -s --data-urlencode script@idle_slaves.groovy $master/scriptText --user fsvctip:sommer11 |  grep ${container:8: -11} | wc -l`
   if [ "$idle" == "1" ]; then 
     container_id=`sudo docker ps | grep $container | awk '{print $1}'`
     echo "stopping container with id=$container_id"
