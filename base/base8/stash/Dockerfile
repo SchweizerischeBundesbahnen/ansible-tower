@@ -4,7 +4,7 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 #Environment Variables
 
 ENV gitversion 1.8.5.5
-ENV stashversion 3.9.2
+ENV stashversion 3.11.4
 ENV mysqlconnectorversion 5.1.35
 ENV idoffset 120
 ENV appuser stash
@@ -30,12 +30,12 @@ RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlass
 # Install JDBC driver
 RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/stash/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
 
-#Universal Plugin in Version 2.18.5
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138611 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
-#Categories in Version 1.0
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000000 -O  ${plugin_folder}/stash-project-categories.jar
-#Workzone in Version 2.4.5
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/2004005020 -O ${plugin_folder}/workzone.jar
+#Universal Plugin in Version 2.20.1
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138691 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
+#Categories in Version 1.1
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000010 -O  ${plugin_folder}/stash-project-categories.jar
+#Workzone in Version 3.1.2
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/3001002020 -O ${plugin_folder}/workzone.jar
 #Unmerged Branch Hook in Version 1.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
 #Webhook in Version 2.1.1
