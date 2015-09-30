@@ -82,7 +82,7 @@ for tag in $clean_tags; do
                         echo "going to delete ${tag:4}"
                         ./remove-tag.sh ${tag:4} $1
                 fi
-        else if [ "${REGISTRY_TO_CLEAN}" == "registry-i.sbb.ch" ]; then
+        elif [ "${REGISTRY_TO_CLEAN}" == "registry-i.sbb.ch" ]; then
 		# integration: delete builds older than the last 5
 	        let buildCount=buildCount+1
                 echo "Nbr of builds: $buildCount"
@@ -90,7 +90,6 @@ for tag in $clean_tags; do
                         echo "going to delete ${tag:4}"
                         ./remove-tag.sh ${tag:4} $1
                 fi
-        fi
 	else 
 		# production: not so easy because there are tags from other projects
                 let buildCount=buildCount+1
