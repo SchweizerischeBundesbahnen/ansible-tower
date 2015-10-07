@@ -46,7 +46,8 @@ function create_privileged_container() {
 }
 
 function create_container() {
-	if [ $labels == "sonargraph"]; then
+	if [ "$labels" == "sonargraph"]
+	then
 		executors=5
 		containername=$labels-$randomint-$master_hostname
 		slavename=$labels-$randomint-`echo $HOSTNAME | cut -d"." -f1`
