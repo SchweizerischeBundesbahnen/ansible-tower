@@ -4,10 +4,12 @@ import hudson.slaves.*
 import java.util.concurrent.*
 import javax.activation.*
 
+dockerslave="i43248"
+
 jenkins = Hudson.instance
 
 
-minimumRequiredSlavesPerLabel = ['android': 0, 'jee': 0, 'yves-migration': 0, 'iib9': 0, 'nodejs': 0, 'wmb': 0, 'was7': 0, 'was85': 0 ]
+minimumRequiredSlavesPerLabel = ['android': 0, 'nodejs': 0, 'wmb': 0, 'was7': 0, 'was85': 0, 'sonargraph': 0 ]
 
 def getEnviron(computer) {
     def env
@@ -37,9 +39,11 @@ def putLabelsInMap(slave, labelMap) {
 
 for (slave in jenkins.slaves) {
     def computer = slave.computer
-    putLabelsInMap(slave, labelMap)
-}
+    if(slave.computer.name.contains(dockerslave)) {
+	putLabelsInMap(slave, labelMap)
+    }
 
+}
 
 for (label in minimumRequiredSlavesPerLabel.keySet()) {
     def has = labelMap[label] ? labelMap[label].size() : 0
