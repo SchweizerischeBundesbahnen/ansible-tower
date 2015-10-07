@@ -38,11 +38,11 @@ function check_reserved() {
 }
 
 function create_android_container() {
-	sudo docker run --privileged -d -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=1 -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1` -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $imagename-$randomint-$master_hostname ${registry}/${imagename}:${tag} 
+	sudo docker run --privileged -d -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=$executors -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
 }
 
 function create_privileged_container() {
-	sudo docker run --privileged -d -p $randomint:$randomint -e master=$master -e executors=1 -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1` -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $imagename-$randomint-$master_hostname ${registry}/${imagename}:${tag} 
+	sudo docker run --privileged -d -p $randomint:$randomint -e master=$master -e executors=$executors -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
 }
 
 function create_container() {
@@ -51,15 +51,8 @@ function create_container() {
 		containername=$labels-$randomint-$master_hostname
 		slavename=$labels-$randomint-`echo $HOSTNAME | cut -d"." -f1`
 	fi
-        sudo docker run -d -p $randomint:$randomint -e master=$master -e executors=$executors -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $imagename-$randomint-$master_hostname ${registry}/${imagename}:${tag}
+        sudo docker run -d -p $randomint:$randomint -e master=$master -e executors=$executors -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
-
-function create_container() {
-        sudo docker run -d -p $randomint:$randomint -e master=$master -e executors=5 -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$labels-$randomint-`echo $HOSTNAME | cut -d"." -f1` -e labels=$labels -e externalport=$randomint -
-e host=$HOSTNAME -e additional_args="${additional_args}" --name $labels-$randomint-$master_hostname ${registry}/${imagename}:${tag}
-}
-
-
 
 function usage() {
 	echo "You need to provide the following parameters: registry imagename tag master labels"
