@@ -19,7 +19,8 @@ fi
 
 
 # list of all old containers
-OLD_CONTAINERS=`sudo docker ps | grep "$old" | grep "jenkins-slave" | awk '{print $13}'`
+# exclude sonargraph container from list
+OLD_CONTAINERS=`sudo docker ps | grep "$old" | grep -v "sonargraph" | grep "jenkins-slave" | awk '{print $13}'`
 
 for container in $OLD_CONTAINERS; do
 
