@@ -60,8 +60,9 @@ echo "$used_tags"
 
 
 echo "------------------"
-echo "Tags in registry"
-clean_tags=`echo $used_tags|tr " " "\n"|grep -v latest| grep -i WZU|sort -r|uniq|tr "\n" " "`
+echo "Tags in registry..."
+#clean_tags=`echo $used_tags|tr " " "\n"|grep -v latest| grep -i WZU|sort -r|uniq|tr "\n" " "`
+clean_tags=`echo $used_tags|tr " " "\n"|grep -v latest | sort -r |uniq`
 
 echo $clean_tags
 
@@ -81,13 +82,24 @@ for tag in $clean_tags; do
                         echo "going to delete ${tag:4}"
                         ./remove-tag.sh ${tag:4} $1
                 fi
-        else
-                let buildCount=buildCount+1
-                if [ $buildCount -gt 10 ]; then
+        elif [ "${REGISTRY_TO_CLEAN}" == "registry-i.sbb.ch" ]; then
+		# integration: delete builds older than the last 5
+	        let buildCount=buildCount+1
+                echo "Nbr of builds: $buildCount"
+		if [ $buildCount -gt 5 ]; then
                         echo "going to delete ${tag:4}"
                         ./remove-tag.sh ${tag:4} $1
                 fi
-        fi
+	else 
+		# production: not so easy because there are tags from other projects
+                let buildCount=buildCount+1
+                echo "Nbr of builds: $buildCount"
+                echo "NO ACTION ON registry.sbb.ch!!"
+		#if [ $buildCount -gt 5 ]; then
+                #        echo "going to delete ${tag:4}"
+                #        ./remove-tag.sh ${tag:4} $1
+                #fi
+	fi
 done
 
 exit 0
