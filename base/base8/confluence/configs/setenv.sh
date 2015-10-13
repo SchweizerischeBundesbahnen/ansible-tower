@@ -12,7 +12,7 @@ fi
 echo $JAVA_XMX
 
 JAVA_OPTS="-Dconfluence.home=/var/data/confluence -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:FlightRecorderOptions=defaultrecording=true,disk=true,repository=/var/data/confluence,maxage=1d -Xms${JAVA_XMX} -Xmx${JAVA_XMX} -XX:MaxPermSize=${JAVA_PERMSIZE} ${JAVA_OPTS} -Duser.timezone=Europe/Zurich -Datlassian.plugins.enable.wait=300 -Dfile.encoding=utf-8 -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=false -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -server"
-CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=11090 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=11090 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dconfluence.upgrade.recovery.file.enabled=false"
 export JAVA_OPTS CATALINA_OPTS
 
 # set the location of the pid file
