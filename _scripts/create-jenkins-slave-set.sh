@@ -67,7 +67,8 @@ then
 		if [ ${runningCount[$label]} -lt  ${vmcount[$label]}  ]; then
 			echo "missing some $label slaves"
 			count=${runningCount[$label]}
-			while [ $count -lt ${vmcount[$label]} ]
+			required=${vmcount[$label]}
+			while [ $count -lt $required ]
 			do
 				echo "starting $label with ${labelMap[$label]}"
 				./create-jenkins-slave.sh registry.sbb.ch ${labelMap[$label]} latest $master $label
