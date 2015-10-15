@@ -18,7 +18,7 @@ labels=$5
 additional_args=$6
 randomint=`shuf -i 40000-65000 -n1`
 master_hostname=`echo $master | awk -F/ '{print $3}' | awk -F: '{print $1}'`
-android_memory_limit=10g
+android_memory_limit=20g
 
 executors=1
 containername=$imagename-$randomint-$master_hostname
@@ -46,7 +46,7 @@ function create_privileged_container() {
 }
 
 function create_container() {
-	if [ "$labels" == "sonargraph"]
+	if [ "$labels" == "sonargraph" ]
 	then
 		executors=5
 		containername=$labels-$randomint-$master_hostname
