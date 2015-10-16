@@ -22,7 +22,7 @@ android_memory_limit=20g
 
 executors=1
 containername=$imagename-$randomint-$master_hostname
-slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1`-$registry-$tag
+slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1`-$tag
 
 function check_reserved() {
 
