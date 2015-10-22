@@ -6,10 +6,10 @@ ENV labels "swarm nodejs"
 
 
 # Install js binaries for build
-RUN yum update -q -y && yum install -q nodejs npm -y && yum clean all -q 
+RUN yum update -q -y && yum install -q nodejs npm rubygems  -y && yum clean all -q 
 
 # Install packages for build
-RUN npm install bower grunt grunt-cli gulp --silent
+RUN npm install bower grunt grunt-cli gulp --silent && gem install bundle
 
 # Add node binaries to path
 RUN echo 'export PATH=$PATH:/node_modules/.bin' >> ${jenkinshome}/env.sh
