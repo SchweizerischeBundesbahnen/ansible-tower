@@ -30,8 +30,8 @@ RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlass
 # Install JDBC driver
 RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/stash/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
 
-#Universal Plugin in Version 2.20.1
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138691 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
+#Universal Plugin in Version 2.20.3
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138711 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
 #Categories in Version 1.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000010 -O  ${plugin_folder}/stash-project-categories.jar
 #Workzone in Version 3.1.2
