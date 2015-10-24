@@ -4,7 +4,7 @@
 master=$1
 
 # definition of old
-old=" hours"
+old=" days"
 
 
 function usage() {
@@ -32,7 +32,7 @@ for container in $OLD_CONTAINERS; do
     container_id=`sudo docker ps | grep $container | awk '{print $1}'`
     echo "stopping container with id=$container_id"
 
-    sudo docker stop $container_id
+    sudo docker kill $container_id
     sudo docker rm $container_id
   fi
 
