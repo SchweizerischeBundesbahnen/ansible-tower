@@ -49,8 +49,8 @@ CATALINA_OPTS="-Djava.awt.headless=true ${CATALINA_OPTS}"
 #CATALINA_OPTS="-Xms1024m -Xmx1024m -XX:+UseG1GC ${CATALINA_OPTS}"
 
 ### Custom WZU System Properties
-CATALINA_OPTS="-Xms${JAVA_XMX} -Xmx${JAVA_XMX} -XX:+UseG1GC ${CATALINA_OPTS}"
-CATALINA_OPTS="-Duser.timezone=Europe/Zurich -Datlassian.plugins.enable.wait=300 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=11090 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dconfluence.upgrade.recovery.file.enabled=false"
+#CATALINA_OPTS="-Xms${JAVA_XMX} -Xmx${JAVA_XMX} -XX:+UseG1GC ${CATALINA_OPTS}"
+CATALINA_OPTS="${CATALINA_OPTS} -Duser.timezone=Europe/Zurich -Datlassian.plugins.enable.wait=300 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=11090 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dconfluence.upgrade.recovery.file.enabled=false"
 
 
 export CATALINA_OPTS
