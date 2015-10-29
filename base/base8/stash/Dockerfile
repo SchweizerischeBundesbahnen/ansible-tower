@@ -43,8 +43,9 @@ RUN wget --quiet http://repo.sbb.ch/content/repositories/hosted.mwe-wzu.releases
 #Commit Enforcer in Version 2.2
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.2/enforce-message-hook-plugin-2.2.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
-#Setting Java Home and Stash Home in /opt/stash/bin/setenv.sh
-RUN sed -i 's,#!/usr/bin/env bash,#!/usr/bin/env bash\n#\n#Customizing for SBB\n#\n# setting JAVA_HOME\nJAVA_HOME="/opt/jdk"\nSTASH_HOME="/var/data/stash"\n\n,g' /opt/stash/bin/setenv.sh 
+#Backing up old setenv and server xml
+RUN mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml \
+	&& mv /opt/stash/bin/setenv.sh /opt/stash/bin/setenv-backup.sh
 
 # since we just mount HOME/shared/data we have to link stash-configuration.properties from another mount
 RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-config.properties
@@ -52,10 +53,12 @@ RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-
 #Exposing Port to make Stash accessible
 EXPOSE 7999 8120 9120 10120 11120
 
-#Getting server.xml
+#Getting server.xml and setenv.sh
 COPY configs/server.xml /opt/stash/conf/server.xml
+COPY configs/setenv.sh /opt/stash/bin/setenv.sh
+COPY configs/stash.sh /opt/stash/stash.sh
+RUN chmod 755 /opt/stash/bin/setenv.sh /opt/stash/stash.sh
 
 RUN chown -R ${appuser}:${appuser} ${stash_home}
-COPY configs/stash.sh /opt/stash/stash.sh
 USER stash
 CMD "/opt/stash/stash.sh"
