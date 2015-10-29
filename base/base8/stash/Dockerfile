@@ -18,7 +18,7 @@ RUN yum install -y git && yum clean all -q
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 1${idoffset} --home ${stash_home} && mkdir -p ${stash_home}/shared && mkdir -p ${plugin_folder}
 
-#Getting stash and setting it
+#Getting stash and setting it up and backing up old settings
 RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${stashversion}.tar.gz -O /opt/atlassian-stash-${stashversion}.tar.gz \
 	&& cd /opt \
 	&& tar xfz atlassian-stash-${stashversion}.tar.gz \
@@ -43,10 +43,6 @@ RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassia
 RUN wget --quiet http://repo.sbb.ch/content/repositories/hosted.mwe-wzu.releases/ch/sbb/stash/jenkins-push-webhook/2.1.2/jenkins-push-webhook-2.1.2.jar -O ${plugin_folder}/jenkins-push-webhook.jar
 #Commit Enforcer in Version 2.2
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/stash/enforce-message-hook-plugin/2.2/enforce-message-hook-plugin-2.2.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
-
-#Backing up old setenv and server xml
-RUN mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml \
-	&& 
 
 # since we just mount HOME/shared/data we have to link stash-configuration.properties from another mount
 RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-config.properties
