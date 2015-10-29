@@ -24,8 +24,9 @@ RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlass
 	&& tar xfz atlassian-stash-${stashversion}.tar.gz \
 	&& rm -f /opt/atlassian-stash-${stashversion}.tar.gz \
 	&& ln -s /opt/atlassian-stash* /opt/stash \
-	&& chown -R ${appuser}:${appuser} /opt/atlassian-stash*\
-	&& mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml
+	&& chown -R ${appuser}:${appuser} /opt/atlassian-stash* \
+	&& mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml \
+	&& mv /opt/stash/bin/setenv.sh /opt/stash/bin/setenv-backup.sh
 
 # Install JDBC driver
 RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector-java/${mysqlconnectorversion}/mysql-connector-java-${mysqlconnectorversion}.jar" -O /opt/stash/lib/mysql-connector-java-${mysqlconnectorversion}-bin.jar
@@ -45,7 +46,7 @@ RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.re
 
 #Backing up old setenv and server xml
 RUN mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml \
-	&& mv /opt/stash/bin/setenv.sh /opt/stash/bin/setenv-backup.sh
+	&& 
 
 # since we just mount HOME/shared/data we have to link stash-configuration.properties from another mount
 RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-config.properties
