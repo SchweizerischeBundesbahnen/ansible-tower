@@ -15,15 +15,15 @@ RUN yum install -y git && yum clean all -q
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} 
-	&& adduser ${appuser} -U -u 1${idoffset} --home ${sonar_home} 
+	&& adduser ${appuser} -U -u 1${idoffset} --home ${sonar_home} \
 	&& mkdir -p ${sonar_home}/shared
 
 # Get Sonar distro and unpack everything
 RUN cd /opt 
-	&& wget -q "http://dist.sonar.codehaus.org/sonarqube-${sonarversion}.zip"  -O sonarqube-${sonarversion}.zip 
-	&& unzip sonarqube-${sonarversion}.zip 
-	&& rm sonarqube-${sonarversion}.zip 
-	&& ln -s sonarqube-${sonarversion} sonar 
+	&& wget -q "http://dist.sonar.codehaus.org/sonarqube-${sonarversion}.zip"  -O sonarqube-${sonarversion}.zip \ 
+	&& unzip sonarqube-${sonarversion}.zip \
+	&& rm sonarqube-${sonarversion}.zip \
+	&& ln -s sonarqube-${sonarversion} sonar \
 	&& chown -R sonar:sonar sonar sonarqube-${sonarversion}
 
 RUN sed -ri "s#wrapper.java.command=java#wrapper.java.command=/opt/jdk/jre/bin/java#g" /opt/sonar/conf/wrapper.conf
@@ -91,8 +91,8 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://dist.sonarsource.com/view
 # SonarQube 5.1 verlangt >= 2.3
 RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/sonar-web-plugin/2.3/sonar-web-plugin-2.3.jar
 
-RUN chown -R ${appuser}:${appuser} ${sonar_home}
-	&& chown -R ${appuser}:${appuser} /opt/sonar/extensions/plugins
+RUN chown -R ${appuser}:${appuser} ${sonar_home} \
+	&& chown -R ${appuser}:${appuser} /opt/sonar/extensions/plugins \
 	&& chown ${appuser}:${appuser} /etc/hosts
 
 USER sonar
