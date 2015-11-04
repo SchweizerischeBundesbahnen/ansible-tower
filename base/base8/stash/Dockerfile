@@ -25,7 +25,6 @@ RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlass
 	&& rm -f /opt/atlassian-stash-${stashversion}.tar.gz \
 	&& ln -s /opt/atlassian-stash* /opt/stash \
 	&& chown -R ${appuser}:${appuser} /opt/atlassian-stash* \
-	&& mv /opt/stash/conf/server.xml /opt/stash/conf/server-backup.xml \
 	&& mv /opt/stash/bin/setenv.sh /opt/stash/bin/setenv-backup.sh
 
 # Install JDBC driver
@@ -48,12 +47,12 @@ RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.re
 
 # since we just mount HOME/shared/data we have to link stash-configuration.properties from another mount
 RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-config.properties
+RUN ln -s ${stash_home}/conf/server.xml ${stash_home}/shared/server.xml
 
 #Exposing Port to make Stash accessible
 EXPOSE 7999 8120 9120 10120 11120
 
-#Getting server.xml and setenv.sh
-COPY configs/server.xml /opt/stash/conf/server.xml
+#Getting files to set image
 COPY configs/setenv.sh /opt/stash/bin/setenv.sh
 COPY configs/stash.sh /opt/stash/stash.sh
 RUN chmod 755 /opt/stash/bin/setenv.sh /opt/stash/stash.sh
