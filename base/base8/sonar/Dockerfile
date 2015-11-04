@@ -14,12 +14,12 @@ ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 RUN yum install -y git && yum clean all -q
 
 # Create Data directory structure and add user jira to the image
-RUN mkdir -p ${datadir} 
+RUN mkdir -p ${datadir} \ 
 	&& adduser ${appuser} -U -u 1${idoffset} --home ${sonar_home} \
 	&& mkdir -p ${sonar_home}/shared
 
 # Get Sonar distro and unpack everything
-RUN cd /opt 
+RUN cd /opt \
 	&& wget -q "http://dist.sonar.codehaus.org/sonarqube-${sonarversion}.zip"  -O sonarqube-${sonarversion}.zip \ 
 	&& unzip sonarqube-${sonarversion}.zip \
 	&& rm sonarqube-${sonarversion}.zip \
