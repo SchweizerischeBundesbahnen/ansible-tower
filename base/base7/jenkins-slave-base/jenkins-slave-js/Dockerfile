@@ -3,10 +3,18 @@ FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV labels "swarm nodejs"
+ENV nodejs_version "v4.2.2"
+ENV installer_url "https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh"
 
 
 # Install js binaries for build
-RUN yum update -q -y && yum install -q nodejs npm rubygems  -y && yum clean all -q 
+RUN yum update -q -y && yum install -q npm rubygems  -y && yum clean all -q 
+
+# Install nodejs
+RUN curl -o- ${installer_url} | bash \
+	&& source /root/.bashrc \
+	&& nvm install ${nodejs_version} \
+	&& nvm alias default ${nodejs_version}
 
 # Install packages for build
 RUN npm install bower grunt grunt-cli gulp --silent && gem install bundle
