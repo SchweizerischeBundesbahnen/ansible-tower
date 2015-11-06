@@ -7,6 +7,7 @@ numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 declare -A vmcountHW
 vmcountHW[was7]=4
 vmcountHW[was85]=20
+vmcountHW[java]=10
 vmcountHW[wmb]=4
 vmcountHW[nodejs]=4
 vmcountHW[android]=2
@@ -16,6 +17,7 @@ vmcountHW[sonargraph]=1
 declare -A vmcountVM
 vmcountVM[was7]=1
 vmcountVM[was85]=1
+vmcountVW[java]=1
 vmcountVM[wmb]=1
 vmcountVM[nodejs]=1
 vmcountVM[android]=1
@@ -25,11 +27,11 @@ vmcountVM[sonargraph]=0
 declare -A labelMap
 labelMap[was7]="jenkins-slave-was7"
 labelMap[was85]="jenkins-slave-was85"
+labelMap[java]="jenkins-slave-base"
 labelMap[wmb]="jenkins-slave-wmb"
 labelMap[nodejs]="jenkins-slave-js"
 labelMap[android]="jenkins-slave-mobile-android"
 labelMap[sonargraph]="jenkins-slave-was85"
-
 
 # check argument
 if [ ! -z $master ]
