@@ -32,7 +32,7 @@ RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet 
 
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && echo "${appuser}:${appuser}" | chpasswd
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
 
 # Adding Jenkins SSH Keys for access to Stash: https://issues.sbb.ch/browse/MWESERVICE-6123 
 COPY configs/id_rsa* ${jenkinshome}/.ssh/
@@ -187,6 +187,9 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
 	&& rm ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts
+
+# Add sonargraph license, see https://issues.sbb.ch/browse/MVBUD-1248 and https://www.hello2morrow.com/doc/sg7/ReportGeneration-Maven.html
+COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/SonargraphArchitect/SonargraphArchitect.license
 
 # Add security limits for jenkins user
 RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
