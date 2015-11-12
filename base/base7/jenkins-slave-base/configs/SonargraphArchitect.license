@@ -1,0 +1,18 @@
+Licensor=hello2morrow GmbH
+Product=Sonargraph
+ProductLicense=ArchitectBuild
+Version=any
+Licensee=SBB
+User=Klaus Lechner
+CreationDate=2015-11-10
+Expiration=2016-02-08
+SupportExpiration=2016-02-08
+Login=any
+NodeId=any
+Contract=3 month site license for Docker support
+NumberOfTypes=0
+NumberOfInstructions=0
+Languages=JAVA
+SpecialLicenseFeatures=DUPLICATE_CODE, REPORT_GENERATION, METRICS_VIEW, ARCHITECTURE_MODELING
+
+Signature=302C02141CC03A19A926F2841440F29480370CE6BA31EEE9021428B540FA4E281CB89F898E4E955EB21505A76B23
