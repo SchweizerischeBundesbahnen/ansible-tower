@@ -191,6 +191,7 @@ RUN  cd ${jenkinshome}/buildtools \
 # Add sonargraph license, see https://issues.sbb.ch/browse/MVBUD-1248 and https://www.hello2morrow.com/doc/sg7/ReportGeneration-Maven.html
 COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/SonargraphArchitect/SonargraphArchitect.license
 
+
 # Add security limits for jenkins user
 RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
 	&& echo "jenkins	hard nproc	10000" >> /etc/security/limits.conf \
