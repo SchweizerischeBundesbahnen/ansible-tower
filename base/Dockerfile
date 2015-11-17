@@ -3,11 +3,11 @@ FROM centos:centos7
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
-# The CA for svn.sbb.ch
-ENV telesec_ssl https://svn.sbb.ch/svn/wzu/telesec_serverpass_ca_1.der 
-
 # SVN is used as filerurl
 ENV filerurl https://fsvctip:sommer11@svn.sbb.ch/svn/wzu
+
+# The CA for svn.sbb.ch
+ENV telesec_ssl ${filerurl}/telesec_serverpass_ca_1.der 
 
 # The wzu user name used for ssh debug sessions to the running container
 ENV JAVA_HOME /opt/jdk
@@ -35,4 +35,3 @@ RUN echo "export LC_ALL=en_US.UTF-8" > /etc/profile.d/lang.sh
 
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
-
