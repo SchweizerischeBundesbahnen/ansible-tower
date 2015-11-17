@@ -13,4 +13,4 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdku
 	&& rm -rf /opt/*.tar.gz
 
 # Install WZU Keystore
-RUN wget --quiet http://wzufiler.sbb.ch/${keystore} -O /opt/jdk/jre/lib/security/cacerts
+RUN wget --quiet ${filerurl}/${keystore} -O /opt/jdk/jre/lib/security/cacerts

@@ -14,7 +14,7 @@ ENV portoffset 91
 ENV swarmversion 1.22
 ENV master http://ci-t.sbb.ch
 ENV executors 1
-ENV filerurl http://wzufiler.sbb.ch
+ENV filerurl https://svn.sbb.ch/svn/wzu 
 ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345 
@@ -49,7 +49,7 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http:/
 	&& rm -rf /opt/*.tar.gz
 
 # Install WZU Keystore
-RUN wget --quiet http://wzufiler.sbb.ch/${keystore} -O /opt/jdk/jre/lib/security/cacerts
+RUN wget --quiet ${filerurl}/${keystore} -O /opt/jdk/jre/lib/security/cacerts
 
 # stuff from slave-base
 # Create Data directory structure and add user jenkins to the image
