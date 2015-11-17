@@ -33,7 +33,7 @@ curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" http://dow
 	&& rm -rf /opt/*.tar.gz
 
 # Install WZU Keystore
-wget --quiet ${filerurl}/keystore -O /opt/jdk/jre/lib/security/cacerts
+wget --quiet ${filerurl}/${keystore} -O /opt/jdk/jre/lib/security/cacerts
 
 
 # Create Data directory structure and add user jira to the image

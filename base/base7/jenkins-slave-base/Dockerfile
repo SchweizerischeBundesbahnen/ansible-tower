@@ -24,7 +24,6 @@ ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345 
 ENV host example.sbb.ch 
-ENV keystore keystore-20150722
 
 # Install dev tools
 RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q 

@@ -4,7 +4,6 @@ FROM schweizerischebundesbahnen/base
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV jdkurl http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz 
-ENV keystore keystore-20150722
 
 # Get and Install Java
 RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdkurl} -o /opt/jdk.tar.gz \

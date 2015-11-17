@@ -9,6 +9,9 @@ ENV filerurl https://fsvctip:sommer11@svn.sbb.ch/svn/wzu
 # The CA for svn.sbb.ch
 ENV telesec_ssl ${filerurl}/telesec_serverpass_ca_1.der
 
+# wzu keystore
+ENV keystore keystore-20150722
+
 # The wzu user name used for ssh debug sessions to the running container
 ENV JAVA_HOME /opt/jdk
 
