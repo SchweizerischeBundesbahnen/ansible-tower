@@ -3,6 +3,12 @@ FROM centos:centos7
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
+# The CA for svn.sbb.ch
+ENV telesec_ssl https://svn.sbb.ch/svn/wzu/telesec_serverpass_ca_1.der 
+
+# SVN is used as filerurl
+ENV filerurl https://fsvctip:sommer11@svn.sbb.ch/svn/wzu
+
 # The wzu user name used for ssh debug sessions to the running container
 ENV JAVA_HOME /opt/jdk
 
@@ -11,6 +17,9 @@ RUN yum install -q http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-
 	&& yum update -y \
 	&& yum -y install wget curl tar zip unzip python-setuptools sudo bzip2 \
 	&& yum clean all -q
+
+# Install telesec serverpass to trust svn.sbb.ch (used in filerurl variable)
+RUN curl --insecure ${telesec_ssl} -o /etc/pki/ca-trust/source/anchors/telesec_serverpass_ca_1.der
 
 # Install supervisor
 RUN easy_install supervisor

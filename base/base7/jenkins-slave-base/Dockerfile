@@ -19,7 +19,6 @@ ENV svnuser fsbuild
 ENV cipassword overridethis 
 ENV svnpassword fsbuild2011 
 ENV executors 1
-ENV filerurl http://wzufiler.sbb.ch
 ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
 ENV labels swarm
 ENV slavename $labels

@@ -2,7 +2,6 @@ FROM schweizerischebundesbahnen/base7
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV HOME /root
-ENV filerurl http://wzufiler.sbb.ch
 ENV jenkinshome /output
 ENV appuser jenkins
 ENV portoffset 91

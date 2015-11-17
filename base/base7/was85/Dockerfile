@@ -1,7 +1,6 @@
 FROM schweizerischebundesbahnen/base7
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
-ENV filerurl http://wzufiler.sbb.ch/was85dev.tar.gz
 ENV scripturl http://wzufiler.sbb.ch/me.tar.gz
 ENV appuser asrun
 ENV profileName AppSrv01
