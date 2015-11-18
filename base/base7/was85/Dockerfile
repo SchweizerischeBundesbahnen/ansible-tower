@@ -15,7 +15,7 @@ COPY configs/authorized_keys /home/${appuser}/.ssh/authorized_keys
 
 # Download and extract WAS 8.5 and create profile
 RUN cd /opt \
-        && curl ${filerurl} | tar xfz - \
+        && curl ${filerurl}/was85.tar.gz | tar xfz - \
         && chown -R ${appuser}:${appuser} was85
 
 # Download and extract OM managements scripts
