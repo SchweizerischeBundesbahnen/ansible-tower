@@ -26,13 +26,6 @@ RUN curl --insecure ${telesec_ssl} -o /etc/pki/ca-trust/source/anchors/telesec_s
 		&& update-ca-trust enable \
 		&& update-ca-trust
 
-# Install supervisor
-RUN easy_install supervisor
-RUN mkdir -p /etc/supervisor/conf.d
-
-# Supervisord: configure service and sshd
-COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
-
 # Set locale to en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8

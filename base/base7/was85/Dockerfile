@@ -10,7 +10,7 @@ RUN adduser ${appuser} \
 	&& echo "${appuser}:${appuser}" | chpasswd \
 	&& mkdir /home/${appuser}/.ssh
 
-# Add public key for passwordless login 
+# Add public key for passwordless login
 COPY configs/authorized_keys /home/${appuser}/.ssh/authorized_keys
 
 # Download and extract WAS 8.5 and create profile
@@ -32,6 +32,13 @@ RUN chmod +x /opt/run.sh
 RUN yum install openssh-server openssh-clients -y \
 	&& yum clean all \
 	&& /usr/bin/ssh-keygen -A
+
+# Install supervisor
+RUN easy_install supervisor
+RUN mkdir -p /etc/supervisor/conf.d
+
+# Supervisord: configure service and sshd
+COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Add supervisor configuration
 COPY configs/was85.ini /etc/supervisor/conf.d/
@@ -72,6 +79,3 @@ RUN cd /opt/me/res/jython && \
 EXPOSE 22 8880 5061 5060 7276 9443 9353 5578 9043 9402 9100 2809 9403 9633 7286 9080 5558 9401 11003 11004 9060
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
-
-
-
