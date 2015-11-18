@@ -13,8 +13,6 @@ ENV stash_home /var/data/stash
 ENV plugin_folder ${stash_home}/shared/plugins/installed-plugins
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 
-RUN yum install -y git && yum clean all -q 
-
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 1${idoffset} --home ${stash_home} && mkdir -p ${stash_home}/shared && mkdir -p ${plugin_folder}
 

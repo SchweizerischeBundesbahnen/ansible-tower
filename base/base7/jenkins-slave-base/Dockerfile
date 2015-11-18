@@ -11,50 +11,50 @@ ENV antversion 1.9.4
 ENV swarmversion 1.26
 ENV appuser jenkins
 ENV portoffset 91
-ENV datadir /var/data 
+ENV datadir /var/data
 ENV jenkinshome ${datadir}/jenkins
 ENV master http://ci-t.sbb.ch
-ENV ciuser overridethis 
-ENV svnuser fsbuild 
-ENV cipassword overridethis 
-ENV svnpassword fsbuild2011 
+ENV ciuser overridethis
+ENV svnuser fsbuild
+ENV cipassword overridethis
+ENV svnpassword fsbuild2011
 ENV executors 1
-ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml 
+ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml
 ENV labels swarm
 ENV slavename $labels
-ENV externalport 12345 
-ENV host example.sbb.ch 
+ENV externalport 12345
+ENV host example.sbb.ch
 
 # Install dev tools
-RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q 
+RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q 
 
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
 
-# Adding Jenkins SSH Keys for access to Stash: https://issues.sbb.ch/browse/MWESERVICE-6123 
+# Adding Jenkins SSH Keys for access to Stash: https://issues.sbb.ch/browse/MWESERVICE-6123
 COPY configs/id_rsa* ${jenkinshome}/.ssh/
-RUN chown -R ${appuser}:${appuser} ${jenkinshome}/.ssh && chmod 700 ${jenkinshome}/.ssh && chmod 600 ${jenkinshome}/.ssh/* 
+RUN chown -R ${appuser}:${appuser} ${jenkinshome}/.ssh && chmod 700 ${jenkinshome}/.ssh && chmod 600 ${jenkinshome}/.ssh/*
 
 # Download Ant 1
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- ${filerurl}/apache-ant-1.8.tar.gz | tar xfz - \
-	&& ln -s apache-ant-1.8* apache-ant-1.8 
+	&& ln -s apache-ant-1.8* apache-ant-1.8
 
 # Download Maven 3.0
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn30version}/binaries/apache-maven-${mvn30version}-bin.tar.gz" | tar xfz - \
-	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml` 
+	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.1
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn31version}/binaries/apache-maven-${mvn31version}-bin.tar.gz" | tar xfz - \
-	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml` 
+	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.2
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn32version}/binaries/apache-maven-${mvn32version}-bin.tar.gz" | tar xfz - \
-	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml` 
+	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.3
 RUN cd ${jenkinshome}/buildtools \
