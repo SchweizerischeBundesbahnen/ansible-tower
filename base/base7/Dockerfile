@@ -10,7 +10,7 @@ RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdku
 	&& cd /opt && tar xfz jdk.tar.gz \
 	&& ln -s /opt/jdk1.7* ${JAVA_HOME} \
 	&& rm -rf /opt/*.tar.gz \
-	&& /opt/jdk1.7/bin/java -version
+	&& /opt/jdk17/bin/java -version
 
 # Install WZU Keystore
 RUN wget --quiet ${filerurl}/${keystore} -O /opt/jdk/jre/lib/security/cacerts
