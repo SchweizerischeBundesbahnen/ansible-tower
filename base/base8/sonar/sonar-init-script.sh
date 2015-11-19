@@ -5,7 +5,7 @@
 # chkconfig: - 85 15
 
 APP_URL="codequality-t.sbb.ch"
-opts=" -p 8110:8110 -p 9110:8110 -p 10110:10110 -v /var/data/sonar/logs/:/opt/sonar/logs/ -e ${APP_URL} -e MYSQL_HOST=v01017.sbb.ch -e MYSQL_DBNAME=sonartest -e MYSQL_USER=sonartest -e MYSQL_PASSWORD=sonartest -d"
+opts=" --net=host -p 8110:8110 -p 9110:8110 -p 10110:10110 -v /var/data/sonar/logs/:/opt/sonar/logs/ -e APP_URL=${APP_URL} -e MYSQL_HOST=v01031.sbb.ch -e MYSQL_DBNAME=sonar -e MYSQL_USER=sonar -e MYSQL_PASSWORD=sonar -d"
 containername=sonar
 imagename=schweizerischebundesbahnen/sonar:latest
 
