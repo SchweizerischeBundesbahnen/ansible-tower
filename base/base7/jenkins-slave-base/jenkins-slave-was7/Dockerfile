@@ -1,7 +1,6 @@
 # Jenkins slave build node configured with a WAS 7 environment for Maven release tasks.
 FROM schweizerischebundesbahnen/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
-MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV labels "was7"
 ENV was7version "70"
