@@ -4,6 +4,7 @@ MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 ENV scripturl ${filerurl}/me.tar.gz
 ENV appuser asrun
 ENV profileName AppSrv01
+ENV was8version "8.5-OM08"
 
 # Create directories and add user to the image
 RUN adduser ${appuser} \
@@ -15,7 +16,7 @@ COPY configs/authorized_keys /home/${appuser}/.ssh/authorized_keys
 
 # Download and extract WAS 8.5 and create profile
 RUN cd /opt \
-        && curl ${filerurl}/was85.tar.gz | tar xfz - \
+        && curl ${filerurl}/was-${was8version}.tar.gz | tar xfz - \
         && chown -R ${appuser}:${appuser} was85
 
 # Download and extract OM managements scripts
