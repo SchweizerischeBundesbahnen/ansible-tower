@@ -2,9 +2,9 @@ FROM schweizerischebundesbahnen/base7
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV scripturl ${filerurl}/me.tar.gz
+ENV wasurl ${filerurl}/was85dev.tar.gz
 ENV appuser asrun
 ENV profileName AppSrv01
-ENV was8version "8.5-OM08"
 
 # Create directories and add user to the image
 RUN adduser ${appuser} \
@@ -16,7 +16,7 @@ COPY configs/authorized_keys /home/${appuser}/.ssh/authorized_keys
 
 # Download and extract WAS 8.5 and create profile
 RUN cd /opt \
-        && curl ${filerurl}/was-${was8version}.tar.gz | tar xfz - \
+        && curl ${wasurl} | tar xfz - \
         && chown -R ${appuser}:${appuser} was85
 
 # Download and extract OM managements scripts
@@ -52,8 +52,7 @@ RUN /opt/was85/bin/managesdk.sh -setNewProfileDefault -sdkName 1.7_64 \
 RUN mkdir -pv /opt/source/delivery \
         && chown ${appuser}:${appuser} /opt/source \
         && chown ${appuser}:${appuser} /opt/source/delivery \
-        && chown -R ${appuser}:${appuser} /opt/was85 \
-        && chown -R ${appuser}:${appuser} /opt/was85_shared
+        && chown -R ${appuser}:${appuser} /opt/was85
 
 # Add the files for the installation in unmanaged WAS (=developer edition) using the postdev ..
 COPY configs/ant_task_lib.patch /opt/me/res/ant/ant_task_lib.patch
