@@ -35,7 +35,7 @@ if [ -n "${APP_URL}" ]; then
 fi
 
 echo "Starting Application";
-/opt/jira/bin/start-confluence.sh -fg &
+/opt/confluence/bin/start-confluence.sh -fg &
 
 child=$! 
 wait "$child"

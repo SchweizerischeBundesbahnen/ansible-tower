@@ -1,19 +1,12 @@
-export JAVA_HOME=/opt/jdk
+# See the CATALINA_OPTS below for tuning the JVM arguments used to start Confluence.
 
+export JAVA_HOME=/opt/jdk
 
 if [ -z ${JAVA_XMX} ]; then
   JAVA_XMX=4096m
-fi 
-
-if [ -z ${JAVA_PERMSIZE} ]; then
-  JAVA_PERMSIZE=512m
 fi
 
-echo $JAVA_XMX
-
-JAVA_OPTS="-Dconfluence.home=/var/data/confluence -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:FlightRecorderOptions=defaultrecording=true,disk=true,repository=/var/data/confluence,maxage=1d -Xms${JAVA_XMX} -Xmx${JAVA_XMX} -XX:MaxPermSize=${JAVA_PERMSIZE} ${JAVA_OPTS} -Duser.timezone=Europe/Zurich -Datlassian.plugins.enable.wait=300 -Dfile.encoding=utf-8 -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=false -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -server"
-CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=11090 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
-export JAVA_OPTS CATALINA_OPTS
+echo "If you encounter issues starting up Confluence, please see the Installation guide at http://confluence.atlassian.com/display/DOC/Confluence+Installation+Guide"
 
 # set the location of the pid file
 if [ -z "$CATALINA_PID" ] ; then
@@ -48,3 +41,16 @@ cd $PUSHED_DIR
 echo ""
 echo "Server startup logs are located in $LOGBASEABS/logs/catalina.out"
 
+# Set the JVM arguments used to start Confluence. For a description of the options, see
+# http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html
+CATALINA_OPTS="-XX:-PrintGCDetails -XX:+PrintGCTimeStamps -XX:-PrintTenuringDistribution ${CATALINA_OPTS}"
+CATALINA_OPTS="-Xloggc:$LOGBASEABS/logs/gc-`date +%F_%H-%M-%S`.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=5 -XX:GCLogFileSize=2M ${CATALINA_OPTS}"
+CATALINA_OPTS="-Djava.awt.headless=true ${CATALINA_OPTS}"
+#CATALINA_OPTS="-Xms1024m -Xmx1024m -XX:+UseG1GC ${CATALINA_OPTS}"
+
+### Custom WZU System Properties
+#CATALINA_OPTS="-Xms${JAVA_XMX} -Xmx${JAVA_XMX} -XX:+UseG1GC ${CATALINA_OPTS}"
+CATALINA_OPTS="${CATALINA_OPTS} -Duser.timezone=Europe/Zurich -Datlassian.plugins.enable.wait=300 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=11090 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dconfluence.upgrade.recovery.file.enabled=false"
+
+
+export CATALINA_OPTS

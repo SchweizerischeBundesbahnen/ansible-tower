@@ -5,32 +5,33 @@ numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 
 # how many slaves do we expect on hardware
 declare -A vmcountHW
-vmcountHW[was7]=2
-vmcountHW[was85]=16
-vmcountHW[wmb]=2
-vmcountHW[nodejs]=2
-vmcountHW[iib9]=0
+vmcountHW[was7]=4
+vmcountHW[was85]=20
+vmcountHW[java]=10
+vmcountHW[wmb]=4
+vmcountHW[nodejs]=4
 vmcountHW[android]=2
+vmcountHW[sonargraph]=1
 
 # how many slaves do we expect on vm
 declare -A vmcountVM
 vmcountVM[was7]=1
 vmcountVM[was85]=1
+vmcountVW[java]=1
 vmcountVM[wmb]=1
 vmcountVM[nodejs]=1
-vmcountVM[iib9]=1
 vmcountVM[android]=1
+vmcountVM[sonargraph]=0
 
 # which image belongs to which label
 declare -A labelMap
 labelMap[was7]="jenkins-slave-was7"
 labelMap[was85]="jenkins-slave-was85"
+labelMap[java]="jenkins-slave-base"
 labelMap[wmb]="jenkins-slave-wmb"
 labelMap[nodejs]="jenkins-slave-js"
-labelMap[iib9]="jenkins-slave-iib9"
 labelMap[android]="jenkins-slave-mobile-android"
-
-
+labelMap[sonargraph]="jenkins-slave-was85"
 
 # check argument
 if [ ! -z $master ]
@@ -68,7 +69,8 @@ then
 		if [ ${runningCount[$label]} -lt  ${vmcount[$label]}  ]; then
 			echo "missing some $label slaves"
 			count=${runningCount[$label]}
-			while [ $count -lt ${vmcount[$label]} ]
+			required=${vmcount[$label]}
+			while [ $count -lt $required ]
 			do
 				echo "starting $label with ${labelMap[$label]}"
 				./create-jenkins-slave.sh registry.sbb.ch ${labelMap[$label]} latest $master $label

@@ -28,10 +28,11 @@ ENV host example.sbb.ch
 ENV keystore keystore-20150722
 
 # Install dev tools
-RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q 
+RUN yum install -q python-lxml git subversion glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q 
+
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && echo "${appuser}:${appuser}" | chpasswd
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
 
 # Adding Jenkins SSH Keys for access to Stash: https://issues.sbb.ch/browse/MWESERVICE-6123 
 COPY configs/id_rsa* ${jenkinshome}/.ssh/
@@ -129,6 +130,16 @@ COPY configs/java.security.was7 ${jenkinshome}/buildtools/ibm-jdk-was70/jre/lib/
 # Download the swarm client
 RUN wget --quiet "http://repo.sbb.ch/content/repositories/mirror/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
 
+# Install sqlplus
+RUN wget -q ${filerurl}/oracle/oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
+        && wget -q ${filerurl}/oracle/oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm \
+        && rpm -ivh oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
+        && rpm -ivh oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm \
+        && echo "export ORACLE_HOME=/usr/lib/oracle/12.1/client64" >> ${jenkinshome}/env.sh \
+        && echo "export LD_LIBRARY_PATH=/usr/lib/oracle/12.1/client64/lib" >> ${jenkinshome}/env.sh \
+	&& rm -fr oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
+	&& rm -fr oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm
+
 # Legacy stuff
 RUN cd ${jenkinshome} \
 	&& ln -s m2 .m2 \
@@ -145,10 +156,10 @@ RUN cd ${jenkinshome} \
 	&& ln -s oracle-jdk-7 jdk-oracle-1.7.0.2
 
 # Create environment file
-RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
+RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin:/usr/lib/oracle/12.1/client64/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
 
 # Disable Hostkeychecks for ssh for enabling batch-based git clones: https://issues.sbb.ch/browse/MWESERVICE-4234, https://issues.sbb.ch/browse/MWESERVICE-5960
-RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext.sbb.ch\n\tStrictHostKeyChecking no\n">> ${jenkinshome}/.ssh/config && chmod 644 ${jenkinshome}/.ssh/config
+RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext.sbb.ch\n\tStrictHostKeyChecking no\nHost code-i.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext-i.sbb.ch\n\tStrictHostKeyChecking no\nHost code-t.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext-t.sbb.ch\n\tStrictHostKeyChecking no\n">> ${jenkinshome}/.ssh/config && chmod 644 ${jenkinshome}/.ssh/config
 
 # Git-Setting for Jenkins-User for Ci-based git commits: https://issues.sbb.ch/browse/WZU-3262#
 RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshome}/.gitconfig && chmod 644 ${jenkinshome}/.gitconfig
@@ -176,9 +187,19 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.6.0.9/jre/lib/security/cacerts \
 	&& rm ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk-ibm-1.7.0.5/jre/lib/security/cacerts
-	
+
+# Add sonargraph license, see https://issues.sbb.ch/browse/MVBUD-1248 and https://www.hello2morrow.com/doc/sg7/ReportGeneration-Maven.html
+COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/SonargraphArchitect/SonargraphArchitect.license
+
+
 # Add security limits for jenkins user
 RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
 	&& echo "jenkins	hard nproc	10000" >> /etc/security/limits.conf \
 	&& echo "jenkins	soft nofile	10000" >> /etc/security/limits.conf \
 	&& echo "jenkins	hard nofile	10000" >> /etc/security/limits.conf
+
+# Chown contents of home directory
+RUN chown -R ${appuser}:${appuser} ${jenkinshome}
+
+# Start Slave
+CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
