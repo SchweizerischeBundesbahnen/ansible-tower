@@ -14,7 +14,7 @@ ENV portoffset 91
 ENV swarmversion 1.22
 ENV master http://ci-t.sbb.ch
 ENV executors 1
-ENV filerurl https://svn.sbb.ch/svn/wzu 
+ENV filerurl https://fsvctip:sommer11@svn.sbb.ch/svn/wzu 
 ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345 
