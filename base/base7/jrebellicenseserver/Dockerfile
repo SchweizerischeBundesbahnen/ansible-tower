@@ -20,5 +20,5 @@ RUN cd /opt && wget -q "http://dl.zeroturnaround.com/license-server/license-serv
 
 
 # Start the license server in ${apphome}
-CMD /opt/jdk/bin/java -Dhttp.port=8${idoffset} -Drebel.ls.loglevel=ERROR -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
+CMD rm -f /RUNNING_PID && /opt/jdk/bin/java -Dhttp.port=8${idoffset} -Drebel.ls.loglevel=ERROR -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
 
