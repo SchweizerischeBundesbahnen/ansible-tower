@@ -24,7 +24,11 @@ RUN wget --quiet "https://services.gradle.org/distributions/gradle-${gradle2vers
 	&& unzip -q /tmp/gradle-${gradle2version}-bin.zip \
 	&& rm -f /tmp/gradle-${gradle2version}-bin.zip \
 	&& ln -s ${jenkinshome}/buildtools/gradle-${gradle2version} ${jenkinshome}/buildtools/gradle \
+	&& mkdir -p ${jenkinshome}/.gradle
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}
+
+# Add gradle.properties
+COPY configs/gradle.properties ${jenkinshome}/.gradle/gradle.properties
 
 # Add ANDROID_HOME to environment 
 RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${jenkinshome}/env.sh
