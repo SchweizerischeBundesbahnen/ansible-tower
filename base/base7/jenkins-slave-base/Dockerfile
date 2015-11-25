@@ -159,7 +159,7 @@ RUN cd ${jenkinshome} \
 RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin:/usr/lib/oracle/12.1/client64/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
 
 # Disable Hostkeychecks for ssh for enabling batch-based git clones: https://issues.sbb.ch/browse/MWESERVICE-4234, https://issues.sbb.ch/browse/MWESERVICE-5960
-RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext.sbb.ch\n\tStrictHostKeyChecking no\n">> ${jenkinshome}/.ssh/config && chmod 644 ${jenkinshome}/.ssh/config
+RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext.sbb.ch\n\tStrictHostKeyChecking no\nHost code-i.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext-i.sbb.ch\n\tStrictHostKeyChecking no\nHost code-t.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext-t.sbb.ch\n\tStrictHostKeyChecking no\n">> ${jenkinshome}/.ssh/config && chmod 644 ${jenkinshome}/.ssh/config
 
 # Git-Setting for Jenkins-User for Ci-based git commits: https://issues.sbb.ch/browse/WZU-3262#
 RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshome}/.gitconfig && chmod 644 ${jenkinshome}/.gitconfig
