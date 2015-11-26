@@ -64,52 +64,55 @@ RUN cd ${jenkinshome}/buildtools \
         && wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn33version}/binaries/apache-maven-${mvn33version}-bin.tar.gz" | tar xfz - \
         && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
+# Create folders for different jdk architecture
+RUN mkdir -p ${jenkinshome}/buildtools/{jdk32bit,jdk64bit}		
+		
 # Get Oracle 6 32 Bit JDK
 RUN wget --quiet ${filerurl}/jdk/${orajdk632bitfile} -O /tmp/${orajdk632bitfile}  \
-	&& cd ${jenkinshome}/buildtools \
+	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk632bitfile} \
 	&& rm -f /tmp/${orajdk632bitfile} \
-	&& ln -s jdk1.6*32b oracle-jdk-6-32b \
+	&& ln -s jdk1.6* ../oracle-jdk-6-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6-32b/bin/java -version
 
 # Get Oracle 7 32 Bit JDK
 RUN wget --quiet ${filerurl}/jdk/${orajdk732bitfile} -O /tmp/${orajdk732bitfile} \
-	&& cd ${jenkinshome}/buildtools \
+	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk732bitfile} \
 	&& rm -f /tmp/${orajdk732bitfile} \
-	&& ln -s jdk1.7*32b oracle-jdk-7-32b \
+	&& ln -s jdk1.7* ../oracle-jdk-7-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7-32b/bin/java -version
 
 # Get Oracle 8 JDK
-RUN wget --quiet ${filerurl}/${orajdk832bitfile} -O /tmp/${orajdk832bitfile} \
-	&& cd ${jenkinshome}/buildtools \
+RUN wget --quiet ${filerurl}/jdk/${orajdk832bitfile} -O /tmp/${orajdk832bitfile} \
+	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk832bitfile} \
 	&& rm -f /tmp/${orajdk832bitfile} \
-	&& ln -s jdk1.8*32b oracle-jdk-8-32b \
+	&& ln -s jdk1.8* ../oracle-jdk-8-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8-32b/bin/java -version
 
 # Get Oracle 6 JDK
-RUN wget --quiet ${filerurl}/${orajdk664bitfile} -O /tmp/${orajdk664bitfile} \
-	&& cd ${jenkinshome}/buildtools \
+RUN wget --quiet ${filerurl}/jdk/${orajdk664bitfile} -O /tmp/${orajdk664bitfile} \
+	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk664bitfile} \
 	&& rm -f /tmp/${orajdk664bitfile} \
-	&& ln -s `ls | grep jdk1.6.0 | grep -v 32b` oracle-jdk-6 \
+	&& ln -s jdk1.6* ../oracle-jdk-6 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6/bin/java -version
 
 # Get Oracle 7 JDK
-RUN wget --quiet ${filerurl}/${orajdk764bitfile} -O /tmp/${orajdk764bitfile} \
-	&& cd ${jenkinshome}/buildtools \
+RUN wget --quiet ${filerurl}/jdk/${orajdk764bitfile} -O /tmp/${orajdk764bitfile} \
+	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk764bitfile} \
 	&& rm -f /tmp/${orajdk764bitfile} \
-	&& ln -s `ls | grep jdk1.7.0 | grep -v 32b` oracle-jdk-7 \
+	&& ln -s jdk1.7* ../oracle-jdk-7 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7/bin/java -version
 
 # Get Oracle 8 JDK
-RUN wget --quiet ${filerurl}/${orajdk864bitfile} -O /tmp/${orajdk864bitfile} \
-	&& cd ${jenkinshome}/buildtools \
+RUN wget --quiet ${filerurl}/jdk/${orajdk864bitfile} -O /tmp/${orajdk864bitfile} \
+	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk764bitfile} \
 	&& rm -f /tmp/${orajdk764bitfile} \
-	&& ln -s `ls | grep jdk1.8.0 | grep -v 32b` oracle-jdk-8 \
+	&& ln -s jdk1.8* ../oracle-jdk-8 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8/bin/java -version
 
 # Legacy stuff
