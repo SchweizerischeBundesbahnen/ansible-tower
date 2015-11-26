@@ -3,10 +3,10 @@ FROM schweizerischebundesbahnen/base
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
-ENV jdkurl http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz
+ENV jdkurl ${filerurl}/jdk-8u65-linux-x64.gz
 
 # Get and Install Java
-RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdkurl} -o /opt/jdk.tar.gz \
+RUN curl -s --user fsvctip:sommer11 ${jdkurl} -o /opt/jdk.tar.gz \
 	&& cd /opt && tar xfz jdk.tar.gz \
 	&& ln -s /opt/jdk1.8* ${JAVA_HOME} \
 	&& rm -rf /opt/*.tar.gz \
