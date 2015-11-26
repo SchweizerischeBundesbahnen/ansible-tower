@@ -21,6 +21,12 @@ ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345
 ENV host example.sbb.ch
+ENV orajdk632bitfile oracle-jdk-6-32b.tar.gz
+ENV orajdk664bitfile oracle-jdk-6.tar.gz
+ENV orajdk732bitfile jdk-7u79-linux-i586.gz
+ENV orajdk764bitfile jdk-7u79-linux-x64.gz
+ENV orajdk832bitfile jdk-8u65-linux-i586.gz
+ENV orajdk864bitfile jdk-8u65-linux-x64.gz
 
 # Install dev tools
 RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q 
@@ -59,64 +65,52 @@ RUN cd ${jenkinshome}/buildtools \
         && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Get Oracle 6 32 Bit JDK
-RUN wget --quiet ${filerurl}/oracle-jdk-6-32b.tar.gz -O /tmp/oracle-jdk-6-32b.tar.gz  \
+RUN wget --quiet ${filerurl}/jdk/${orajdk632bitfile} -O /tmp/${orajdk632bitfile}  \
 	&& cd ${jenkinshome}/buildtools \
-	&& tar xfz /tmp/oracle-jdk-6-32b.tar.gz \
-	&& rm -f /tmp/oracle-jdk-6-32b.tar.gz \
+	&& tar xfz /tmp/${orajdk632bitfile} \
+	&& rm -f /tmp/${orajdk632bitfile} \
 	&& ln -s jdk1.6*32b oracle-jdk-6-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6-32b/bin/java -version
 
 # Get Oracle 7 32 Bit JDK
-RUN wget --quiet ${filerurl}/oracle-jdk-7-32b.tar.gz -O /tmp/oracle-jdk-7-32b.tar.gz \
+RUN wget --quiet ${filerurl}/jdk/${orajdk732bitfile} -O /tmp/${orajdk732bitfile} \
 	&& cd ${jenkinshome}/buildtools \
-	&& tar xfz /tmp/oracle-jdk-7-32b.tar.gz \
-	&& rm -f /tmp/oracle-jdk-7-32b.tar.gz \
+	&& tar xfz /tmp/${orajdk732bitfile} \
+	&& rm -f /tmp/${orajdk732bitfile} \
 	&& ln -s jdk1.7*32b oracle-jdk-7-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7-32b/bin/java -version
 
 # Get Oracle 8 JDK
-RUN wget --quiet ${filerurl}/oracle-jdk-8-32b.tar.gz -O /tmp/oracle-jdk-8-32b.tar.gz \
+RUN wget --quiet ${filerurl}/${orajdk832bitfile} -O /tmp/${orajdk832bitfile} \
 	&& cd ${jenkinshome}/buildtools \
-	&& tar xfz /tmp/oracle-jdk-8-32b.tar.gz \
-	&& rm -f /tmp/oracle-jdk-8-32b.tar.gz \
+	&& tar xfz /tmp/${orajdk832bitfile} \
+	&& rm -f /tmp/${orajdk832bitfile} \
 	&& ln -s jdk1.8*32b oracle-jdk-8-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8-32b/bin/java -version
 
 # Get Oracle 6 JDK
-RUN wget --quiet ${filerurl}/oracle-jdk-6.tar.gz -O /tmp/oracle-jdk-6.tar.gz \
+RUN wget --quiet ${filerurl}/${orajdk664bitfile} -O /tmp/${orajdk664bitfile} \
 	&& cd ${jenkinshome}/buildtools \
-	&& tar xfz /tmp/oracle-jdk-6.tar.gz \
-	&& rm -f /tmp/oracle-jdk-6.tar.gz \
+	&& tar xfz /tmp/${orajdk664bitfile} \
+	&& rm -f /tmp/${orajdk664bitfile} \
 	&& ln -s `ls | grep jdk1.6.0 | grep -v 32b` oracle-jdk-6 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6/bin/java -version
 
 # Get Oracle 7 JDK
-RUN wget --quiet ${filerurl}/oracle-jdk-7.tar.gz -O /tmp/oracle-jdk-7.tar.gz \
+RUN wget --quiet ${filerurl}/${orajdk764bitfile} -O /tmp/${orajdk764bitfile} \
 	&& cd ${jenkinshome}/buildtools \
-	&& tar xfz /tmp/oracle-jdk-7.tar.gz \
-	&& rm -f /tmp/oracle-jdk-7.tar.gz \
+	&& tar xfz /tmp/${orajdk764bitfile} \
+	&& rm -f /tmp/${orajdk764bitfile} \
 	&& ln -s `ls | grep jdk1.7.0 | grep -v 32b` oracle-jdk-7 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7/bin/java -version
 
 # Get Oracle 8 JDK
-RUN wget --quiet ${filerurl}/oracle-jdk-8.tar.gz -O /tmp/oracle-jdk-8.tar.gz \
+RUN wget --quiet ${filerurl}/${orajdk864bitfile} -O /tmp/${orajdk864bitfile} \
 	&& cd ${jenkinshome}/buildtools \
-	&& tar xfz /tmp/oracle-jdk-8.tar.gz \
-	&& rm -f /tmp/oracle-jdk-8.tar.gz \
+	&& tar xfz /tmp/${orajdk764bitfile} \
+	&& rm -f /tmp/${orajdk764bitfile} \
 	&& ln -s `ls | grep jdk1.8.0 | grep -v 32b` oracle-jdk-8 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8/bin/java -version
-
-# Install IBM JDK 1.6
-RUN cd ${jenkinshome}/buildtools \
-        && wget -qO- ${filerurl}/was70-jdk.tar.gz | tar xfz - \
-        && ln -s jdk-ibm-1.6* ibm-jdk-was70 \
-				&& ${jenkinshome}/buildtools/ibm-jdk-was70/bin/java -version
-
-# Install IBM JDK 1.7
-RUN cd ${jenkinshome}/buildtools \
-        && wget -qO- ${filerurl}/was85-jdk.tar.gz | tar xfz - \
-        && ln -s jdk-ibm-1.7* ibm-jdk-was85 \
-				&& ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
 
 # Legacy stuff
 RUN cd ${jenkinshome}/buildtools \

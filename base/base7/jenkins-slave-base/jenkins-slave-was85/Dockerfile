@@ -10,7 +10,12 @@ RUN cd /opt \
         &&  wget -qO- ${filerurl}/was-${was8version}.tar.gz | tar xfz - \
         && ln -s /opt/was85 ${jenkinshome}/buildtools/was85 \
         && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh \
-        && chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was85*
+		&& chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was85*
+		
+# Link WAS JDK for Jenkins
+RUN cd ${jenkinshome}/buildtools \
+        && ln -s ${jenkinshome}/buildtools/was85/java ibm-jdk-was85 \
+		&& ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
 
 # Create environment file
 RUN echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
