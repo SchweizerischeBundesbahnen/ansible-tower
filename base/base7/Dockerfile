@@ -6,7 +6,7 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 ENV jdkurl ${filerurl}/jdk-7u79-linux-x64.gz
 
 # Get and Install Java
-RUN curl -s --user fsvctip:sommer11 ${jdkurl} -o /opt/jdk.tar.gz \
+RUN curl -s ${jdkurl} -o /opt/jdk.tar.gz \
 	&& cd /opt && tar xfz jdk.tar.gz \
 	&& ln -s /opt/jdk1.7* ${JAVA_HOME} \
 	&& rm -rf /opt/*.tar.gz \

@@ -26,7 +26,7 @@ echo "export LC_ALL=en_US.UTF-8" > /etc/profile.d/lang.sh
 ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
 # Get and Install Java
-curl -s --user fsvctip:sommer11 ${jdkurl} -o /opt/jdk17.tar.gz \
+curl -s ${jdkurl} -o /opt/jdk17.tar.gz \
 	&& cd /opt && tar xfz jdk17.tar.gz \
 	&& ln -s /opt/jdk1.7* ${JAVA_HOME} \
 	&& rm -rf /opt/*.tar.gz
