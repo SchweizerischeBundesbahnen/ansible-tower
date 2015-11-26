@@ -17,7 +17,7 @@ tar -zcf /output/android-sdk-linux-latest.tar.gz /output/buildtools
 md5sum /output/android-sdk-linux-latest.tar.gz
 
 # delete file from filerurl
-svn delete --non-interactive --no-auth-cache --username fsbuild --password fsbuild2011 -m "Deleting file android-sdk-linux-latest.tar.gz from build" ${filerurl}/android/android-sdk-linux-latest.tar.gz
+svn delete --non-interactive --no-auth-cache --username ${fileruser} --password ${filerpassword} -m "Deleting file android-sdk-linux-latest.tar.gz from build" ${filerurl}/android/android-sdk-linux-latest.tar.gz
 
 # upload to wzufiler
-svn import --non-interactive --no-auth-cache --username fsbuild --password fsbuild2011 -m "Updating android-sdk-linux-latest.tar.gz from build" /output/android-sdk-linux-latest.tar.gz ${filerurl}/android/android-sdk-linux-latest.tar.gz
+svn import --non-interactive --no-auth-cache --username ${fileruser} --password ${filerpassword} -m "Updating android-sdk-linux-latest.tar.gz from build" /output/android-sdk-linux-latest.tar.gz ${filerurl}/android/android-sdk-linux-latest.tar.gz

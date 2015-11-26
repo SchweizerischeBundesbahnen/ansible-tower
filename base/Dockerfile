@@ -4,7 +4,9 @@ FROM centos:centos7
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 # SVN is used as filerurl
-ENV filerurl https://fsvctip:sommer11@svn.sbb.ch/svn/wzu
+ENV fileruser fswzuad
+ENV filerpassword bolb3fas
+ENV filerurl https://${fileruser}:${filerpassword}@svn.sbb.ch/svn/wzu
 
 # The CA for svn.sbb.ch
 ENV telesec_ssl ${filerurl}/telesec_serverpass_ca_1.der

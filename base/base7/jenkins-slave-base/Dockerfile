@@ -7,7 +7,6 @@ ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
 ENV mvn33version 3.3.3
-ENV antversion 1.9.4
 ENV swarmversion 1.26
 ENV appuser jenkins
 ENV portoffset 91
@@ -15,9 +14,7 @@ ENV datadir /var/data
 ENV jenkinshome ${datadir}/jenkins
 ENV master http://ci-t.sbb.ch
 ENV ciuser overridethis
-ENV svnuser fsbuild
 ENV cipassword overridethis
-ENV svnpassword fsbuild2011
 ENV executors 1
 ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml
 ENV labels swarm
@@ -169,7 +166,7 @@ RUN echo -e "Host code.sbb.ch\n\tStrictHostKeyChecking no\nHost code-ext.sbb.ch\
 RUN echo -e "[user]\n\tname = jenkins\n\temail = no-reply@sbb.ch">> ${jenkinshome}/.gitconfig && chmod 644 ${jenkinshome}/.gitconfig
 
 # Add environment variables to run on start
-RUN echo "wget --quiet ${settingsxmlurl} --user ${svnuser} --password ${svnpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
+RUN echo "wget --quiet ${settingsxmlurl} --user ${fileruser} --password ${filerpassword} --no-check-certificate -O ${jenkinshome}/m2/settings.xml" >> ${jenkinshome}/run.sh \
 	&& wget --quiet ${filerurl}/${keystore} -O ${jenkinshome}/.keystore \
 	&& chmod +x ${jenkinshome}/run.sh
 
