@@ -13,7 +13,7 @@ ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 
 RUN yum install -y git && yum clean all -q
 
-# Create Data directory structure and add user jira to the image
+# Create Data directory structure and add user sonar to the image
 RUN mkdir -p ${datadir} \ 
 	&& adduser ${appuser} -U -u 1${idoffset} --home ${sonar_home} \
 	&& mkdir -p ${sonar_home}/shared

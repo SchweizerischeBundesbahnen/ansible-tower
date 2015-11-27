@@ -53,7 +53,7 @@ case "${APP_URL}" in
                 echo "0.0.0.0 smtp-app.sbb.ch" >> /etc/hosts
 
 	;;
-        "codequality-t.sbb.ch")
+        "codequality-i.sbb.ch")
         	# disable mailserver
 		echo "0.0.0.0 smtp-app.sbb.ch" >> /etc/hosts
 	;;
