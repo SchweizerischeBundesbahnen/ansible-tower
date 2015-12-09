@@ -7,7 +7,8 @@ git checkout "${GIT_BRANCH}"
 GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
 echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
-LATEST_TAG_NAME=latest-int
+TAG_SUFFIX="-int"
+LATEST_TAG_NAME="latest${TAG_SUFIX}"
 
 # Finding the pull request based on the commit via Stash
 BRANCH=`basename $GIT_BRANCH`
@@ -23,6 +24,10 @@ else
     echo "pr=${PR} is NOT valid, exiting..."
     exit -1
 fi
+
+# rewrite TAG to one registry logic
+TAG=${TAG}${TAG_SUFFIX}
+echo "Tag for deployment: ${TAG}"
 
 # define registry to push to
 REGISTRY="registry.sbb.ch"
