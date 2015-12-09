@@ -14,7 +14,11 @@ RUN yum update -q -y && yum install -q npm rubygems  -y && yum clean all -q
 RUN curl -o- ${installer_url} | bash \
 	&& source /root/.bashrc \
 	&& nvm install ${nodejs_version} \
-	&& nvm alias default ${nodejs_version}
+	&& nvm alias default ${nodejs_version} \
+	&& cp -r /root/.nvm/versions/node/${nodejs_version}/{bin,lib,share} /usr/local \
+	&& rm -f /bin/node \
+	&& ln -s /usr/local/bin/node /bin/node
+
 
 # Install packages for build
 RUN npm install bower grunt grunt-cli gulp --silent && gem install bundle
