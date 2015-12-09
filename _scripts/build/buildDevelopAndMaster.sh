@@ -8,7 +8,7 @@ GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
 echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
 TAG_SUFFIX="-dev"
-LATEST_TAG_NAME="latest${TAG_SUFIX}"
+LATEST_TAG_NAME="latest${TAG_SUFFIX}"
 
 # Finding the pull request based on the commit via Stash
 BRANCH=`basename $GIT_BRANCH`
