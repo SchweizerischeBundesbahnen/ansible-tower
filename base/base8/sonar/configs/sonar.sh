@@ -42,6 +42,24 @@ sed -ri "s#MYSQL_DBNAME#${MYSQL_DBNAME}#g" /opt/sonar/conf/sonar.properties
 sed -ri "s#MYSQL_PASSWORD#${MYSQL_PASSWORD}#g" /opt/sonar/conf/sonar.properties
 cat /opt/sonar/conf/sonar.properties
 
+# modifications for some environments
+echo "Application modifications for App URL ${APP_URL}"
+case "${APP_URL}" in
+	"codequality-t.sbb.ch")
+		# disable some unlicensed plugins
+		rm -f /opt/sonar/extensions/plugins/sonar-sqale-plugin*
+		rm -f /opt/sonar/extensions/plugins/sonar-views-plugin*
+		 # disable mailserver
+                echo "0.0.0.0 smtp-app.sbb.ch" >> /etc/hosts
+
+	;;
+        "codequality-i.sbb.ch")
+        	# disable mailserver
+		echo "0.0.0.0 smtp-app.sbb.ch" >> /etc/hosts
+	;;
+esac
+
+
 echo "Starting Application";
 /opt/sonar/bin/linux-x86-64/sonar.sh console &
 child=$!
