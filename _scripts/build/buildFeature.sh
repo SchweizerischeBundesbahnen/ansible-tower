@@ -4,6 +4,8 @@
 GIT_BRANCH=$1
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
+REGISTRY=registry.sbb.ch
+
 # since we're on a feature branch, we want to find the suffix
 tag=`basename $GIT_BRANCH`
 error=0
@@ -46,7 +48,7 @@ fi
 echo ""
 echo ""
 echo "-------------------------------------"
-echo "Start if list of images to Build to push to registry-t.sbb.ch"
+echo "Start if list of images to Build to push to ${REGISTRY}"
 echo "-------------------------------------"
 echo ""
 echo ""
@@ -54,7 +56,7 @@ echo "${images}"
 echo ""
 echo ""
 echo "-------------------------------------"
-echo "End if list of images to Build to push to $REGISTRY, starting building and pushing"
+echo "End if list of images to Build to push to ${REGISTRY}, starting building and pushing"
 echo "-------------------------------------"
 echo ""
 echo ""
@@ -76,49 +78,21 @@ do
     dockerfile=$path/Dockerfile
     #if [ "${path}" != "base" ]; then
     #Always referring to prod-registry.
-    sed -ri "s#FROM schweizerischebundesbahnen#FROM registry-i.sbb.ch#g" ${dockerfile}
-    search=`grep "FROM registry-i.sbb.ch" ${dockerfile}`
+    sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
+    search=`grep "FROM registry.sbb.ch ${dockerfile}`
     currentparent=`basename $( echo $search | cut -d " " -f2 )`
-
-    #Iterate through all images to build to adapt parent-reference if necessary.
-    #This means, the parent is built if the parent is also part of this build.
-    for parentname in $imagenames ; do
-        #If parent is always built, point to the image to be built in this job. Adapting dockerfile over here.
-        if [ "$parentname" = "$currentparent" ]; then
-            echo "found $parentname"
-            echo "Dockerfile: ${dockerfile}"
-            echo "Old from: ${search}"
-            sed -ri "s#${search}#${search}:${tag}#g" ${dockerfile}
-            sed -ri "s#FROM registry-i.sbb.ch#FROM registry-t.sbb.ch#g" ${dockerfile}
-            search2=`grep "FROM registry-t.sbb.ch" ${dockerfile}`
-            echo "New from: ${search2}:${tag}"
-        fi
-        #else, the referring parent is registry-i.sbb.ch
-    done
-    #fi 
 
     image=`basename $path`
     # build and push images
-    echo "Cleaning up possibly existing images for schweizerischebundesbahnen/${image}:${TAG}"
-    sudo docker rmi -f schweizerischebundesbahnen/${image}:${TAG} && true
-    # build and push images
-    echo "docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}"
-    sudo docker build --rm --no-cache -t schweizerischebundesbahnen/${image}:${tag} ./${path}
+    echo "docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}"
+    sudo docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Image=$image"
         exit -1
     fi
 
-    # if everything is ok till now: push images to internal registry
-    echo "docker tag -f schweizerischebundesbahnen/${image}:${tag} registry-t.sbb.ch/${image}:${tag}"
-    sudo docker tag -f "schweizerischebundesbahnen/${image}:${tag}" "registry-t.sbb.ch/${image}:${tag}"
-    if [ $? -ne 0 ]; then
-        echo "BUILD failed! Tagging image=$image failed!"
-        exit -2
-    fi
-
-    echo "docker push registry-t.sbb.ch/${image}:${tag}"
-    sudo docker push registry-t.sbb.ch/${image}:${tag}
+    echo "docker push ${REGISTRY}/${image}:${tag}"
+    sudo docker push ${REGISTRY}/${image}:${tag}
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Pushing image=$image failed!"
         exit -3
@@ -126,8 +100,7 @@ do
 
     # delete images from disk, if succesful. Exit otherwise
     if [ $error -eq 0 ]; then
-        sudo docker rmi -f "registry-t.sbb.ch/${image}:${tag}"
-        sudo docker rmi -f "schweizerischebundesbahnen/${image}:${tag}"
+        sudo docker rmi -f "${REGISTRY}/${image}:${tag}"
     else
         exit $error
     fi
