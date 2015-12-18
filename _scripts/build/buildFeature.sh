@@ -79,8 +79,7 @@ do
     #if [ "${path}" != "base" ]; then
     #Always referring to prod-registry.
     sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
-    search=`grep "FROM registry.sbb.ch" ${dockerfile}`
-    currentparent=`basename $( echo $search | cut -d " " -f2 )`
+    search=`grep "FROM registry.sbb.ch ${dockerfile}`
 
     image=`basename $path`
     # build and push images
