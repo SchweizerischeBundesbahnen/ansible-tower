@@ -6,7 +6,7 @@ MAINTAINER Igor Masen <igor.masen@sbb.ch>
 ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
-ENV mvn33version 3.3.3
+ENV mvn33version 3.3.9
 ENV swarmversion 1.26
 ENV appuser jenkins
 ENV portoffset 91
@@ -68,7 +68,7 @@ RUN cd ${jenkinshome}/buildtools \
 RUN mkdir -p ${jenkinshome}/buildtools/{jdk32bit,jdk64bit}
 
 # Get Oracle 6 32 Bit JDK
-RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk632bitfile} -O /tmp/${orajdk632bitfile}  \
+RUN wget --quiet --no-check-certificate ${filerurl}/jdk/${orajdk632bitfile} -O /tmp/${orajdk632bitfile}  \
 	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk632bitfile} \
 	&& rm -f /tmp/${orajdk632bitfile} \
@@ -76,7 +76,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk632bitfile} -O /tmp/${or
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6-32b/bin/java -version
 
 # Get Oracle 7 32 Bit JDK
-RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk732bitfile} -O /tmp/${orajdk732bitfile} \
+RUN wget --quiet --no-check-certificate ${filerurl}/jdk/${orajdk732bitfile} -O /tmp/${orajdk732bitfile} \
 	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk732bitfile} \
 	&& rm -f /tmp/${orajdk732bitfile} \
@@ -84,7 +84,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk732bitfile} -O /tmp/${or
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7-32b/bin/java -version
 
 # Get Oracle 8 JDK
-RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk832bitfile} -O /tmp/${orajdk832bitfile} \
+RUN wget --quiet --no-check-certificate ${filerurl}/jdk/${orajdk832bitfile} -O /tmp/${orajdk832bitfile} \
 	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk832bitfile} \
 	&& rm -f /tmp/${orajdk832bitfile} \
@@ -92,7 +92,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk832bitfile} -O /tmp/${or
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8-32b/bin/java -version
 
 # Get Oracle 6 JDK
-RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk664bitfile} -O /tmp/${orajdk664bitfile} \
+RUN wget --quiet --no-check-certificate ${filerurl}/jdk/${orajdk664bitfile} -O /tmp/${orajdk664bitfile} \
 	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk664bitfile} \
 	&& rm -f /tmp/${orajdk664bitfile} \
@@ -100,7 +100,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk664bitfile} -O /tmp/${or
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6/bin/java -version
 
 # Get Oracle 7 JDK
-RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk764bitfile} -O /tmp/${orajdk764bitfile} \
+RUN wget --quiet --no-check-certificate ${filerurl}/jdk/${orajdk764bitfile} -O /tmp/${orajdk764bitfile} \
 	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk764bitfile} \
 	&& rm -f /tmp/${orajdk764bitfile} \
@@ -108,7 +108,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk764bitfile} -O /tmp/${or
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7/bin/java -version
 
 # Get Oracle 8 JDK
-RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk864bitfile} -O /tmp/${orajdk864bitfile} \
+RUN wget --quiet --no-check-certificate ${filerurl}/jdk/${orajdk864bitfile} -O /tmp/${orajdk864bitfile} \
 	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk864bitfile} \
 	&& rm -f /tmp/${orajdk864bitfile} \
