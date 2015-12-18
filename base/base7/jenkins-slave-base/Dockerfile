@@ -23,13 +23,13 @@ ENV externalport 12345
 ENV host example.sbb.ch
 ENV orajdk632bitfile oracle-jdk-6-32b.tar.gz
 ENV orajdk664bitfile oracle-jdk-6.tar.gz
-ENV orajdk732bitfile jdk-7u79-linux-i586.gz
-ENV orajdk764bitfile jdk-7u79-linux-x64.gz
-ENV orajdk832bitfile jdk-8u65-linux-i586.gz
-ENV orajdk864bitfile jdk-8u65-linux-x64.gz
+ENV orajdk732bitfile jdk-7u79-linux-i586.tar.gz
+ENV orajdk764bitfile jdk-7u79-linux-x64.tar.gz
+ENV orajdk832bitfile jdk-8u65-linux-i586.tar.gz
+ENV orajdk864bitfile jdk-8u65-linux-x64.tar.gz
 
 # Install dev tools
-RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q 
+RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q
 
 
 # Create Data directory structure and add user jenkins to the image
@@ -65,8 +65,8 @@ RUN cd ${jenkinshome}/buildtools \
         && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Create folders for different jdk architecture
-RUN mkdir -p ${jenkinshome}/buildtools/{jdk32bit,jdk64bit}		
-		
+RUN mkdir -p ${jenkinshome}/buildtools/{jdk32bit,jdk64bit}
+
 # Get Oracle 6 32 Bit JDK
 RUN wget --quiet ${filerurl}/jdk/${orajdk632bitfile} -O /tmp/${orajdk632bitfile}  \
 	&& cd ${jenkinshome}/buildtools/jdk32bit \
