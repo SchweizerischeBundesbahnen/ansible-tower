@@ -82,7 +82,7 @@ do
     if [ $previousimage == "NOIMAGE" ]; then
 		sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
 	else
-		parentimage=`grep "FROM" ${dockerfile} | cut -d\ -f1`
+		parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f2`
 		sed -ri "s#FROM schweizerischebundesbahnen\/$parentimage#FROM ${REGISTRY}\/$parentimage:${tag}#g" ${dockerfile}
 	fi
 
