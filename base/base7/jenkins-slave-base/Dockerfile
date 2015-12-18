@@ -110,8 +110,8 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk764bitfile} -O /tmp/${or
 # Get Oracle 8 JDK
 RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk864bitfile} -O /tmp/${orajdk864bitfile} \
 	&& cd ${jenkinshome}/buildtools/jdk64bit \
-	&& tar xfz /tmp/${orajdk764bitfile} \
-	&& rm -f /tmp/${orajdk764bitfile} \
+	&& tar xfz /tmp/${orajdk864bitfile} \
+	&& rm -f /tmp/${orajdk864bitfile} \
 	&& cd .. && ln -s jdk64bit/jdk1.8* oracle-jdk-8 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8/bin/java -version
 
