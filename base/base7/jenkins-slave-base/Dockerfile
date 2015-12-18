@@ -72,7 +72,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk632bitfile} -O /tmp/${or
 	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk632bitfile} \
 	&& rm -f /tmp/${orajdk632bitfile} \
-	&& ln -s jdk1.6* ../oracle-jdk-6-32b \
+	&& cd .. && ln -s jdk32bit/jdk1.6* oracle-jdk-6-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6-32b/bin/java -version
 
 # Get Oracle 7 32 Bit JDK
@@ -80,7 +80,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk732bitfile} -O /tmp/${or
 	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk732bitfile} \
 	&& rm -f /tmp/${orajdk732bitfile} \
-	&& ln -s jdk1.7* ../oracle-jdk-7-32b \
+	&& cd .. && ln -s jdk32bit/jdk1.7* oracle-jdk-7-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7-32b/bin/java -version
 
 # Get Oracle 8 JDK
@@ -88,7 +88,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk832bitfile} -O /tmp/${or
 	&& cd ${jenkinshome}/buildtools/jdk32bit \
 	&& tar xfz /tmp/${orajdk832bitfile} \
 	&& rm -f /tmp/${orajdk832bitfile} \
-	&& ln -s jdk1.8* ../oracle-jdk-8-32b \
+	&& cd .. && ln -s jdk32bit/jdk1.8* oracle-jdk-8-32b \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8-32b/bin/java -version
 
 # Get Oracle 6 JDK
@@ -96,7 +96,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk664bitfile} -O /tmp/${or
 	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk664bitfile} \
 	&& rm -f /tmp/${orajdk664bitfile} \
-	&& ln -s jdk1.6* ../oracle-jdk-6 \
+	&& cd .. && ln -s jdk64bit/jdk1.6* oracle-jdk-6 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-6/bin/java -version
 
 # Get Oracle 7 JDK
@@ -104,7 +104,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk764bitfile} -O /tmp/${or
 	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk764bitfile} \
 	&& rm -f /tmp/${orajdk764bitfile} \
-	&& ln -s jdk1.7* ../oracle-jdk-7 \
+	&& cd .. && ln -s jdk64bit/jdk1.7* oracle-jdk-7 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-7/bin/java -version
 
 # Get Oracle 8 JDK
@@ -112,7 +112,7 @@ RUN wget --no-check-certificate ${filerurl}/jdk/${orajdk864bitfile} -O /tmp/${or
 	&& cd ${jenkinshome}/buildtools/jdk64bit \
 	&& tar xfz /tmp/${orajdk764bitfile} \
 	&& rm -f /tmp/${orajdk764bitfile} \
-	&& ln -s jdk1.8* ../oracle-jdk-8 \
+	&& cd .. && ln -s jdk64bit/jdk1.8* oracle-jdk-8 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8/bin/java -version
 
 # Legacy stuff
