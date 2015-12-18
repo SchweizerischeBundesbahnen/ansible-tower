@@ -64,6 +64,7 @@ echo ""
 
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
+previousimage=NOIMAGE
 #Adapt the dockerfiles to point to registry-t and to point to adjacent parents included in this build, if necessary.
 for path in $images ;
 do
@@ -76,12 +77,15 @@ do
     echo ""
 
     dockerfile=$path/Dockerfile
+    image=`basename $path`
     #if [ "${path}" != "base" ]; then
     #Always referring to prod-registry.
-    sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
-    search=`grep "FROM registry.sbb.ch" ${dockerfile}`
+    if [ $previousimage == "NOIMAGE" ]; then
+		sed -ri "s#FROM schweizerischebundesbahnen\/${image}#FROM ${REGISTRY}\/$image#g" ${dockerfile}
+	else
+		sed -ri "s#FROM schweizerischebundesbahnen\/${image}#FROM ${REGISTRY}\/$image:${tag}#g" ${dockerfile}
+	fi
 
-    image=`basename $path`
     # build and push images
     echo "docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}"
     sudo docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}
@@ -103,6 +107,8 @@ do
     else
         exit $error
     fi
+    
+    previousimage=$image
 
     echo ""
     echo ""
