@@ -78,12 +78,11 @@ do
 
     dockerfile=$path/Dockerfile
     image=`basename $path`
-    #if [ "${path}" != "base" ]; then
-    #Always referring to prod-registry.
+    
     if [ $previousimage == "NOIMAGE" ]; then
 		sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
 	else
-		sed -ri "s#FROM schweizerischebundesbahnen\/${image}#FROM ${REGISTRY}\/$image:${tag}#g" ${dockerfile}
+		sed -ri "s#FROM schweizerischebundesbahnen\/$previosimage#FROM ${REGISTRY}\/$image:${tag}#g" ${dockerfile}
 	fi
 
     # build and push images
