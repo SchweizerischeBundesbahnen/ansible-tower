@@ -121,10 +121,6 @@ RUN cd ${jenkinshome}/buildtools \
 	&& ln -s was85 base_v85 \
 	&& ln -s was70 base_v70
 
-# Modify IBM JDK security settings
-COPY configs/java.security.was85 ${jenkinshome}/buildtools/ibm-jdk-was85/jre/lib/security/java.security
-COPY configs/java.security.was7 ${jenkinshome}/buildtools/ibm-jdk-was70/jre/lib/security/java.security
-
 # Download the swarm client
 RUN wget --quiet "http://repo.sbb.ch/content/repositories/mirror/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
 
@@ -174,7 +170,7 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& rm ./oracle-jdk-7-32b/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-7-32b/jre/lib/security/cacerts \
 	&& rm ./oracle-jdk-8-32b/jre/lib/security/cacerts \
-	&& ln -s /opt/jdk/jre/lib/security/cacerts ./jdk1.8.0_51-32b/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-7-32b/jre/lib/security/cacerts \
 	&& rm ./oracle-jdk-6/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-6/jre/lib/security/cacerts \
 	&& rm ./oracle-jdk-7/jre/lib/security/cacerts \
