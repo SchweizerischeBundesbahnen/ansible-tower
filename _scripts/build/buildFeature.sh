@@ -82,7 +82,8 @@ do
     if [ $previousimage == "NOIMAGE" ]; then
 		sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
 	else
-		sed -ri "s#FROM schweizerischebundesbahnen\/$previousimage#FROM ${REGISTRY}\/$previousimage:${tag}#g" ${dockerfile}
+		parentimage=`grep "FROM" ${dockerfile} | cut -d\ -f1`
+		sed -ri "s#FROM schweizerischebundesbahnen\/$parentimage#FROM ${REGISTRY}\/$parentimage:${tag}#g" ${dockerfile}
 	fi
 
     # build and push images
