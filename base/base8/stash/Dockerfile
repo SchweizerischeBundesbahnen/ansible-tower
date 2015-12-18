@@ -20,8 +20,8 @@ RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlass
 	&& cd /opt \
 	&& tar xfz atlassian-stash-${stashversion}.tar.gz \
 	&& rm -f /opt/atlassian-stash-${stashversion}.tar.gz \
-	&& ln -s /opt/atlassian-stash* /opt/stash \
-	&& chown -R ${appuser}:${appuser} /opt/atlassian-stash* \
+	&& ln -s /opt/atlassian-bitbucket* /opt/stash \
+	&& chown -R ${appuser}:${appuser} /opt/atlassian-bitbucket* \
 	&& mv /opt/stash/bin/setenv.sh /opt/stash/bin/setenv-backup.sh
 
 # Install JDBC driver
