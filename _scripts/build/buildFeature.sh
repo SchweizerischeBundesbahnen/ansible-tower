@@ -24,7 +24,7 @@ do
     base=`basename $dir`;
     if [ "$base" == "configs" ]; then
         dir=`dirname $dir`;
-    fi  
+    fi
     #since git show respects the hierarchy, check if already touched folder is in list is sufficient to reduce any duplicates
     if [[ "$images" != *"$dir"* ]]; then
         if [[ -d "$dir" ]]; then
@@ -74,12 +74,12 @@ do
     echo "-------------------------------------"
     echo ""
     echo ""
-    
+
     dockerfile=$path/Dockerfile
     #if [ "${path}" != "base" ]; then
     #Always referring to prod-registry.
     sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
-    search=`grep "FROM registry.sbb.ch ${dockerfile}`
+    search=`grep "FROM registry.sbb.ch" ${dockerfile}`
     currentparent=`basename $( echo $search | cut -d " " -f2 )`
 
     image=`basename $path`
@@ -104,7 +104,7 @@ do
     else
         exit $error
     fi
-    
+
     echo ""
     echo ""
     echo "-------------------------------------"
