@@ -7,6 +7,9 @@ git checkout "${GIT_BRANCH}"
 GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
 echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
+LATEST_TAG_NAME=latest-dev
+
+
 # Finding the pull request based on the commit via Stash
 BRANCH=`basename $GIT_BRANCH`
 echo "branch=${BRANCH}"
@@ -56,18 +59,16 @@ do
     IMAGE=`basename $TOBUILD`
 
     # build and push images
-    echo "Cleaning up possibly existing images for schweizerischebundesbahnen/${IMAGE}:${TAG}"
-    sudo docker rmi -f schweizerischebundesbahnen/${IMAGE}:${TAG} && true
-    echo "docker pull registry-i.sbb.ch/${IMAGE}:latest"
-    sudo docker pull registry-i.sbb.ch/${IMAGE}:latest
+    echo "docker pull ${REGISTRY}/${IMAGE}:${LATEST_TAG_NAME}"
+    sudo docker pull ${REGISTRY}/${IMAGE}:${LATEST_TAG_NAME}
     if [ $? -ne 0 ]; then
         echo "PULL failed! Image=$IMAGE"
         exit -1
     fi
 
     # if everything is ok till now: push images to internal registry
-    echo "docker tag -f "registry-i.sbb.ch/${IMAGE}:latest" "${REGISTRY}/${IMAGE}:${TAG}""
-    sudo docker tag -f "registry-i.sbb.ch/${IMAGE}:latest" "${REGISTRY}/${IMAGE}:${TAG}"
+    echo "docker tag -f "${REGISTRY}/${IMAGE}:${LATEST_TAG_NAME}" "${REGISTRY}/${IMAGE}:${TAG}""
+    sudo docker tag -f "${REGISTRY}/${IMAGE}:${LATEST_TAG_NAME}" "${REGISTRY}/${IMAGE}:${TAG}"
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Tagging image=$IMAGE failed!"
            exit -2
@@ -83,7 +84,7 @@ do
 
     # set latest tag
     echo "setting latest tag for ${IMAGE}:${TAG}"
-    sudo docker tag -f "registry-i.sbb.ch/${IMAGE}:latest" "${REGISTRY}/${IMAGE}:latest"
+    sudo docker tag -f "${REGISTRY}/${IMAGE}:${LATEST_TAG_NAME}" "${REGISTRY}/${IMAGE}:latest"
     sudo docker push ${REGISTRY}/${IMAGE}:latest
     if [ $? -ne 0 ]; then
             echo "BUILD failed! Pushing image=$IMAGE failed!"
@@ -111,7 +112,7 @@ for TOBUILD in $FILELIST ;
 do
   IMAGE=`basename ${TOBUILD}`
   echo "Deleting ${IMAGE}"
-  sudo docker rmi -f registry-i.sbb.ch/${IMAGE}:latest
+  sudo docker rmi -f ${REGISTRY}/${IMAGE}:${LATEST_TAG_NAME}
   sudo docker rmi -f ${REGISTRY}/${IMAGE}:latest
   sudo docker rmi -f ${REGISTRY}/${IMAGE}:${TAG}
 done

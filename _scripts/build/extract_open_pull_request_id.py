@@ -32,10 +32,10 @@ c.putrequest('GET', getUrl)
 c.putheader('Authorization', auth )
 c.endheaders()
 response = c.getresponse()
-c.close()
 #print response.status, response.reason
 data = response.read()
 values = json.loads(data).get("values")
+c.close()
 
 #print getUrl
 #print 'printing dump:'
