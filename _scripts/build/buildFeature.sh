@@ -81,7 +81,7 @@ do
     #if [ "${path}" != "base" ]; then
     #Always referring to prod-registry.
     if [ $previousimage == "NOIMAGE" ]; then
-		sed -ri "s#FROM schweizerischebundesbahnen\/${image}#FROM ${REGISTRY}\/$image#g" ${dockerfile}
+		sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
 	else
 		sed -ri "s#FROM schweizerischebundesbahnen\/${image}#FROM ${REGISTRY}\/$image:${tag}#g" ${dockerfile}
 	fi
