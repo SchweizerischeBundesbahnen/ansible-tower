@@ -178,6 +178,9 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& rm ./oracle-jdk-8/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-8/jre/lib/security/cacerts \
 
+# Create Sonargraph Directories
+RUN mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect/
+
 # Add sonargraph license, see https://issues.sbb.ch/browse/MVBUD-1248 and https://www.hello2morrow.com/doc/sg7/ReportGeneration-Maven.html
 COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/SonargraphArchitect/SonargraphArchitect.license
 
