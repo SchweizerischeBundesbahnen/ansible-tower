@@ -4,6 +4,11 @@
 GIT_BRANCH=$1
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
+if [ -z "$GIT_BRANCH" ]; then
+	echo "Please give me the current GIT_BRANCH"
+	exit 1
+fi
+
 REGISTRY=registry.sbb.ch
 
 # since we're on a feature branch, we want to find the suffix
