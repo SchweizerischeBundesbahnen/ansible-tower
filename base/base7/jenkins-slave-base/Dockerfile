@@ -176,7 +176,7 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& rm ./oracle-jdk-7/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-7/jre/lib/security/cacerts \
 	&& rm ./oracle-jdk-8/jre/lib/security/cacerts \
-	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-8/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-8/jre/lib/security/cacerts
 
 # Create Sonargraph Directories
 RUN mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect/
