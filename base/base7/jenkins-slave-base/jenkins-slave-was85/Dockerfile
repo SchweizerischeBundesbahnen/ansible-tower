@@ -17,8 +17,6 @@ RUN cd ${jenkinshome}/buildtools \
         && ln -s ${jenkinshome}/buildtools/was85/java ibm-jdk-was85 \
 		&& ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
 
-# TODO: Add certificates to JRE
-
 # Create environment file
 RUN echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 
