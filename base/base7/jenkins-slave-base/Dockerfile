@@ -16,7 +16,7 @@ ENV master http://ci-t.sbb.ch
 ENV ciuser overridethis
 ENV cipassword overridethis
 ENV executors 1
-ENV settingsxmlurl https://svn.sbb.ch/svn/mwe/wzu/ci-admin-files/settings.xml
+ENV settingsxmlurl ${filerurl}/ci-admin-files/settings.xml
 ENV labels swarm
 ENV slavename $labels
 ENV externalport 12345
@@ -33,7 +33,7 @@ RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw3
 
 
 # Create Data directory structure and add user jenkins to the image
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp,_scripts} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
 
 # Adding Jenkins SSH Keys for access to Stash: https://issues.sbb.ch/browse/MWESERVICE-6123
 COPY configs/id_rsa* ${jenkinshome}/.ssh/
@@ -167,6 +167,8 @@ RUN mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect/
 # Add sonargraph license, see https://issues.sbb.ch/browse/MVBUD-1248 and https://www.hello2morrow.com/doc/sg7/ReportGeneration-Maven.html
 COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/SonargraphArchitect/SonargraphArchitect.license
 
+# Add download settings xml script
+COPY configs/download_settingsxml.sh ${jenkinshome}/_scripts/download_settingsxml.sh
 
 # Add security limits for jenkins user
 RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
