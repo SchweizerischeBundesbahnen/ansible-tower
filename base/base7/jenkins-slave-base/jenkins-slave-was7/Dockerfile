@@ -16,6 +16,12 @@ RUN cd /opt \
 RUN cd ${jenkinshome}/buildtools \
         && ln -s ${jenkinshome}/buildtools/was70/java ibm-jdk-was70 \
 		&& ${jenkinshome}/buildtools/ibm-jdk-was70/bin/java -version
+		
+# Link custom keystore
+RUN  cd ${jenkinshome}/buildtools \
+	&& rm ./ibm-jdk-was70/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./ibm-jdk-was70/jre/lib/security/cacerts \
+	&& ls -l ./ibm-jdk-was70/jre/lib/security/cacerts
 
 # Create environment file
 RUN echo 'export WAS7RUNTIME=/var/data/jenkins/buildtools/was70' >> ${jenkinshome}/env.sh

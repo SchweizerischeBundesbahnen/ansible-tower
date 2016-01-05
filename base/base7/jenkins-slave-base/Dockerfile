@@ -64,6 +64,10 @@ RUN cd ${jenkinshome}/buildtools \
         && wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn33version}/binaries/apache-maven-${mvn33version}-bin.tar.gz" | tar xfz - \
         && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
+# Create symlink for m2
+RUN cd ${jenkinshome} \
+	&& ln -s m2 .m2
+
 # Create folders for different jdk architecture
 RUN mkdir -p ${jenkinshome}/buildtools/{jdk32bit,jdk64bit}
 
@@ -115,12 +119,6 @@ RUN wget --quiet --no-check-certificate ${filerurl}/jdk/${orajdk864bitfile} -O /
 	&& cd .. && ln -s jdk64bit/jdk1.8* oracle-jdk-8 \
 	&& 	${jenkinshome}/buildtools/oracle-jdk-8/bin/java -version
 
-# Legacy stuff
-RUN cd ${jenkinshome}/buildtools \
-	&& ln -s ibm-jdk-was85 jdk-ibm-1.7.0.2 \
-	&& ln -s was85 base_v85 \
-	&& ln -s was70 base_v70
-
 # Download the swarm client
 RUN wget --quiet "http://repo.sbb.ch/content/repositories/mirror/org/jenkins-ci/plugins/swarm-client/${swarmversion}/swarm-client-${swarmversion}-jar-with-dependencies.jar" -O ${jenkinshome}/swarm-client.jar
 
@@ -131,23 +129,8 @@ RUN wget -q ${filerurl}/oracle/oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_6
         && rpm -ivh oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm \
         && echo "export ORACLE_HOME=/usr/lib/oracle/12.1/client64" >> ${jenkinshome}/env.sh \
         && echo "export LD_LIBRARY_PATH=/usr/lib/oracle/12.1/client64/lib" >> ${jenkinshome}/env.sh \
-	&& rm -fr oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
-	&& rm -fr oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm
-
-# Legacy stuff
-RUN cd ${jenkinshome} \
-	&& ln -s m2 .m2 \
-	&& ln -s buildtools/ build-binaries \
-	&& cd build-binaries \
-	&& ln -s apache-maven-${mvn30version} apache-maven-3.0.4 \
-	&& ln -s oracle-jdk-6 jdk-oracle-1.6.0.30 \
-	&& ln -s oracle-jdk-6-32b jdk-oracle-1.6.0.31-32b \
-	&& ln -s oracle-jdk-6 jdk-oracle-1.6.0.31 \
-	&& ln -s oracle-jdk-7 jdk-oracle-1.7.0.3 \
-	&& ln -s oracle-jdk-7-32b jdk-oracle-1.7.0.3-32b \
-	&& ln -s oracle-jdk-7 1.7.0.2 \
-	&& ln -s oracle-jdk-8 jdk-oracle-1.8.0.5-64b \
-	&& ln -s oracle-jdk-7 jdk-oracle-1.7.0.2
+		&& rm -fr oracle-instantclient12.1-basic-12.1.0.2.0-1.x86_64.rpm \
+		&& rm -fr oracle-instantclient12.1-sqlplus-12.1.0.2.0-1.x86_64.rpm
 
 # Create environment file
 RUN echo 'export PATH=$PATH:$HOME/bin:/opt/jdk/bin:/usr/lib/oracle/12.1/client64/bin LC_ALL=en_US.UTF-8' >> ${jenkinshome}/env.sh
