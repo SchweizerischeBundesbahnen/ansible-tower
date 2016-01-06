@@ -1,8 +1,8 @@
 FROM schweizerischebundesbahnen/base7
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
-ENV filerurl http://wzufiler.sbb.ch/was85dev.tar.gz
-ENV scripturl http://wzufiler.sbb.ch/me.tar.gz
+ENV scripturl ${filerurl}/me.tar.gz
+ENV wasurl ${filerurl}/was85dev.tar.gz
 ENV appuser asrun
 ENV profileName AppSrv01
 
@@ -11,12 +11,12 @@ RUN adduser ${appuser} \
 	&& echo "${appuser}:${appuser}" | chpasswd \
 	&& mkdir /home/${appuser}/.ssh
 
-# Add public key for passwordless login 
+# Add public key for passwordless login
 COPY configs/authorized_keys /home/${appuser}/.ssh/authorized_keys
 
 # Download and extract WAS 8.5 and create profile
 RUN cd /opt \
-        && curl ${filerurl} | tar xfz - \
+        && curl ${wasurl} | tar xfz - \
         && chown -R ${appuser}:${appuser} was85
 
 # Download and extract OM managements scripts
@@ -30,9 +30,16 @@ COPY configs/run.sh /opt/run.sh
 RUN chmod +x /opt/run.sh
 
 # Add sshd
-RUN yum install openssh-server openssh-clients -y \
+RUN yum install openssh-server openssh-clients python-setuptools -y \
 	&& yum clean all \
 	&& /usr/bin/ssh-keygen -A
+
+# Install supervisor
+RUN easy_install supervisor
+RUN mkdir -p /etc/supervisor/conf.d
+
+# Supervisord: configure service and sshd
+COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
 
 # Add supervisor configuration
 COPY configs/was85.ini /etc/supervisor/conf.d/
@@ -45,8 +52,7 @@ RUN /opt/was85/bin/managesdk.sh -setNewProfileDefault -sdkName 1.7_64 \
 RUN mkdir -pv /opt/source/delivery \
         && chown ${appuser}:${appuser} /opt/source \
         && chown ${appuser}:${appuser} /opt/source/delivery \
-        && chown -R ${appuser}:${appuser} /opt/was85 \
-        && chown -R ${appuser}:${appuser} /opt/was85_shared
+        && chown -R ${appuser}:${appuser} /opt/was85
 
 # Add the files for the installation in unmanaged WAS (=developer edition) using the postdev ..
 COPY configs/ant_task_lib.patch /opt/me/res/ant/ant_task_lib.patch
@@ -73,6 +79,3 @@ RUN cd /opt/me/res/jython && \
 EXPOSE 22 8880 5061 5060 7276 9443 9353 5578 9043 9402 9100 2809 9403 9633 7286 9080 5558 9401 11003 11004 9060
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
-
-
-

@@ -3,7 +3,7 @@ mkdir -p ${jenkinshome}/buildtools \
 	&& cd ${jenkinshome}/buildtools \
 	&& wget -qO- ${filerurl}/android-sdk.tar.gz | tar xfz - \
 	&& cd ${jenkinshome}/buildtools/android-sdk-linux \
-        && wget ${filerurl}/android-sdk-update.sh -O android-sdk-update.sh \
+        && wget -q ${filerurl}/android-sdk-update.sh -O android-sdk-update.sh \
         && chmod +x ./android-sdk-update.sh \
         && chown -R ${appuser}:${appuser} ${jenkinshome}
 
@@ -16,5 +16,8 @@ tar -zcf /output/android-sdk-linux-latest.tar.gz /output/buildtools
 # create md5sum for log
 md5sum /output/android-sdk-linux-latest.tar.gz
 
+# delete file from filerurl
+svn delete --non-interactive --no-auth-cache --username ${fileruser} --password ${filerpassword} -m "Deleting file android-sdk-linux-latest.tar.gz from build" ${filerurl}/android/android-sdk-linux-latest.tar.gz
+
 # upload to wzufiler
-curl -T /output/android-sdk-linux-latest.tar.gz ${filerurl}/android/
+svn import --non-interactive --no-auth-cache --username ${fileruser} --password ${filerpassword} -m "Updating android-sdk-linux-latest.tar.gz from build" /output/android-sdk-linux-latest.tar.gz ${filerurl}/android/android-sdk-linux-latest.tar.gz
