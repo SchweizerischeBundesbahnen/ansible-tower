@@ -1,30 +1,22 @@
 #Docker image for jenkins master
 FROM schweizerischebundesbahnen/base7
-
-MAINTAINER igor.masen2@sbb.ch
-
+ 
+MAINTAINER igor.masen@sbb.ch
+ 
 ENV datadir /var/data
 ENV appname jenkins-master
 ENV appuser jenkins
-ENV appversion 1.609.3
+ENV appversion 1.596.3
 ENV offset 50
 ENV JAVA_HOME /opt/jdk
 ENV jenkinshome ${datadir}/${appname}
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} \
-	&& adduser ${appuser} -U -u 10${offset} --home ${jenkinshome} \
-	&& mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh} \
-	&& echo "${appuser}:${appuser}" | chpasswd
-
-# setting up locale
-RUN echo "LC_ALL=en_US.UTF-8" >> ${jenkinshome}/.bashrc
-
-# add java opts to .bashrc file
-RUN echo "export JAVA_HOME=${JAVA_HOME}" >> ${jenkinshome}/.bashrc
+	&& adduser ${appuser} -U -u 10${offset} --home ${jenkinshome}
 
 # download jenkins war
-RUN wget --quiet http://mirrors.jenkins-ci.org/war-stable/${appversion}/jenkins.war -O /opt/jenkins.war \
+RUN wget --quiet http://repo.sbb.ch/content/groups/mirror/org/jenkins-ci/main/jenkins-war/${appversion}/jenkins-war-${appversion}.war -O /opt/jenkins.war \
 	&& chown ${appuser}:${appuser} /opt/jenkins.war
 
 # expose port 8050 for jenkins
