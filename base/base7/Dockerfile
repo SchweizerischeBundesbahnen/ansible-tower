@@ -3,14 +3,14 @@ FROM schweizerischebundesbahnen/base
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
-ENV jdkurl http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz 
-ENV keystore keystore-20150722
+ENV jdkurl ${filerurl}/jdk/jdk-7u79-linux-x64.tar.gz
 
 # Get and Install Java
-RUN curl -Lks --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdkurl} -o /opt/jdk.tar.gz \
+RUN curl -s ${jdkurl} -o /opt/jdk.tar.gz \
 	&& cd /opt && tar xfz jdk.tar.gz \
 	&& ln -s /opt/jdk1.7* ${JAVA_HOME} \
-	&& rm -rf /opt/*.tar.gz
+	&& rm -rf /opt/*.tar.gz \
+	&& /opt/jdk/bin/java -version
 
 # Install WZU Keystore
-RUN wget --quiet http://wzufiler.sbb.ch/${keystore} -O /opt/jdk/jre/lib/security/cacerts
+RUN wget --quiet ${filerurl}/${keystore} -O /opt/jdk/jre/lib/security/cacerts

@@ -1,8 +1,8 @@
 #Docker image for jenkins master
 FROM schweizerischebundesbahnen/base7
- 
+
 MAINTAINER igor.masen2@sbb.ch
- 
+
 ENV datadir /var/data
 ENV appname jenkins-master
 ENV appuser jenkins
@@ -19,11 +19,7 @@ RUN mkdir -p ${datadir} \
 
 # setting up locale
 RUN echo "LC_ALL=en_US.UTF-8" >> ${jenkinshome}/.bashrc
- 
-# install basic tools
-RUN yum install --quiet git -y \
-	&& yum clean all -y
- 
+
 # add java opts to .bashrc file
 RUN echo "export JAVA_HOME=${JAVA_HOME}" >> ${jenkinshome}/.bashrc
 

@@ -19,7 +19,7 @@ RUN adduser -u 10${portoffset} -U ${appname} -b ${datadir}
 RUN echo "jenkins:jenkins" | chpasswd
 
 # install basic tools
-RUN yum install --quiet s3cmd git git-svn subversion openldap-clients openssl xmlstarlet -y && yum clean all -y
+RUN yum install --quiet s3cmd git-svn openldap-clients openssl xmlstarlet -y && yum clean all -y
 
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
