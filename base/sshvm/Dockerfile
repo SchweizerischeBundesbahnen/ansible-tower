@@ -15,6 +15,13 @@ RUN adduser sshuser -U -u 1000 --home /home/sshuser \
 	&& echo "sshuser:sshuser" | chpasswd \
 	&& mkdir -p /var/data
 
+# install supervisor
+RUN yum update -y \
+	&& yum -y install python-setuptools \
+	&& yum clean all -q \
+	&& easy_install supervisor \
+	&& mkdir -p /etc/supervisor/conf.d
+
 # setting up locale
 RUN echo "LC_ALL=en_US.UTF-8" >> /home/sshuser/.bashrc
  
