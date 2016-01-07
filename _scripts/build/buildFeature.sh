@@ -4,6 +4,11 @@
 GIT_BRANCH=$1
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
+if [ -z "$GIT_BRANCH" ]; then
+	echo "Please give me the current GIT_BRANCH"
+	exit 1
+fi
+
 REGISTRY=registry.sbb.ch
 
 # since we're on a feature branch, we want to find the suffix
@@ -24,7 +29,7 @@ do
     base=`basename $dir`;
     if [ "$base" == "configs" ]; then
         dir=`dirname $dir`;
-    fi  
+    fi
     #since git show respects the hierarchy, check if already touched folder is in list is sufficient to reduce any duplicates
     if [[ "$images" != *"$dir"* ]]; then
         if [[ -d "$dir" ]]; then
@@ -64,6 +69,7 @@ echo ""
 
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
+previousimage=NOIMAGE
 #Adapt the dockerfiles to point to registry-t and to point to adjacent parents included in this build, if necessary.
 for path in $images ;
 do
@@ -74,15 +80,17 @@ do
     echo "-------------------------------------"
     echo ""
     echo ""
-    
-    dockerfile=$path/Dockerfile
-    #if [ "${path}" != "base" ]; then
-    #Always referring to prod-registry.
-    sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
-    search=`grep "FROM registry.sbb.ch ${dockerfile}`
-    currentparent=`basename $( echo $search | cut -d " " -f2 )`
 
+    dockerfile=$path/Dockerfile
     image=`basename $path`
+    
+    if [ $previousimage == "NOIMAGE" ]; then
+		sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
+	else
+		parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f2`
+		sed -ri "s#FROM schweizerischebundesbahnen\/$parentimage#FROM ${REGISTRY}\/$parentimage:${tag}#g" ${dockerfile}
+	fi
+
     # build and push images
     echo "docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}"
     sudo docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}
@@ -105,6 +113,8 @@ do
         exit $error
     fi
     
+    previousimage=$image
+
     echo ""
     echo ""
     echo "-------------------------------------"
