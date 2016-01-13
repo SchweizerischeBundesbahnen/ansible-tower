@@ -84,9 +84,12 @@ do
     image=`basename $path`
     parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f2`
 
-    if [[ $imagnames =~ $parentimage ]]; then
+    # If the parent image is built too, then take the tagged image; else take the untagged image
+    if [[ $imagenames =~ $parentimage ]]; then
+        echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
 		sed -ri "s#FROM schweizerischebundesbahnen\/$parentimage#FROM ${REGISTRY}\/$parentimage:${tag}#g" ${dockerfile}
 	else
+	    echo "For image $image setting parent to  ${REGISTRY}/$parentimage"
 	    sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
 	fi
 
