@@ -69,8 +69,7 @@ echo ""
 
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
-previousimage=NOIMAGE
-#Adapt the dockerfiles to point to registry-t and to point to adjacent parents included in this build, if necessary.
+#Adapt the dockerfiles to point to registry and to point to adjacent parents included in this build, if necessary.
 for path in $images ;
 do
     echo ""
@@ -83,12 +82,12 @@ do
 
     dockerfile=$path/Dockerfile
     image=`basename $path`
-    
-    if [ $previousimage == "NOIMAGE" ]; then
-		sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
-	else
-		parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f2`
+    parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f2`
+
+    if [[ $imagnames =~ $parentimage ]]; then
 		sed -ri "s#FROM schweizerischebundesbahnen\/$parentimage#FROM ${REGISTRY}\/$parentimage:${tag}#g" ${dockerfile}
+	else
+	    sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
 	fi
 
     # build and push images
@@ -112,8 +111,6 @@ do
     else
         exit $error
     fi
-    
-    previousimage=$image
 
     echo ""
     echo ""
