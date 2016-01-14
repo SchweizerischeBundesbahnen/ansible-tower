@@ -14,7 +14,7 @@ RUN cd /opt \
 		
 # Link WAS JDK for Jenkins
 RUN cd ${jenkinshome}/buildtools \
-        && ln -s ${jenkinshome}/buildtools/was85/java ibm-jdk-was85 \
+        && ln -s ${jenkinshome}/buildtools/was85/java_1.7_64 ibm-jdk-was85 \
 		&& ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
 
 # Link custom keystore
