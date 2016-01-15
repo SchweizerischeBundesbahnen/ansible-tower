@@ -30,7 +30,7 @@ RUN wget --quiet "https://services.gradle.org/distributions/gradle-${gradle2vers
 
 # Add gradle.properties
 COPY configs/* ${jenkinshome}/.codequality/
-RUN chmod u+x ${jenkinshome}/.codequality/android.sh
+RUN chown -R ${appuser}:${appuser} ${jenkinshome}/.codequality && chmod u+x ${jenkinshome}/.codequality/android.sh
 
 # Add ANDROID_HOME to environment 
 RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${jenkinshome}/env.sh
