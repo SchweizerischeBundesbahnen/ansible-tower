@@ -30,7 +30,7 @@ RUN wget --quiet "https://services.gradle.org/distributions/gradle-${gradle2vers
 
 # Add gradle.properties
 COPY configs/* ${jenkinshome}/.codequality/
-RUN chown -R ${appuser}:${appuser} ${jenkinshome}/.codequality && chmod u+x ${jenkinshome}/.codequality/android.sh
+RUN cat ${jenkinshome}/.codequality/android.sh >> ${jenkinshome}/run.sh
 
 # Add ANDROID_HOME to environment 
 RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${jenkinshome}/env.sh
@@ -39,4 +39,4 @@ RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${
 RUN ln -sf `find ${jenkinshome}/buildtools/android-sdk-linux -name zipalign | tail -n 1` ${jenkinshome}/buildtools/android-sdk-linux/tools/zipalign
 
 # Run jenkins
-CMD su - ${appuser} -c ${jenkinshome}/.codequality/android.sh && echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
+CMD echo "export externalport=${externalport} host=${host} master=${master} jenkinshome=${jenkinshome}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
