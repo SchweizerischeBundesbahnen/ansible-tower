@@ -36,6 +36,7 @@ EXPOSE 22
 VOLUME /var/backup
 
 # supervisord: configure
+COPY configs/supervisord.conf /etc/supervisor/supervisord.conf
 COPY configs/sshd.ini /etc/supervisor/conf.d/
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
