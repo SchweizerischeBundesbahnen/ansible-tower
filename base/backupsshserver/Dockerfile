@@ -1,4 +1,3 @@
-#Docker image for jenkins master
 FROM schweizerischebundesbahnen/base
  
 MAINTAINER igor.masen@sbb.ch
