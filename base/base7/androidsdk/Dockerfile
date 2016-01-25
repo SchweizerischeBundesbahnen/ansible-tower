@@ -5,6 +5,8 @@ ENV HOME /root
 ENV jenkinshome /output
 ENV appuser jenkins
 ENV portoffset 91
+ENV USERNAME replacemeatruntime
+ENV PASSWORD replacemeatruntime
 
 # Install dependencies
 RUN yum install -q qemu-kvm qemu-kvm-tools python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q
