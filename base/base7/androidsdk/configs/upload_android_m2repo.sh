@@ -5,13 +5,19 @@ NEXUS_BASE_URL=http://repo.sbb.ch
 NEXUS_UNZIP_URL=$NEXUS_BASE_URL/service/local/repositories/$REPO/content-compressed
 NEXUS_REPO_URL=$NEXUS_BASE_URL/content/repositories/$REPO
 
-function createRepoZip {
+function createAndroidRepoZip {
    cd $SOURCE_DIR/extras/android/m2repository \
-   && zip -r $REPO.zip .
+   && zip -r $REPO-android.zip .
+}
+
+function createGoogleRepoZip {
+   cd $SOURCE_DIR/extras/google/m2repository \
+   && zip -r $REPO-google.zip .
 }
 
 function uploadArchiveToNexus {
-  curl --upload-file ${REPO}.zip $NEXUS_UNZIP_URL \
+  curl --upload-file ${REPO}-android.zip $NEXUS_UNZIP_URL \
+  && curl --upload-file ${REPO}-google.zip $NEXUS_UNZIP_URL \
   && checkRC
 }
 
@@ -33,7 +39,8 @@ if [ ! -z $SOURCE_DIR ] && [ ! -z $REPO ]; then
   echo "REPO: $REPO"
 
   ### start logic
-  createRepoZip
+  createAndroidRepoZip
+  createGoogleRepoZip
   uploadArchiveToNexus
 else
   helpMe
