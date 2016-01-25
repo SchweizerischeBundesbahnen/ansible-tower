@@ -9,10 +9,7 @@ ENV USERNAME replacemeatruntime
 ENV PASSWORD replacemeatruntime
 
 # Install dependencies
-RUN yum install -q qemu-kvm qemu-kvm-tools python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect -y && yum clean all -q
-
-# Create user
-RUN adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && echo "${appuser}:${appuser}" | chpasswd
+RUN yum install -q expect -y && yum clean all -q
 
 # create the script for building git
 COPY configs/build-android-sdk.sh /root/
