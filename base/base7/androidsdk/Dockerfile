@@ -3,7 +3,6 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV HOME /root
 ENV jenkinshome /output
-ENV appuser jenkins
 ENV USERNAME replacemeatruntime
 ENV PASSWORD replacemeatruntime
 
