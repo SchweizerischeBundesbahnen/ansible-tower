@@ -4,7 +4,6 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 ENV HOME /root
 ENV jenkinshome /output
 ENV appuser jenkins
-ENV portoffset 91
 ENV USERNAME replacemeatruntime
 ENV PASSWORD replacemeatruntime
 
@@ -15,7 +14,7 @@ RUN yum install -q expect -y && yum clean all -q
 COPY configs/build-android-sdk.sh /root/
 
 # add the script for upload m2 repo
-COPY configs/upload_android_m2repo.sh /root/upload_android_m2repo.sh
+COPY configs/upload_android_m2repo.sh /root/
 
 # build the rpm on container start
 CMD /bin/bash ~/build-android-sdk.sh; /bin/bash ~/upload_android_m2repo.sh /output/buildtools/android-sdk-linux hosted.android.releases

@@ -5,10 +5,9 @@ mkdir -p ${jenkinshome}/buildtools \
 	&& cd ${jenkinshome}/buildtools/android-sdk-linux \
         && wget -q ${filerurl}/android-sdk-update.sh -O android-sdk-update.sh \
         && chmod +x ./android-sdk-update.sh \
-        && chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Update android sdk
-su - ${appuser} -c "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux JAVA_HOME=/opt/jdk && PATH=$PATH:/opt/jdk/bin && ${jenkinshome}/buildtools/android-sdk-linux/android-sdk-update.sh"
+export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux JAVA_HOME=/opt/jdk && PATH=$PATH:/opt/jdk/bin && ${jenkinshome}/buildtools/android-sdk-linux/android-sdk-update.sh
 
 # compress to tarball
 tar -zcf /output/android-sdk-linux-latest.tar.gz /output/buildtools
