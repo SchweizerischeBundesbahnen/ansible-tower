@@ -7,12 +7,14 @@ NEXUS_REPO_URL=$NEXUS_BASE_URL/content/repositories/$REPO
 
 function createAndroidRepoZip {
    cd $SOURCE_DIR/extras/android/m2repository \
-   && zip -r $REPO-android.zip .
+   && zip -r $REPO-android.zip . \
+   && checkRC
 }
 
 function createGoogleRepoZip {
    cd $SOURCE_DIR/extras/google/m2repository \
-   && zip -r $REPO-google.zip .
+   && zip -r $REPO-google.zip . \
+   && checkRC
 }
 
 function uploadArchiveToNexus {
