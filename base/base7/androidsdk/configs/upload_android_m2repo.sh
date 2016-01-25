@@ -1,0 +1,40 @@
+#!/bin/bash
+SOURCE_DIR=$1
+REPO=$2
+NEXUS_BASE_URL=http://repo.sbb.ch
+NEXUS_UNZIP_URL=$NEXUS_BASE_URL/service/local/repositories/$REPO/content-compressed
+NEXUS_REPO_URL=$NEXUS_BASE_URL/content/repositories/$REPO
+
+function createRepoZip {
+   cd $SOURCE_DIR/extras/android/m2repository \
+   && zip -r $REPO.zip .
+}
+
+function uploadArchiveToNexus {
+  curl --upload-file ${REPO}.zip $NEXUS_UNZIP_URL \
+  && checkRC
+}
+
+function checkRC {
+  if [ $? -ne 0 ]; then
+          echo "*** ERROR *** : Something went wrong"
+          exit 1
+  fi
+}
+
+function helpMe {
+  echo "please give me the following parameters: Source, Reponame"
+}
+
+### start script
+if [ ! -z $SOURCE_DIR ] && [ ! -z $REPO ]; then
+  echo "script started with following options: "
+  echo "SOURCE_DIR: $SOURCE_DIR"
+  echo "REPO: $REPO"
+
+  ### start logic
+  createRepoZip
+  uploadArchiveToNexus
+else
+  helpMe
+fi

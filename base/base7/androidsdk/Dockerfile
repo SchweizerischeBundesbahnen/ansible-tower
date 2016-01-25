@@ -17,5 +17,8 @@ RUN adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && echo "${ap
 # create the script for building git
 COPY configs/build-android-sdk.sh /root/
 
+# add the script for upload m2 repo
+COPY configs/upload_android_m2repo.sh /root/upload_android_m2repo.sh
+
 # build the rpm on container start
-CMD /bin/bash ~/build-android-sdk.sh
+CMD /bin/bash ~/build-android-sdk.sh && /bin/bash ~/upload_android_m2repo.sh
