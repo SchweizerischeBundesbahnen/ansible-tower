@@ -21,4 +21,4 @@ COPY configs/build-android-sdk.sh /root/
 COPY configs/upload_android_m2repo.sh /root/upload_android_m2repo.sh
 
 # build the rpm on container start
-CMD /bin/bash ~/build-android-sdk.sh && /bin/bash ~/upload_android_m2repo.sh
+CMD /bin/bash ~/build-android-sdk.sh && /bin/bash ~/upload_android_m2repo.sh /output/buildtools hosted.android.releases
