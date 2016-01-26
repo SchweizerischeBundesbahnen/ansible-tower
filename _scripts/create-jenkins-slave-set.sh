@@ -5,10 +5,10 @@ numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 
 # how many slaves do we expect on hardware
 declare -A vmcountHW
-vmcountHW[was7]=4
-vmcountHW[was85]=20
-vmcountHW[java]=10
-vmcountHW[wmb]=4
+vmcountHW[was7]=2
+vmcountHW[was85]=22
+vmcountHW[java]=12
+vmcountHW[wmb]=2
 vmcountHW[nodejs]=4
 vmcountHW[android]=2
 vmcountHW[sonargraph]=1
