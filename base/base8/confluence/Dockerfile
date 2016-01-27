@@ -4,9 +4,9 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 ENV idoffset 40
 ENV appuser confluence
 ENV datadir /var/data
-ENV confluence_version 5.8.14
+ENV confluence_version 5.9.4
 ENV confluence_home /var/data/confluence
-ENV mysqlconnectorversion 5.1.36
+ENV mysqlconnectorversion 5.1.38
 
 # Create Data directory structure and add user to the image
 RUN mkdir -p ${datadir} \
