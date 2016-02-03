@@ -1,0 +1,280 @@
+#!/bin/bash
+
+# Usage:
+# Shut down your registry service to avoid race conditions and possible data loss
+# and then run the command with an image name like this:
+# delete_docker_registry_image --image testrepo/awesomeimage --dry-run
+
+OPTS=`getopt -o vhnfpi: --long verbose,help,dry-run,force,prune,image: -n 'parse-options' -- "$@"`
+
+USAGE="Usage: \ndelete_docker_registry_image --image testrepo/awesomeimage\nor\ndelete_docker_registry_image --image testrepo/awesomeimage:killertag \n\nOPTIONS: \n -v | --verbose \n -h | --help \n -n | --dry-run \n -p | --prune \n -f | --force \n -i | --image (ex. image or image:tag) \n"
+
+if [ $? != 0 ] ; then echo -e "Failed parsing options. \n\n$USAGE" >&2 ; exit 1 ; fi
+
+eval set -- "$OPTS"
+
+VERBOSE=false
+HELP=false
+FORCE=false
+DRY_RUN=false
+PRUNE=false
+
+while true; do
+  case "$1" in
+    -v | --verbose ) VERBOSE=true; shift ;;
+    -h | --help )    HELP=true; shift ;;
+    -n | --dry-run ) DRY_RUN=true; shift ;;
+    -f | --force ) FORCE=true; shift ;;
+    -p | --prune ) PRUNE=true; shift ;;
+    -i | --image ) IMAGE="$2"; shift; shift ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+
+if $HELP; then
+  echo -e $USAGE
+  exit
+fi
+
+if [[ -z $REGISTRY_DATA_DIR ]]; then
+  REGISTRY_DATA_DIR=/opt/registry_data/docker/registry/v2
+  echo -e "Important:\nset REGISTRY_DATA_DIR as shell variable to one proper for your enviroment!\n  Currently it is: $REGISTRY_DATA_DIR\n"
+fi
+
+function delete_blobs() {
+  for blob_to_delete in "${blobs_to_delete[@]}"; do
+    directory_prefix_of_blob_to_delete=${blob_to_delete:0:2}
+    full_path_of_blob_to_delete="blobs/sha256/${directory_prefix_of_blob_to_delete}/${blob_to_delete}"
+    if $DRY_RUN; then
+      echo "DRY_RUN: would have deleted directory: $full_path_of_blob_to_delete"
+    else
+      rm -rf $full_path_of_blob_to_delete
+    fi
+  done
+}
+
+function delete_layers_no_longer_used_by_this_repo() {
+  for layer_digest_not_used_in_this_repo in "${layer_digests_not_used_in_this_repo[@]}"; do
+    directory_to_delete=$layers_dir/$layer_digest_not_used_in_this_repo
+    if $DRY_RUN; then
+      echo "DRY_RUN: would have deleted layer metadata directory: $directory_to_delete"
+    else
+      rm -rf $directory_to_delete
+    fi
+  done
+}
+
+function prune_it_baby() {
+  if $PRUNE; then
+    if $DRY_RUN; then
+      echo "DRY_RUN: not pruning empty blob dirs"
+    else
+      echo Pruning empty directories under $REGISTRY_DATA_DIR
+      find $REGISTRY_DATA_DIR/* -type d -empty -delete
+    fi
+  fi
+}
+
+function um_you_might_want_to_confirm_this() {
+  echo "This is maybe fine but a bit worrisome."
+  echo "None of the blobs that make up the image you want to delete were used by another image."
+  echo
+  echo "blobs are:"
+  printf "%s\n" "${blobs_to_delete[@]}"
+  echo
+  echo "Because of this, we're aborting the delete."
+  echo "If you're sure you actually want to delete this data, add a --force option"
+  exit 1
+}
+
+cd $REGISTRY_DATA_DIR
+
+repositories_dir="repositories"
+if [[ ! -d "${repositories_dir}" ]] ; then
+  SCRIPTDIR=$( cd $(dirname $0) ; pwd -P )
+  echo "No repositories directory found inside REGISTRY_DATA_DIR '$REGISTRY_DATA_DIR'. Set REGISTRY_DATA_DIR correctly in this script ($SCRIPTDIR/$0) or pass it in as an environment variable."
+  exit 1
+fi
+
+if [[ -z $IMAGE ]]; then
+  echo -e "Please specify an image to delete. \n\n$USAGE"
+  exit 1
+fi
+
+TAG_SPLIT_ON_COLON=(${IMAGE//:/ })
+REPO=${TAG_SPLIT_ON_COLON[0]}
+TAG_IDENTIFIER=${TAG_SPLIT_ON_COLON[1]}
+
+if $VERBOSE; then
+  echo "Image to delete: $IMAGE"
+  echo "Repo: $REPO"
+  echo "Tag: $TAG_IDENTIFIER"
+fi
+
+repo_dir="${repositories_dir}/${REPO}"
+layers_dir="${repo_dir}/_layers/sha256"
+
+# code for deleting an entire repo
+if [[ -z $TAG_IDENTIFIER ]]; then
+  if $VERBOSE; then
+    echo "Deleting repo: $IMAGE"
+  fi
+  repository_dir_for_image="${repositories_dir}/${IMAGE}"
+  if [[ ! -d "${repo_dir}" ]] ; then
+    echo "No repository '$REPO' found in repositories directory $REGISTRY_DATA_DIR/$repositories_dir"
+    exit 1
+  fi
+
+  blobs_to_delete=()
+  link_files=$(find ${repo_dir} -name link)
+  at_least_one_blob_was_used_elsewhere=false
+  for file in $link_files; do
+    sha256=$(cat $file | sed -e 's/sha256://g')
+
+    # i'm not sure if this egrep with the ./ prefix is super-portable, but it works for me
+    # and i want to be careful not to ignore another repo that might be using this blob
+    if find ./${repositories_dir} -name link | grep $sha256/link | egrep -v "^./${repo_dir}" > /dev/null
+    then
+      at_least_one_blob_was_used_elsewhere=true
+      if $VERBOSE; then
+        echo "Blob found in another repository. not deleting: $sha256"
+      fi
+    else
+      blobs_to_delete+=("${sha256}")
+      if $VERBOSE; then
+        echo "Blob not found in another repository. Marking for deletion: $sha256"
+      fi
+    fi
+  done
+
+  if [[ $at_least_one_blob_was_used_elsewhere == true || $FORCE == true ]]; then
+    if $DRY_RUN; then
+      echo "DRY_RUN: would have deleted repository directory: $repo_dir"
+    else
+      rm -rf $repo_dir
+    fi
+    delete_blobs
+    prune_it_baby
+  else
+    um_you_might_want_to_confirm_this
+  fi
+  # end code for deleting an entire repo
+else
+  # user wanted to delete a specific tag, not an entire repo/image
+  dir_for_tags="${repo_dir}/_manifests/tags"
+  dir_for_tag="${dir_for_tags}/${TAG_IDENTIFIER}"
+
+  if [[ ! -d "${dir_for_tag}" ]]; then
+    echo "No tag found in '${dir_for_tag}'"
+    exit 1
+  fi
+
+  link_files=$(find ${dir_for_tag}/index/sha256 -name link)
+
+  manifest_digests=()
+  for file in $link_files; do
+    manifest_digests+=($(cat $file | sed -e 's/sha256://g'))
+  done
+
+  unique_manifest_digests=$(echo "${manifest_digests[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+  dir_for_revisions="${repositories_dir}/${REPO}/_manifests/revisions"
+  manifest_revisions_to_delete=()
+
+  if ! hash jq 2>/dev/null; then
+    echo "Sorry about this, but the jq program is required to delete tags. https://stedolan.github.io/jq/download/"
+    exit 1
+  fi
+
+  layer_digests_for_tag=()
+
+  for manifest_digest in ${unique_manifest_digests[@]}; do
+    if $VERBOSE; then
+      echo "Looking up fileystem layers for manifest digest $manifest_digest"
+    fi
+    manifest_revisions_to_delete+=("$dir_for_revisions/sha256/$manifest_digest")
+    directory_prefix=${manifest_digest:0:2}
+
+    for filesystem_layer_sha256 in $(cat blobs/sha256/${directory_prefix}/${manifest_digest}/data  | jq -r '.fsLayers | map(.blobSum)[]' | sort | uniq); do
+      digest=$(echo $filesystem_layer_sha256 | sed -e 's/sha256://g')
+      layer_digests_for_tag+=("$digest")
+    done
+  done
+
+  unique_layer_digests_for_tag=$(echo "${layer_digests_for_tag[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+
+  layer_digests_not_used_in_this_repo=()
+
+  for digest in ${unique_layer_digests_for_tag[@]}; do
+    digest_in_use_in_same_repo=false
+
+    for tag_subdir in $(ls $dir_for_tags | grep -v $TAG_IDENTIFIER); do
+      manifest_digest_for_tag=$(cat "${dir_for_tags}/${tag_subdir}/current/link" | sed -e 's/sha256://g')
+      directory_prefix_for_tag_digest=${manifest_digest_for_tag:0:2}
+      for filesystem_layer_sha256_for_tag in $(cat blobs/sha256/${directory_prefix_for_tag_digest}/${manifest_digest_for_tag}/data  | jq -r '.fsLayers | map(.blobSum)[]' | sort | uniq); do
+        used_digest=$(echo $filesystem_layer_sha256_for_tag | sed -e 's/sha256://g')
+        if [ "$used_digest" == "$digest" ]; then
+          digest_in_use_in_same_repo=true
+          another_tag_using=$tag_subdir
+          at_least_one_blob_was_used_elsewhere=true
+          break 2 # break out of 'for tag_subdir' loop completely
+        fi
+      done
+    done
+
+    # if it's being used in the same repo, there's no need to check other repos. we're not deleting the blob.
+    if [[ $digest_in_use_in_same_repo == false ]]; then
+      if $VERBOSE; then
+        echo "Blob not required by this repo. checking to make sure no other repos are using it"
+      fi
+      layer_digests_not_used_in_this_repo+=($digest)
+      # i'm not sure if this egrep with the ./ prefix is super-portable, but it works for me
+      # and i want to be careful not to ignore another repo that might be using this blob
+      if find ./${repositories_dir} -name link | grep $digest/link | egrep -v "^./${dir_for_tag}" | egrep -v "^./${layers_dir}" > /dev/null
+      then
+        at_least_one_blob_was_used_elsewhere=true
+        if $VERBOSE; then
+          echo "Blob found in another repository. not deleting: $digest"
+        fi
+      else
+        blobs_to_delete+=("${digest}")
+        if $VERBOSE; then
+          echo "Blob not found in another repository or sibling tag. Marking for deletion: $digest"
+        fi
+      fi
+    else
+      if $VERBOSE; then
+        echo "Not deleting since we found another tag using digest: $digest. tag was: $another_tag_using"
+      fi
+    fi
+  done # end for each filesystem layer digest
+
+  if [[ $at_least_one_blob_was_used_elsewhere == true || $FORCE == true ]]; then
+    if $DRY_RUN; then
+      echo "DRY_RUN: would have deleted tag directory: $dir_for_tag"
+    else
+      rm -rf $dir_for_tag
+    fi
+
+    for manifest_revision_to_delete in "${manifest_revisions_to_delete[@]}"; do
+      link_files_for_manifest_revision=$(find ${manifest_revision_to_delete} -name link)
+
+      for file in $link_files_for_manifest_revision; do
+        digest_for_manifest_revision=($(cat $file | sed -e 's/sha256://g'))
+        blobs_to_delete+=("${digest_for_manifest_revision}")
+      done
+
+      if $DRY_RUN; then
+        echo "DRY_RUN: would have deleted manifest revision: $manifest_revision_to_delete"
+      else
+        rm -rf $manifest_revision_to_delete
+      fi
+    done
+
+    delete_blobs
+    delete_layers_no_longer_used_by_this_repo
+    prune_it_baby
+  else
+    um_you_might_want_to_confirm_this
+  fi
+fi
