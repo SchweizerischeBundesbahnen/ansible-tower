@@ -32,7 +32,7 @@ JVM_SUPPORT_RECOMMENDED_ARGS=""
 # In larger Stash instances, the maximum amount will need to be increased.
 #
 JVM_MINIMUM_MEMORY="512m"
-JVM_MAXIMUM_MEMORY="8192m"
+JVM_MAXIMUM_MEMORY="4096m"
 
 #
 # File encoding passed into the Atlassian Stash Java virtual machine

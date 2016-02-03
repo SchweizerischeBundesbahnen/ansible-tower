@@ -20,7 +20,16 @@ randomint=`shuf -i 40000-65000 -n1`
 master_hostname=`echo $master | awk -F/ '{print $3}' | awk -F: '{print $1}'`
 android_memory_limit=20g
 
-executors=1
+# how many executors per kind of slave
+declare -A execount
+execount[was7]=1
+execount[was85]=2
+execount[java]=2
+execount[wmb]=1
+execount[nodejs]=1
+execount[android]=1
+execount[sonargraph]=5
+
 containername=$imagename-$randomint-$master_hostname
 slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1`-$tag
 
@@ -36,21 +45,20 @@ function check_reserved() {
 }
 
 function create_android_container() {
-	sudo docker run --privileged -d -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=$executors -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
+	sudo docker run --privileged -d -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
 
 function create_privileged_container() {
-	sudo docker run --privileged -d -p $randomint:$randomint -e master=$master -e executors=$executors -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
+	sudo docker run --privileged -d -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
 }
 
 function create_container() {
 	if [ "$labels" == "sonargraph" ]
 	then
-		executors=5
 		containername=$labels-$randomint-$master_hostname
 		slavename=$labels-$randomint-`echo $HOSTNAME | cut -d"." -f1`
 	fi
-        sudo docker run -d -p $randomint:$randomint -e master=$master -e executors=$executors -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
+        sudo docker run -d -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
 
 function usage() {
