@@ -9,7 +9,7 @@ if [ -z "$GIT_BRANCH" ]; then
 	exit 1
 fi
 
-REGISTRY=registry.sbb.ch
+REGISTRY=registry.sbb.ch/kd_wzu
 
 # since we're on a feature branch, we want to find the suffix
 tag=`basename $GIT_BRANCH`
@@ -69,8 +69,7 @@ echo ""
 
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
-previousimage=NOIMAGE
-#Adapt the dockerfiles to point to registry-t and to point to adjacent parents included in this build, if necessary.
+#Adapt the dockerfiles to point to registry and to point to adjacent parents included in this build, if necessary.
 for path in $images ;
 do
     echo ""
@@ -83,12 +82,13 @@ do
 
     dockerfile=$path/Dockerfile
     image=`basename $path`
-    
-    if [ $previousimage == "NOIMAGE" ]; then
-		sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
-	else
-		parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f2`
-		sed -ri "s#FROM schweizerischebundesbahnen\/$parentimage#FROM ${REGISTRY}\/$parentimage:${tag}#g" ${dockerfile}
+    parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f3`
+
+    # If the parent image is built too, then take the tagged image (which will already be built due to depth-first ordering); else take the untagged image
+    # http://stackoverflow.com/questions/8063228/how-do-i-check-if-a-variable-exists-in-a-list-in-bash
+    if [[ $imagenames =~ $parentimage ]]; then
+        echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
+		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:${tag}#g" ${dockerfile}
 	fi
 
     # build and push images
@@ -112,8 +112,6 @@ do
     else
         exit $error
     fi
-    
-    previousimage=$image
 
     echo ""
     echo ""

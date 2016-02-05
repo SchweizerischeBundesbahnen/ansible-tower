@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM schweizerischebundesbahnen/base7
+FROM registry.sbb.ch/kd_wzu/base7
  
 MAINTAINER igor.masen@sbb.ch
  

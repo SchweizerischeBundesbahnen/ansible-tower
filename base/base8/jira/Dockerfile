@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as Jira
-FROM schweizerischebundesbahnen/base8
+FROM registry.sbb.ch/kd_wzu/base8
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
 #Environment variables
