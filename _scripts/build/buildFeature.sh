@@ -19,7 +19,7 @@ echo "TAG=${tag}"
 
 #Find all files changed with respect to develop and order them breadth-first order
 # http://stackoverflow.com/questions/539583/how-do-i-recursively-list-all-directories-at-a-location-breadth-first
-filesTouched=`git show --pretty="format:" --name-only develop..${GIT_BRANCH} | perl -lne 'print tr:/::, " $_"' | sort -n | uniq | grep -v '^$' | cut -d' ' -f2`
+filesTouched=`git show --pretty="format:" --name-only develop..feature/${GIT_BRANCH} | perl -lne 'print tr:/::, " $_"' | sort -n | uniq | grep -v '^$' | cut -d' ' -f2`
 
 #For each folder, store only the path to the folder since only files are modified.
 for f in $filesTouched ;
