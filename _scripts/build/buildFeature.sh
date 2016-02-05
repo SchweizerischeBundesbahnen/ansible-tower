@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 
+set -x
+
 GIT_BRANCH=$1
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
@@ -89,7 +91,7 @@ do
     # Since 'base' is also part of 'jenkins-slave-base' etc, regex needs some complexity..., see http://stackoverflow.com/questions/9155590/regexp-match-character-group-or-end-of-line
     echo $imagenames | grep -q '\(^\|[ ]\)'$parentimage'\($\|[ ]\)'
     is_parent_built=$?
-    echo "is_parent_built=${$is_parent_built}"
+    echo "is_parent_built=${is_parent_built}"
     if [[ ${is_parent_built} ]]; then
         echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
 		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:${tag}#g" ${dockerfile}
