@@ -87,7 +87,7 @@ do
     # If the parent image is built too, then take the tagged image (which will already be built due to depth-first ordering); else take the untagged image
     # http://stackoverflow.com/questions/8063228/how-do-i-check-if-a-variable-exists-in-a-list-in-bash
     # Since 'base' is also part of 'jenkins-slave-base' etc, regex needs some complexity..., see http://stackoverflow.com/questions/9155590/regexp-match-character-group-or-end-of-line
-    if [[ $(echo $imagenames | grep -q '\(^\|[ ]\)'$image'\($\|[ ]\)') ]]; then
+    if [[ $(echo $imagenames | grep -q '\(^\|[ ]\)'$parentimage'\($\|[ ]\)') ]]; then
         echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
 		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:${tag}#g" ${dockerfile}
 	fi
