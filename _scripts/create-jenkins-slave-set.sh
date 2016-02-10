@@ -52,7 +52,7 @@ function checkOrStartVarnish() {
 if [ ! -z $master ]
 then
 	# start a varnish if none running
-	ret=checkOrStartVarnish
+	checkOrStartVarnish
 	
 	# get current running count
         running=`curl -s --data-urlencode script@running_slaves.groovy $master/scriptText --user fsvctip:sommer11`
