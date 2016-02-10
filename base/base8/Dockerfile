@@ -3,7 +3,7 @@ FROM schweizerischebundesbahnen/base
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
-ENV jdkurl ${filerurl}/jdk/jdk-8u65-linux-x64.tar.gz
+ENV jdkurl ${filerurl}/jdk/jdk-8u74-linux-x64.tar.gz
 
 # Get and Install Java
 RUN curl -s ${jdkurl} -o /opt/jdk.tar.gz \
