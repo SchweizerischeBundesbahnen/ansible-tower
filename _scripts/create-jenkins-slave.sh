@@ -23,8 +23,8 @@ android_memory_limit=20g
 # how many executors per kind of slave
 declare -A execount
 execount[was7]=1
-execount[was85]=2
-execount[java]=2
+execount[was85]=1
+execount[java]=1
 execount[wmb]=1
 execount[nodejs]=1
 execount[android]=1
