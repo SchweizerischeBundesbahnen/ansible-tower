@@ -91,7 +91,7 @@ then
 			while [ $count -lt $required ]
 			do
 				echo "starting $label with ${labelMap[$label]}"
-				./create-jenkins-slave.sh registry.sbb.ch ${labelMap[$label]} latest $master $label
+				./create-jenkins-slave.sh registry.sbb.ch/kd_wzu ${labelMap[$label]} latest $master $label
 				if [ $? -ne 0 ]; then
                                         echo "BUILD failed! Image=${labelMap[$label]}"
                                         exit -1

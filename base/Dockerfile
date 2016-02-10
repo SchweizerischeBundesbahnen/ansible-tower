@@ -7,6 +7,7 @@ MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 ENV fileruser fswzuad
 ENV filerpassword bolb3fas
 ENV filerurl https://${fileruser}:${filerpassword}@svn.sbb.ch/svn/wzu
+ENV TZ Europe/Zurich
 
 # The CA for svn.sbb.ch
 ENV telesec_ssl ${filerurl}/telesec_serverpass_ca_1.der
