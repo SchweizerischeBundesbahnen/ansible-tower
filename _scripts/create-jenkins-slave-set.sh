@@ -33,9 +33,27 @@ labelMap[nodejs]="jenkins-slave-js"
 labelMap[android]="jenkins-slave-mobile-android"
 labelMap[sonargraph]="jenkins-slave-was85"
 
+
+function checkOrStartVarnish() {
+  local _varnishCount=`sudo docker ps | grep varnish | wc -l`
+  if [ ${_varnishCount} -lt 1 ]; then
+	echo "No varnish running! Starting varnish container"
+	sudo docker run -p 80:80 --restart=always -d --name repocache -v /etc/wzu/jenkins-varnish-config:/data/varnish --env 'VCL_CONFIG=/data/varnish/repo.sbb.ch.vcl' --env 'CACHE_SIZE=20g' registry.sbb.ch/kd_wzu/varnish
+	if [ $? -ne 0 ]; then
+		echo "Starting varnish container failed!"
+		exit -1
+	fi 
+  fi
+}
+
+
+
 # check argument
 if [ ! -z $master ]
 then
+	# start a varnish if none running
+	checkOrStartVarnish
+	
 	# get current running count
         running=`curl -s --data-urlencode script@running_slaves.groovy $master/scriptText --user fsvctip:sommer11`
         declare -A runningCount
