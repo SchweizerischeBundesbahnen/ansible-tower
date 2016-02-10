@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base7
+FROM registry.sbb.ch/kd_wzu/base7
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV scripturl ${filerurl}/me.tar.gz
