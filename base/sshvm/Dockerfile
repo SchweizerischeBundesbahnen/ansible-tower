@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM schweizerischebundesbahnen/base
+FROM registry.sbb.ch/kd_wzu/base
  
 MAINTAINER roger.bobst@sbb.ch
 

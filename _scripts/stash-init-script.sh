@@ -6,7 +6,7 @@
 
 opts=" -p 8090:8090 -v /var/data/stash/log:/var/data/stash/log -v /var/data/stash/logs:/var/data/stash/logs -v /var/data/stash/shared/data:/var/data/stash/shared/data -d"
 containername=stash
-imagename=schweizerischebundesbahnen/stash-internal:3.4.1
+imagename=registry.sbb.ch/kd_wzu/stash-internal:3.4.1
 
 function start_container() {
 	docker start $containername

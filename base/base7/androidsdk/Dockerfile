@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base7
+FROM registry.sbb.ch/kd_wzu/base7
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
 ENV HOME /root

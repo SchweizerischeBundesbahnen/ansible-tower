@@ -1,5 +1,5 @@
 #Docker image for wzuscheduler
-FROM schweizerischebundesbahnen/jenkins-master
+FROM registry.sbb.ch/kd_wzu/jenkins-master
 MAINTAINER igor.masen@sbb.ch
 
 ENV appversion 1.625.3

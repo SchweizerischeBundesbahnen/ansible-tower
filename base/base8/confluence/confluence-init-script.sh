@@ -6,7 +6,7 @@
 APP_URL=confluence-t.sbb.ch
 opts=" -p 8040:8040 -p 9040:9040 -p 10040:10040 -d -e APP_URL=${APP_URL} -v /var/data/confluence:/var/data/confluence -v /var/data/confluence/log:/opt/confluence/logs"
 containername=confluence
-imagename=schweizerischebundesbahnen/confluence:5.4.4
+imagename=registry.sbb.ch/kd_wzu/confluence:5.4.4
 
 function start_container() {
 	docker start $containername
