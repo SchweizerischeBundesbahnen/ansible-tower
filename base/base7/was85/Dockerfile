@@ -1,8 +1,9 @@
 FROM schweizerischebundesbahnen/base7
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
-ENV scripturl ${filerurl}/me.tar.gz
-ENV wasurl ${filerurl}/was85dev.tar.gz
+ENV wasurl https://fswzuad:bolb3fas@svn.sbb.ch/svn/wzu/was85dev.tar.gz
+ENV scripturl https://fswzuad:bolb3fas@svn.sbb.ch/svn/wzu/me.tar.gz
+
 ENV appuser asrun
 ENV profileName AppSrv01
 
@@ -16,12 +17,12 @@ COPY configs/authorized_keys /home/${appuser}/.ssh/authorized_keys
 
 # Download and extract WAS 8.5 and create profile
 RUN cd /opt \
-        && curl ${wasurl} | tar xfz - \
+        && curl -k ${wasurl} | tar xfz - \
         && chown -R ${appuser}:${appuser} was85
 
 # Download and extract OM managements scripts
 RUN cd / \
-        && curl ${scripturl} | tar xfz - \
+        && curl -k ${scripturl} | tar xfz - \
         && cd /opt \
         && chown -R ${appuser}:${appuser} me
 
@@ -69,8 +70,11 @@ RUN cd /opt/me/res/jython && \
       mv ant_task_lib.xml.new ant_task_lib.xml && \
       chown -R ${appuser}:${appuser} * && \
 # ... and builder.sh
-      sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh
-
+      sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh &&
+# ... and adapters
+      mkdir -p /opt/me/repo/ && cd /opt/me/repo && \
+      curl http://repo.sbb.ch/service/local/repositories/mirror/content/ch/sbb/eaio/jca_adapter/1.15.0/jca_adapter-1.15.0.zip -o jca_adapter-1.15.0.zip && \
+      unzip jca_adapter.zip && chown -R ${appuser}:${appuser} * && find /opt/me/repo
 
 #SSH,SOAP_CONNECTOR_ADDRESS,SIP_DEFAULTHOST_SECURE,SIP_DEFAULTHOST,SIB_ENDPOINT_ADDRESS,WC_defaulthost_secure,DCS_UNICAST_ADDRESS
 #SIB_MQ_ENDPOINT_SECURE_ADDRESS,WC_adminhost_secure,CSIV2_SSL_MUTUALAUTH_LISTENER_ADDRESS,ORB_LISTENER_ADDRESS,
