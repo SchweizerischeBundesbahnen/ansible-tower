@@ -1,1 +1,3 @@
-.iml
+*.iml
+.idea
+atlassian-ide-plugin.xml
