@@ -15,7 +15,6 @@ REGISTRY=registry.sbb.ch/kd_wzu
 
 # since we're on a feature branch, we want to find the suffix
 tag=`basename $GIT_BRANCH`
-error=0
 
 echo "TAG=${tag}"
 
@@ -112,13 +111,6 @@ do
         exit -3
     fi
 
-    # delete images from disk, if succesful. Exit otherwise
-    if [ $error -eq 0 ]; then
-        sudo docker rmi -f "${REGISTRY}/${image}:${tag}"
-    else
-        exit $error
-    fi
-
     echo ""
     echo ""
     echo "-------------------------------------"
@@ -127,4 +119,25 @@ do
     echo ""
     echo ""
 done
-exit $error
+
+
+echo ""
+echo ""
+echo "-------------------------------------"
+echo "Cleanup: going to delete built images locally"
+echo "-------------------------------------"
+echo ""
+echo ""
+for path in $images ;
+do
+    echo ""
+    echo ""
+    echo "-------------------------------------"
+    echo "Delete image ${path} locally"
+    echo "-------------------------------------"
+    echo ""
+    echo ""
+    image=`basename $path`
+    # delete images from disk, if succesful. Exit otherwise
+    sudo docker rmi -f "${REGISTRY}/${image}:${tag}"
+done
