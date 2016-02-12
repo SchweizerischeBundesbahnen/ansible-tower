@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base7
+FROM registry.sbb.ch/kd_wzu/base7
 MAINTAINER Christoph Glanzmann <christoph.glanzmann@sbb.ch>
 
 ENV wasurl https://fswzuad:bolb3fas@svn.sbb.ch/svn/wzu/was85dev.tar.gz

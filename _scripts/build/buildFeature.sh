@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 
+set -x
+
 GIT_BRANCH=$1
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
@@ -9,7 +11,7 @@ if [ -z "$GIT_BRANCH" ]; then
 	exit 1
 fi
 
-REGISTRY=registry.sbb.ch
+REGISTRY=registry.sbb.ch/kd_wzu
 
 # since we're on a feature branch, we want to find the suffix
 tag=`basename $GIT_BRANCH`
@@ -82,16 +84,17 @@ do
 
     dockerfile=$path/Dockerfile
     image=`basename $path`
-    parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f2`
+    parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f3`
 
     # If the parent image is built too, then take the tagged image (which will already be built due to depth-first ordering); else take the untagged image
     # http://stackoverflow.com/questions/8063228/how-do-i-check-if-a-variable-exists-in-a-list-in-bash
-    if [[ $imagenames =~ $parentimage ]]; then
+    # Since 'base' is also part of 'jenkins-slave-base' etc, regex needs some complexity..., see http://stackoverflow.com/questions/9155590/regexp-match-character-group-or-end-of-line
+    echo $imagenames | grep -q '\(^\|[ ]\)'$parentimage'\($\|[ ]\)'
+    is_parent_built=$?
+    echo "is_parent_built=${is_parent_built}"
+    if [[ ${is_parent_built} ]]; then
         echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
-		sed -ri "s#FROM schweizerischebundesbahnen\/$parentimage#FROM ${REGISTRY}\/$parentimage:${tag}#g" ${dockerfile}
-	else
-	    echo "For image $image setting parent to  ${REGISTRY}/$parentimage"
-	    sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
+		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:${tag}#g" ${dockerfile}
 	fi
 
     # build and push images
@@ -119,7 +122,7 @@ do
     echo ""
     echo ""
     echo "-------------------------------------"
-    echo "End of push and build of ${TOBUILD}"
+    echo "End of push and build of ${path}"
     echo "-------------------------------------"
     echo ""
     echo ""

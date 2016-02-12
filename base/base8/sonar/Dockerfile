@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base8
+FROM registry.sbb.ch/kd_wzu/base8
 
 MAINTAINER u214892@sbb.ch
 
