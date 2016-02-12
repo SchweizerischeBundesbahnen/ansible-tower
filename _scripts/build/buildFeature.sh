@@ -92,7 +92,7 @@ do
     echo $imagenames | grep -q '\(^\|[ ]\)'$parentimage'\($\|[ ]\)'
     is_parent_built=$?
     echo "is_parent_built=${is_parent_built}"
-    if [[ ${is_parent_built} ]]; then
+    if [[ ${is_parent_built} -eq 0 ]]; then
         echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
 		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:${tag}#g" ${dockerfile}
 	fi
