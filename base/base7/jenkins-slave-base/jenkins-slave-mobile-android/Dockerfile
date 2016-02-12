@@ -9,17 +9,16 @@ ENV ANDROID_HOME ${jenkinshome}/buildtools/android-sdk-linux
 # Install qemu and kvm
 RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
 
-# Get android sdk from wzufiler
+# Get android sdk and Gradle from wzufiler
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -q ${filerurl}/android/android-sdk-linux-latest.tar.gz \
 	&& md5sum android-sdk-linux-latest.tar.gz \
 	&& tar xfz android-sdk-linux-latest.tar.gz \
 	&& mv output/buildtools/android-sdk-linux . \
 	&& rm -rf output android-sdk-linux-latest.tar.gz \
-	&& chown -R ${appuser}:${appuser} ${jenkinshome}/m2  ${jenkinshome}/temp  ${jenkinshome}/workspace
-
+	&& chown -R ${appuser}:${appuser} ${jenkinshome}/m2  ${jenkinshome}/temp  ${jenkinshome}/workspace \
 # Download Gradle
-RUN wget --quiet "https://services.gradle.org/distributions/gradle-${gradle2version}-bin.zip" -O /tmp/gradle-${gradle2version}-bin.zip \
+    && wget --quiet "https://services.gradle.org/distributions/gradle-${gradle2version}-bin.zip" -O /tmp/gradle-${gradle2version}-bin.zip \
 	&& cd ${jenkinshome}/buildtools \
 	&& unzip -q /tmp/gradle-${gradle2version}-bin.zip \
 	&& rm -f /tmp/gradle-${gradle2version}-bin.zip \
