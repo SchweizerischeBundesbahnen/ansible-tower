@@ -1,5 +1,5 @@
 # This is the base Dockerfile for all SBB Dockerfiles @WZU
-FROM schweizerischebundesbahnen/base
+FROM registry.sbb.ch/kd_wzu/base
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 

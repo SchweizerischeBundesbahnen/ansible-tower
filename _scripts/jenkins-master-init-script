@@ -8,7 +8,7 @@ portoffset=50
 
 opts="-p 80${portoffset}:80${portoffset} -p 90${portoffset}:90${portoffset} -p 9051:9051 -v /var/data/jenkins:/var/data/jenkins -d"
 containername=jenkins-master
-imagename=schweizerischebundesbahnen/jenkins-master
+imagename=registry.sbb.ch/kd_wzu/jenkins-master
 
 function start_container() {
 	docker start $containername

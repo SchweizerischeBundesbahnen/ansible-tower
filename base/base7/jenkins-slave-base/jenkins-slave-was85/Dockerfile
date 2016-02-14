@@ -1,5 +1,5 @@
 # Jenkins slave build node configured with a WAS 8.5 environment for Maven release tasks.
-FROM schweizerischebundesbahnen/jenkins-slave-base
+FROM registry.sbb.ch/kd_wzu/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV labels "was85"
