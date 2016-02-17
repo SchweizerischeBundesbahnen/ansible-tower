@@ -108,6 +108,9 @@ function usage() {
 
 [ "$1" == "help" ] || [ "$#" -eq 0 ] && usage
 
+command -v 7z >/dev/null 2>&1 || { echo >&2 "I require 7z but it's not installed.  Aborting."; exit 1; }
+command -v ant >/dev/null 2>&1 || { echo >&2 "I require ant but it's not installed.  Aborting."; exit 1; }
+
 for version in ${VERSIONS[@]}
 do
     echo "Finding build number for ${version}"
