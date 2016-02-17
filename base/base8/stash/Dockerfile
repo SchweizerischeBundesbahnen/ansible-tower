@@ -3,7 +3,7 @@ MAINTAINER Sebastian Graf <sebastian.graf@sbb.ch>
 
 #Environment Variables
 
-ENV stashversion 4.2.0
+ENV stashversion 4.2.3
 ENV mysqlconnectorversion 5.1.35
 ENV idoffset 120
 ENV appuser stash
@@ -29,15 +29,15 @@ RUN wget --quiet "http://repo.sbb.ch/content/groups/mirror/mysql/mysql-connector
 
 #Universal Plugin in Version 2.20.5
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.upm.atlassian-universal-plugin-manager-plugin/version/138731 -O ${plugin_folder}/atlassian-universal-plugin-manager-plugin.jar
-#Support Tools Plugin in Version 3.7.5
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.support.stp/version/30705 -O ${plugin_folder}/atlassian-support-tools-plugin.jar
-#Categories in Version 1.3
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000031 -O  ${plugin_folder}/stash-project-categories.jar
+#Support Tools Plugin in Version 3.7.15
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.support.stp/version/30735 -O ${plugin_folder}/atlassian-support-tools-plugin.jar
+#Categories in Version 1.3.1
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000041 -O  ${plugin_folder}/stash-project-categories.jar
 #Workzone in Version 4.1.2
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/4004001040 -O ${plugin_folder}/workzone.jar
 #Unmerged Branch Hook in Version 2.0.0
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/200 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
-#REST API Browser
+#REST API Browser in Version 3.2.0
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.labs.rest-api-browser/version/30200 -O ${plugin_folder}/rest-browser.jar
 #Webhook in Version 2.1.1, Disabled for now
 #RUN wget --quiet #http://repo.sbb.ch/content/repositories/hosted.mwe-wzu.releases/ch/sbb/stash/jenkins-push-webhook/2.1.2/jenkins-push-webhook-2.1.2.jar -O ${plugin_folder}/jenkins-push-webhook.jar
