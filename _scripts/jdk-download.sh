@@ -57,7 +57,7 @@ function nexus_upload() {
     fi
     B=${VER:2:2}
     ARTIFACT="oracle-jdk-$V-$P"
-    VERSION="$V.0_$P"
+    VERSION="$V.0_$B"
     curl -v  \
  -F r=hosted.mwe-wzu.releases \
  -F hasPom=false  \
