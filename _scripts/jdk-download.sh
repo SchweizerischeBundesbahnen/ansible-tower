@@ -28,7 +28,7 @@ function find_build_id() {
     do
         BASE_URL="http://download.oracle.com/otn-pub/java/jdk/${VER}-b${BUILD}/"
         FILENAME="jdk-${VER}-${OS}-${PLATFORM}.tar.gz"
-        wget -q --spider -c -O /dev/null --show-progress --no-check-certificate --no-cookies --header "${HEADER}" "${BASE_URL}${FILENAME}" && {
+        wget -q --spider -c -O /dev/null --no-check-certificate --no-cookies --header "${HEADER}" "${BASE_URL}${FILENAME}" && {
         BUILDID=${BUILD}
         return
     }
@@ -37,7 +37,7 @@ function find_build_id() {
 
 function download() {
     BASE_URL="http://download.oracle.com/otn-pub/java/jdk/${VER}-b${BUILD}/"
-    wget -c --show-progress -O $TMPDIR/"${FILENAME}" --no-check-certificate --no-cookies --header "${HEADER}" "${BASE_URL}${FILENAME}"
+    wget -c -O $TMPDIR/"${FILENAME}" --no-check-certificate --no-cookies --header "${HEADER}" "${BASE_URL}${FILENAME}"
 }
 
 function svn_upload() {
@@ -57,7 +57,7 @@ function nexus_upload() {
     fi
     B=${VER:2:2}
     ARTIFACT="oracle-jdk-$V-$P"
-    VERSION="$V.0_$B"
+    VERSION="$V.0_$P"
     curl -v  \
  -F r=hosted.mwe-wzu.releases \
  -F hasPom=false  \
