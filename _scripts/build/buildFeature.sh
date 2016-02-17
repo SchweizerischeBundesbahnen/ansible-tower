@@ -3,6 +3,8 @@
 
 set -x
 
+NOCACHE=$2
+
 GIT_BRANCH=$1
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
@@ -103,8 +105,8 @@ do
     fi
 
     # build and push images
-    echo "docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}"
-    sudo docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}
+    echo "docker build --rm ${NOCACHE} -t ${REGISTRY}/${image}:${tag} ./${path}"
+    sudo docker build --rm ${NOCACHE} -t ${REGISTRY}/${image}:${tag} ./${path}
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Image=$image"
         exit -1

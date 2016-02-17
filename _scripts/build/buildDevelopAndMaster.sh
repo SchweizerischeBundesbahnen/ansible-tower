@@ -4,6 +4,8 @@
 GIT_BRANCH=$1
 git checkout "${GIT_BRANCH}"
 
+NOCACHE=$2
+
 GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
 echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
@@ -71,8 +73,8 @@ do
     IMAGE=`basename $TOBUILD`
 
     # build and push images
-    echo "docker build --rm --no-cache -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}"
-    sudo docker build --rm --no-cache -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}
+    echo "docker build --rm ${NOCACHE} -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}"
+    sudo docker build --rm ${NOCACHE} -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Image=$IMAGE"
         exit -1
