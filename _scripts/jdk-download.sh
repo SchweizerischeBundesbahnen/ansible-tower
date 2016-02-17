@@ -37,7 +37,7 @@ function find_build_id() {
 
 function download() {
     BASE_URL="http://download.oracle.com/otn-pub/java/jdk/${VER}-b${BUILD}/"
-    wget -c -O $TMPDIR/"${FILENAME}" --no-check-certificate --no-cookies --header "${HEADER}" "${BASE_URL}${FILENAME}"
+    wget -q -c -O $TMPDIR/"${FILENAME}" --no-check-certificate --no-cookies --header "${HEADER}" "${BASE_URL}${FILENAME}"
 }
 
 function svn_upload() {
@@ -58,7 +58,7 @@ function nexus_upload() {
     B=${VER:2:2}
     ARTIFACT="oracle-jdk-$V-$P"
     VERSION="$V.0_$B"
-    curl -v  \
+    curl \
  -F r=hosted.mwe-wzu.releases \
  -F hasPom=false  \
  -F e=zip  \
@@ -76,16 +76,22 @@ function unpack() {
     mkdir -p ${DATADIR}
 
     if [ $FORMAT == "exe" ]; then
-        7z e -o$TMPDIR ${TMPDIR}/${FILENAME}
-        unzip $TMPDIR/tools.zip -d $DATADIR
+        7z e -bb0 -o$TMPDIR ${TMPDIR}/${FILENAME}
+        unzip $TMPDIR/tools.zip -d $DATADIR -q
         rm $TMPDIR/tools.zip
     else
-        tar xzvf ${TMPDIR}/${FILENAME} -C $DATADIR
+        tar xzf ${TMPDIR}/${FILENAME} -C $DATADIR
     fi
 }
 
 function pack() {
-    (cd $DATADIR && zip -r $TMPDIR/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" .)
+    (cd $DATADIR && zip -q -r $TMPDIR/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" .)
+}
+
+function cleanup() {
+  rm $TMPDIR/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip"
+  rm ${TMPDIR}/${FILENAME}
+  rm -r $DATADIR
 }
 
 function add_cert() {
@@ -127,6 +133,7 @@ do
             add_cert
             pack
             nexus_upload
+            cleanup
         done
     done
 done
