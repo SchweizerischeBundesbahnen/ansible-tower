@@ -15,7 +15,6 @@ REGISTRY=registry.sbb.ch/kd_wzu
 
 # since we're on a feature branch, we want to find the suffix
 tag=`basename $GIT_BRANCH`
-error=0
 
 echo "TAG=${tag}"
 
@@ -92,10 +91,14 @@ do
     echo $imagenames | grep -q '\(^\|[ ]\)'$parentimage'\($\|[ ]\)'
     is_parent_built=$?
     echo "is_parent_built=${is_parent_built}"
-    if [[ ${is_parent_built} ]]; then
+    # is_parent_built is a integer. grep return 0 if, the pattern is found else 1. so if the parent image is found in $imagenames, then tag it with branch else take latest-dev
+    if [[ ${is_parent_built} -eq 0 ]]; then
         echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
 		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:${tag}#g" ${dockerfile}
-	fi
+	else
+        echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:latest-dev"
+		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:latest-dev#g" ${dockerfile}
+    fi
 
     # build and push images
     echo "docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}"
@@ -112,13 +115,6 @@ do
         exit -3
     fi
 
-    # delete images from disk, if succesful. Exit otherwise
-    if [ $error -eq 0 ]; then
-        sudo docker rmi -f "${REGISTRY}/${image}:${tag}"
-    else
-        exit $error
-    fi
-
     echo ""
     echo ""
     echo "-------------------------------------"
@@ -127,4 +123,25 @@ do
     echo ""
     echo ""
 done
-exit $error
+
+
+echo ""
+echo ""
+echo "-------------------------------------"
+echo "Cleanup: going to delete built images locally"
+echo "-------------------------------------"
+echo ""
+echo ""
+for path in $images ;
+do
+    echo ""
+    echo ""
+    echo "-------------------------------------"
+    echo "Delete image ${path} locally"
+    echo "-------------------------------------"
+    echo ""
+    echo ""
+    image=`basename $path`
+    # delete images from disk, if succesful. Exit otherwise
+    sudo docker rmi -f "${REGISTRY}/${image}:${tag}"
+done
