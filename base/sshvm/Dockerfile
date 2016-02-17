@@ -1,5 +1,5 @@
 #Docker image for jenkins master
-FROM schweizerischebundesbahnen/base
+FROM registry.sbb.ch/kd_wzu/base
  
 MAINTAINER roger.bobst@sbb.ch
 
@@ -14,6 +14,13 @@ RUN adduser sshuser -U -u 1000 --home /home/sshuser \
 	&& usermod -a -G wheel sshuser \
 	&& echo "sshuser:sshuser" | chpasswd \
 	&& mkdir -p /var/data
+
+# install supervisor
+RUN yum update -y \
+	&& yum -y install python-setuptools \
+	&& yum clean all -q \
+	&& easy_install supervisor \
+	&& mkdir -p /etc/supervisor/conf.d
 
 # setting up locale
 RUN echo "LC_ALL=en_US.UTF-8" >> /home/sshuser/.bashrc

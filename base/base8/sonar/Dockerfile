@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base8
+FROM registry.sbb.ch/kd_wzu/base8
 
 MAINTAINER u214892@sbb.ch
 
@@ -73,7 +73,7 @@ RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com
 # sonar-scm-activity-plugin-1.8.jar
 # Wird im in 5.1 im SonarQube-Core ausgeliefert
 RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/scm-activity/sonar-scm-activity-plugin/1.8/sonar-scm-activity-plugin-1.8.jar
-# Dafür neu git und scm ausliefern
+# Dafï¿½r neu git und scm ausliefern
 #RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/sonar-scm-svn-plugin/1.0/sonar-scm-svn-plugin-1.0.jar
 #RUN cd /opt/sonar/extensions/plugins && wget -q http://downloads.sonarsource.com/plugins/org/codehaus/sonar-plugins/sonar-scm-git-plugin/1.0/sonar-scm-git-plugin-1.0.jar
 

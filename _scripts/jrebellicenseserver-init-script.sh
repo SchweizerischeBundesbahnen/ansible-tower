@@ -6,7 +6,7 @@
 
 opts=" -p 9000:8150 -v /var/data/jrebellicenseserver/logs:/var/data/jrebellicenseserver/logs -v /var/data/jrebellicenseserver/data:/var/data/jrebellicenseserver/data -d"
 containername=jrebellicenseserver
-imagename=schweizerischebundesbahnen/jrebellicenseserver:3.0.4
+imagename=registry.sbb.ch/kd_wzu/jrebellicenseserver:3.0.4
 
 function start_container() {
 	docker start $containername

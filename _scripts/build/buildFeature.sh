@@ -1,10 +1,17 @@
 #!/bin/bash
 #
 
+set -x
+
 GIT_BRANCH=$1
 echo "GIT_BRANCH=${GIT_BRANCH}"
 
-REGISTRY=registry.sbb.ch
+if [ -z "$GIT_BRANCH" ]; then
+	echo "Please give me the current GIT_BRANCH"
+	exit 1
+fi
+
+REGISTRY=registry.sbb.ch/kd_wzu
 
 # since we're on a feature branch, we want to find the suffix
 tag=`basename $GIT_BRANCH`
@@ -24,7 +31,7 @@ do
     base=`basename $dir`;
     if [ "$base" == "configs" ]; then
         dir=`dirname $dir`;
-    fi  
+    fi
     #since git show respects the hierarchy, check if already touched folder is in list is sufficient to reduce any duplicates
     if [[ "$images" != *"$dir"* ]]; then
         if [[ -d "$dir" ]]; then
@@ -64,7 +71,7 @@ echo ""
 
 #Getting the imagenames only for referring to dependant parents if necessary.
 imagenames=`basename -a $images`
-#Adapt the dockerfiles to point to registry-t and to point to adjacent parents included in this build, if necessary.
+#Adapt the dockerfiles to point to registry and to point to adjacent parents included in this build, if necessary.
 for path in $images ;
 do
     echo ""
@@ -74,15 +81,22 @@ do
     echo "-------------------------------------"
     echo ""
     echo ""
-    
-    dockerfile=$path/Dockerfile
-    #if [ "${path}" != "base" ]; then
-    #Always referring to prod-registry.
-    sed -ri "s#FROM schweizerischebundesbahnen#FROM ${REGISTRY}#g" ${dockerfile}
-    search=`grep "FROM registry.sbb.ch ${dockerfile}`
-    currentparent=`basename $( echo $search | cut -d " " -f2 )`
 
+    dockerfile=$path/Dockerfile
     image=`basename $path`
+    parentimage=`grep "FROM" ${dockerfile} | cut -d/ -f3`
+
+    # If the parent image is built too, then take the tagged image (which will already be built due to depth-first ordering); else take the untagged image
+    # http://stackoverflow.com/questions/8063228/how-do-i-check-if-a-variable-exists-in-a-list-in-bash
+    # Since 'base' is also part of 'jenkins-slave-base' etc, regex needs some complexity..., see http://stackoverflow.com/questions/9155590/regexp-match-character-group-or-end-of-line
+    echo $imagenames | grep -q '\(^\|[ ]\)'$parentimage'\($\|[ ]\)'
+    is_parent_built=$?
+    echo "is_parent_built=${is_parent_built}"
+    if [[ ${is_parent_built} ]]; then
+        echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
+		sed -ri "s#FROM ${REGISTRY}/$parentimage#FROM ${REGISTRY}/$parentimage:${tag}#g" ${dockerfile}
+	fi
+
     # build and push images
     echo "docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}"
     sudo docker build --rm --no-cache -t ${REGISTRY}/${image}:${tag} ./${path}
@@ -104,11 +118,11 @@ do
     else
         exit $error
     fi
-    
+
     echo ""
     echo ""
     echo "-------------------------------------"
-    echo "End of push and build of ${TOBUILD}"
+    echo "End of push and build of ${path}"
     echo "-------------------------------------"
     echo ""
     echo ""

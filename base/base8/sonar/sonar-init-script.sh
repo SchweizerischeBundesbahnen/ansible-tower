@@ -7,7 +7,7 @@
 APP_URL="codequality-t.sbb.ch"
 opts=" --net=host -p 8110:8110 -p 9110:9110 -p 10110:10110 -v /var/data/sonar/logs/:/opt/sonar/logs/ -e APP_URL=${APP_URL} -e MYSQL_HOST=v01031.sbb.ch -e MYSQL_DBNAME=sonar -e MYSQL_USER=sonar -e MYSQL_PASSWORD=sonar -d"
 containername=sonar
-imagename=schweizerischebundesbahnen/sonar:latest
+imagename=registry.sbb.ch/kd_wzu/sonar:latest
 
 function start_container() {
 	docker start $containername
