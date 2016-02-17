@@ -29,9 +29,9 @@ function find_build_id() {
         BASE_URL="http://download.oracle.com/otn-pub/java/jdk/${VER}-b${BUILD}/"
         FILENAME="jdk-${VER}-${OS}-${PLATFORM}.tar.gz"
         wget -q --spider -c -O /dev/null --show-progress --no-check-certificate --no-cookies --header "${HEADER}" "${BASE_URL}${FILENAME}" && {
-          BUILDID=${BUILD}
-          return
-        }
+        BUILDID=${BUILD}
+        return
+    }
     done
 }
 
@@ -42,6 +42,33 @@ function download() {
 
 function svn_upload() {
     svn import -m "Add $FILENAME" $TMPDIR/"${FILENAME}" https://svn.sbb.ch/svn/wzu/jdk/${FILENAME}
+}
+
+function nexus_upload() {
+    if [[ ${VER:0:1} == "8" ]]; then
+        V="1.8";
+    else
+        V="1.7";
+    fi
+    if [[ ${PLATFORM} == "x64" ]]; then
+        P="64";
+    else
+        P="32";
+    fi
+    B=${VER:2:2}
+    ARTIFACT="oracle-jdk-$V-$P"
+    VERSION="$V.0_$B"
+    curl -v  \
+ -F r=hosted.mwe-wzu.releases \
+ -F hasPom=false  \
+ -F e=zip  \
+ -F g=ch.sbb.eaio  \
+ -F a=$ARTIFACT  \
+ -F v=$VERSION  \
+ -F p=zip  \
+ -F file=@${TMPDIR}/${FILENAME}  \
+ -u admin:$ADMINPWD  \
+ http://repo.sbb.ch/service/local/artifact/maven/content
 }
 
 function unpack() {
@@ -81,9 +108,9 @@ do
     find_build_id $version
     echo "Got build number ${BUILDID}"
     [ $BUILDID -gt 100 ] && {
-      echo "Build-Id not in range, exiting..."
-      exit 1
-    }
+    echo "Build-Id not in range, exiting..."
+    exit 1
+}
     for platform in ${PLATFORMS[@]}
     do
         for os in ${OSS[@]}
@@ -99,7 +126,7 @@ do
             unpack
             add_cert
             pack
+            nexus_upload
         done
     done
 done
-
