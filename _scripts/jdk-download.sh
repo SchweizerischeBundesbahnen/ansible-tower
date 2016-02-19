@@ -28,6 +28,7 @@ CURLVERBOSITY=" -S "
 
 # webproxy.sbb.ch has problems with JDK download, use this as a workaround
 #CURLPROXYWORKAROUND=" --socks5 localhost:60001"
+CURLPROXYWORKAROUND=" --proxy http://fswzuad:bolb3fas@testwebproxy.sbb.ch:8080"
 
 function error() {
   echo "Fatal: Could not finish operation. Exiting"
@@ -39,7 +40,7 @@ function find_build_id() {
   PLATFORM="${PLATFORMS[0]}"
   VER=$1
   OS="${OSS[0]}"
-  for BUILD in {99..00}
+  for BUILD in {15..00}
   do
     BASE_URL="http://download.oracle.com/otn-pub/java/jdk/${VER}-b${BUILD}/"
     FILENAME="jdk-${VER}-${OS}-${PLATFORM}.tar.gz"
@@ -62,27 +63,13 @@ function svn_upload() {
 }
 
 function nexus_upload() {
-
   if [[ ${OS} == "windows" ]]; then
     echo "Uploading artifact jdk-${VER}-${OS}-${PLATFORM}-sbb.zip to Nexus"
   else
     echo "Skipping upload of artifact jdk-${VER}-${OS}-${PLATFORM}-sbb.zip to Nexus"
     return
   fi
-
-  if [[ ${VER:0:1} == "8" ]]; then
-    V="1.8";
-  else
-    V="1.7";
-  fi
-  if [[ ${PLATFORM} == "x64" ]]; then
-    P="64";
-  else
-    P="32";
-  fi
-#  B=${VER:2:2}
   ARTIFACT="oracle-jdk-$V-$P"
-#  VERSION="$V.0_$B"
   curl --progress-bar -f \
  -F r=hosted.mwe-wzu.releases  \
  -F hasPom=false  \
@@ -98,13 +85,25 @@ function nexus_upload() {
 
 function unpack() {
   echo "Unpacking ${FILENAME}"
-  DATADIR="${TMPDIR}/${FILENAME}-unpacked"
+
+ if [[ ${VER:0:1} == "8" ]]; then
+    V="1.8";
+  else
+    V="1.7";
+  fi
+  if [[ ${PLATFORM} == "x64" ]]; then
+    P="64";
+  else
+    P="32";
+  fi
+  ZIPROOTDIR="${TMPDIR}/${FILENAME}-unpacked/"
+  DATADIR="${ZIPROOTDIR}/jdk${V}_${P}/"
   mkdir -p ${DATADIR} || error
 
   if [ ${FORMAT} == "exe" ]; then
-    7z e -bb0 -o$TMPDIR ${TMPDIR}/${FILENAME} > /dev/null 2>&1  || error
-    unzip -q $TMPDIR/tools.zip -d ${DATADIR} || error
-    rm $TMPDIR/tools.zip
+    7z e -bb0 -o${TMPDIR} ${TMPDIR}/${FILENAME} > /dev/null 2>&1  || error
+    unzip -q ${TMPDIR}/tools.zip -d ${DATADIR} || error
+    rm ${TMPDIR}/tools.zip
   else
     tar xzf ${TMPDIR}/${FILENAME} -C ${DATADIR} || error
   fi
@@ -112,7 +111,7 @@ function unpack() {
 
 function pack() {
   echo "Packing jdk-${VER}-${OS}-${PLATFORM}-sbb.zip"
-  (cd ${DATADIR} && zip -q -r $TMPDIR/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" .) || error
+  (cd ${ZIPROOTDIR} && zip -q -r $TMPDIR/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" .) || error
 }
 
 function cleanup() {
