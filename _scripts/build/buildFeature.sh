@@ -37,7 +37,7 @@ do
         if [[ -d "$dir" ]]; then
           #Exclude some folders from the search like .git, _scripts..everything where commits do not affect images should be ignored.
           #If directory does not exist any more, it's been git-mved away (in this case, it will show up in the list, too, so skip it in this case)
-          images="$images `find $dir -type d -print | grep -v -E ".git|_doc|_scripts|configs"`";
+          images="$images `find $dir -type d -print | grep -v -E ".git|_doc|_scripts|configs" | grep -v "^.$" `";
         fi
     fi
 done
