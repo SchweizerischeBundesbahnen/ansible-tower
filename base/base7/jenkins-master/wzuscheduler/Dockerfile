@@ -8,7 +8,7 @@ ENV appversion 1.625.3
 USER root
 
 # install basic tools
-RUN yum install --quiet s3cmd git-svn openldap-clients openssl xmlstarlet p7zip ant -y \
+RUN yum install --quiet s3cmd git-svn openldap-clients openssl xmlstarlet p7zip p7zip-plugins ant -y \
 	&& yum clean all -y
 
 # replace jenkins war
