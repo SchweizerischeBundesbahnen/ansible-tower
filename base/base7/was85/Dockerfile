@@ -70,11 +70,13 @@ RUN cd /opt/me/res/jython && \
       mv ant_task_lib.xml.new ant_task_lib.xml && \
       chown -R ${appuser}:${appuser} * && \
 # ... and builder.sh
-      sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh && \
-# ... and adapters
-      mkdir -p /opt/me/repo/ && cd /opt/me/repo && \
-      curl http://repo.sbb.ch/service/local/repositories/mirror/content/ch/sbb/eaio/jca_adapter/1.15.0/jca_adapter-1.15.0.zip -o jca_adapter-1.15.0.zip && \
-      unzip jca_adapter.zip && chown -R ${appuser}:${appuser} * && find /opt/me/repo
+      sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh
+# / SWEBL-287 does not work yet:
+## ... and adapters
+#      mkdir -p /opt/me/repo/ && cd /opt/me/repo && \
+#      curl http://repo.sbb.ch/service/local/repositories/mirror/content/ch/sbb/eaio/jca_adapter/1.15.0/jca_adapter-1.15.0.zip -o jca_adapter-1.15.0.zip && \
+#      unzip jca_adapter.zip && chown -R ${appuser}:${appuser} * && find /opt/me/repo
+# \ SWEBL-287
 
 #SSH,SOAP_CONNECTOR_ADDRESS,SIP_DEFAULTHOST_SECURE,SIP_DEFAULTHOST,SIB_ENDPOINT_ADDRESS,WC_defaulthost_secure,DCS_UNICAST_ADDRESS
 #SIB_MQ_ENDPOINT_SECURE_ADDRESS,WC_adminhost_secure,CSIV2_SSL_MUTUALAUTH_LISTENER_ADDRESS,ORB_LISTENER_ADDRESS,
