@@ -23,8 +23,8 @@ DATADIR=
 
 # use one of those
 #CURLVERBOSITY=" -S -v "
-CURLVERBOSITY=" -S "
-#CURLVERBOSITY=" -s "
+#CURLVERBOSITY=" -S "
+CURLVERBOSITY=" -s "
 
 # webproxy.sbb.ch has problems with JDK download, use this as a workaround
 #CURLPROXYWORKAROUND=" --socks5 localhost:60001"
