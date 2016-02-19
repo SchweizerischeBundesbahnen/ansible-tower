@@ -70,7 +70,7 @@ RUN cd /opt/me/res/jython && \
       mv ant_task_lib.xml.new ant_task_lib.xml && \
       chown -R ${appuser}:${appuser} * && \
 # ... and builder.sh
-      sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh &&
+      sed -i 's%WAS_BIN=.*%WAS_BIN=$ROOT/AppSrv01/bin%g' /opt/me/bin/builder.sh && \
 # ... and adapters
       mkdir -p /opt/me/repo/ && cd /opt/me/repo && \
       curl http://repo.sbb.ch/service/local/repositories/mirror/content/ch/sbb/eaio/jca_adapter/1.15.0/jca_adapter-1.15.0.zip -o jca_adapter-1.15.0.zip && \
