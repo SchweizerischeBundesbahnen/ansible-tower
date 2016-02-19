@@ -40,7 +40,7 @@ function find_build_id() {
   PLATFORM="${PLATFORMS[0]}"
   VER=$1
   OS="${OSS[0]}"
-  for BUILD in {15..00}
+  for BUILD in {99..00}
   do
     BASE_URL="http://download.oracle.com/otn-pub/java/jdk/${VER}-b${BUILD}/"
     FILENAME="jdk-${VER}-${OS}-${PLATFORM}.tar.gz"
