@@ -59,7 +59,7 @@ function download() {
 
 function svn_upload() {
   echo "Importing ${FILENAME} to Subversion"
-  svn import -m "Add $FILENAME" $TMPDIR/"${FILENAME}" https://svn.sbb.ch/svn/wzu/jdk/${FILENAME}
+  svn import --username "fstools" --password ${FSTOOLSPWD} --non-interactive -m "Add $FILENAME" $TMPDIR/"${FILENAME}" https://svn.sbb.ch/svn/wzu/jdk/${FILENAME}
 }
 
 function nexus_upload() {
