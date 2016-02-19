@@ -15,12 +15,13 @@ REGISTRY=registry.sbb.ch/kd_wzu
 
 # since we're on a feature branch, we want to find the suffix
 tag=`basename $GIT_BRANCH`
+error=0
 
 echo "TAG=${tag}"
 
 #Find all files changed with respect to develop and order them breadth-first order
 # http://stackoverflow.com/questions/539583/how-do-i-recursively-list-all-directories-at-a-location-breadth-first
-filesTouched=`git show --pretty="format:" --name-only develop..${GIT_BRANCH} | perl -lne 'print tr:/::, " $_"' | sort -n | uniq | grep -v '^$' | cut -d' ' -f2`
+filesTouched=`git show --pretty="format:" --name-only develop..${GIT_BRANCH} | perl -lne 'print tr:/::, " $_"' | sort -n | uniq | grep -v '^$' | cut -d' ' -f2 |  grep -v -E ".git|_doc|_scripts|configs"`
 
 #For each folder, store only the path to the folder since only files are modified.
 for f in $filesTouched ;
@@ -36,7 +37,7 @@ do
         if [[ -d "$dir" ]]; then
           #Exclude some folders from the search like .git, _scripts..everything where commits do not affect images should be ignored.
           #If directory does not exist any more, it's been git-mved away (in this case, it will show up in the list, too, so skip it in this case)
-          images="$images `find $dir -type d -print | grep -v -E ".git|_doc|_scripts|configs"`";
+          images="$images `find $dir -type d -print | grep -v -E ".git|_doc|_scripts|configs" | grep -v "^.$" `";
         fi
     fi
 done
@@ -91,6 +92,7 @@ do
     echo $imagenames | grep -q '\(^\|[ ]\)'$parentimage'\($\|[ ]\)'
     is_parent_built=$?
     echo "is_parent_built=${is_parent_built}"
+
     # is_parent_built is a integer. grep return 0 if, the pattern is found else 1. so if the parent image is found in $imagenames, then tag it with branch else take latest-dev
     if [[ ${is_parent_built} -eq 0 ]]; then
         echo "For image $image setting parent to  ${REGISTRY}\/$parentimage:${tag}"
@@ -115,6 +117,13 @@ do
         exit -3
     fi
 
+    # delete images from disk, if succesful. Exit otherwise
+    if [ $error -eq 0 ]; then
+        sudo docker rmi -f "${REGISTRY}/${image}:${tag}"
+    else
+        exit $error
+    fi
+
     echo ""
     echo ""
     echo "-------------------------------------"
@@ -123,25 +132,4 @@ do
     echo ""
     echo ""
 done
-
-
-echo ""
-echo ""
-echo "-------------------------------------"
-echo "Cleanup: going to delete built images locally"
-echo "-------------------------------------"
-echo ""
-echo ""
-for path in $images ;
-do
-    echo ""
-    echo ""
-    echo "-------------------------------------"
-    echo "Delete image ${path} locally"
-    echo "-------------------------------------"
-    echo ""
-    echo ""
-    image=`basename $path`
-    # delete images from disk, if succesful. Exit otherwise
-    sudo docker rmi -f "${REGISTRY}/${image}:${tag}"
-done
+exit $error
