@@ -54,7 +54,7 @@ function find_build_id() {
 function download() {
   echo "Downloading ${FILENAME}"
   BASE_URL="http://download.oracle.com/otn-pub/java/jdk/${VER}-b${BUILD}/"
-  curl ${CURLVERBOSITY} ${CURLPROXYWORKAROUND} --progress-bar -f -L -A "Mozilla/4.0" -b "oraclelicense=a" "${BASE_URL}${FILENAME}" -o $TMPDIR/"${FILENAME}" || error
+  curl ${CURLVERBOSITY} ${CURLPROXYWORKAROUND} -f -L -A "Mozilla/4.0" -b "oraclelicense=a" "${BASE_URL}${FILENAME}" -o $TMPDIR/"${FILENAME}" || error
 }
 
 function svn_upload() {
@@ -70,7 +70,7 @@ function nexus_upload() {
     return
   fi
   ARTIFACT="oracle-jdk-$V-$P"
-  curl --progress-bar -f \
+  curl -f \
  -F r=hosted.mwe-wzu.releases  \
  -F hasPom=false  \
  -F e=zip  \
@@ -121,7 +121,7 @@ function cleanup() {
 
 function add_cert() {
   echo "Adding Swisscon Certificates to keystores"
-  curl ${CURLVERBOSITY} --progress-bar -f -L https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/cmdfiles/src/main/resources/import_cacerts.xml?raw  -o $TMPDIR/import_cacerts.xml || error
+  curl ${CURLVERBOSITY} -f -L https://code.sbb.ch/projects/KD_WZU/repos/eaio/browse/cmdfiles/src/main/resources/import_cacerts.xml?raw  -o $TMPDIR/import_cacerts.xml || error
   ant -q -S -autoproxy -buildfile $TMPDIR/import_cacerts.xml -Dexecutable.keytool=`which keytool` -Dexecutable.wget=`which wget` -Dcertificates.dir=$TMPDIR/certs/ -Dinstall.root.dir=${DATADIR} || error
 }
 
