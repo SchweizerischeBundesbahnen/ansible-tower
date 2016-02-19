@@ -15,8 +15,7 @@ RUN cd ${jenkinshome}/buildtools \
 	&& md5sum android-sdk-linux-latest.tar.gz \
 	&& tar xfz android-sdk-linux-latest.tar.gz \
 	&& mv output/buildtools/android-sdk-linux . \
-	&& rm -rf output android-sdk-linux-latest.tar.gz
-
+	&& rm -rf output android-sdk-linux-latest.tar.gz \
 # Download Gradle
     && wget --quiet "https://services.gradle.org/distributions/gradle-${gradle2version}-bin.zip" -O /tmp/gradle-${gradle2version}-bin.zip \
 	&& cd ${jenkinshome}/buildtools \
