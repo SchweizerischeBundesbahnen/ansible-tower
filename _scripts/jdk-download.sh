@@ -28,7 +28,7 @@ CURLVERBOSITY=" -S "
 
 # webproxy.sbb.ch has problems with JDK download, use this as a workaround
 #CURLPROXYWORKAROUND=" --socks5 localhost:60001"
-CURLPROXYWORKAROUND=" --proxy http://fswzuad:bolb3fas@testwebproxy.sbb.ch:8080"
+CURLPROXYWORKAROUND=" --proxy http://fstools:${FSTOOLSPWD}@testwebproxy.sbb.ch:8080"
 
 function error() {
   echo "Fatal: Could not finish operation. Exiting"
