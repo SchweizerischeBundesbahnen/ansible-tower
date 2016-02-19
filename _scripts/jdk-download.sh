@@ -147,6 +147,9 @@ function checkdeps() {
 
 checkdeps
 
+# Wipe someone elses floor
+[ -d ${TMPDIR} ] && cleanup
+
 mkdir -p $TMPDIR
 
 for version in ${VERSIONS[@]}
