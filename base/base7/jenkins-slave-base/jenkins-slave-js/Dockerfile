@@ -2,7 +2,7 @@
 FROM registry.sbb.ch/kd_wzu/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
-ENV labels "swarm nodejs"
+ENV labels "nodejs"
 ENV nodejs_version "v4.2.2"
 ENV installer_url "https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh"
 
