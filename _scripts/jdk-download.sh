@@ -7,7 +7,7 @@
 # @changelog: 2016-02-17: Initiated
 ##
 
-DEPS=( "7z" "ant" "keytool" "curl" )
+DEPS=( "7z" "ant" "keytool" "curl" "which" )
 VERSIONS=( "$@" )
 PLATFORMS=( "i586" "x64" )
 OSS=( "linux" "windows" )
