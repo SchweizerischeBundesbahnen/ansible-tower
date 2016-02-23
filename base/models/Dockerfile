@@ -20,6 +20,6 @@ VOLUME /var/www/models
 # Copy httpdconfig for models
 COPY config/models.conf /etc/httpd/conf.d/models.conf
 #CMD ["httpd", "&&", "sleep 1", "&&", "tail", "-f", "/var/log/httpd/error_log"]
-COPY run-httpd.sh /run-httpd.sh
-RUN chmod -v +x /run-httpd.sh
-CMD ["/run-httpd.sh"]
+COPY run-models.sh /run-models.sh
+RUN chmod -v +x /run-models.sh
+CMD ["/run-models.sh"]
