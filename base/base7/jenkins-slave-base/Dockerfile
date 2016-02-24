@@ -23,10 +23,10 @@ ENV externalport 12345
 ENV host example.sbb.ch
 ENV orajdk632bitfile oracle-jdk-6-32b.tar.gz
 ENV orajdk664bitfile oracle-jdk-6.tar.gz
-ENV orajdk732bitfile jdk-7u79-linux-i586.tar.gz
-ENV orajdk764bitfile jdk-7u79-linux-x64.tar.gz
-ENV orajdk832bitfile jdk-8u65-linux-i586.tar.gz
-ENV orajdk864bitfile jdk-8u65-linux-x64.tar.gz
+ENV orajdk732bitfile jdk-7u80-linux-i586.tar.gz
+ENV orajdk764bitfile jdk-7u80-linux-x64.tar.gz
+ENV orajdk832bitfile jdk-8u74-linux-i586.tar.gz
+ENV orajdk864bitfile jdk-8u74-linux-x64.tar.gz
 
 # Install dev tools
 RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q
