@@ -15,7 +15,8 @@ fi
 export REGISTRY_DATA_DIR=/var/data/registry/docker/registry/v2/
 
 
-list=`curl --silent -X GET https://registry.sbb.ch/v2/_catalog?n=1000 | jq '.repositories[]' `
+list=`curl --silent -X GET https://registry.sbb.ch/v2/_catalog?n=1000 | jq '.repositories[]' | grep kd_wzu`
+# | egrep "androidsdk|backupsshserver|base|base7|base8|confluence|jira|jrebellicenseserver|sonar|sshvm|stash|was85|wzuscheduler"  | grep -v cloud | grep -v wzuself | grep -v plattform | grep -v ngin`
 
 for image in ${list}; do
 
