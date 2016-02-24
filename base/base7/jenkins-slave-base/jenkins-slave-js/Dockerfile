@@ -8,7 +8,21 @@ ENV installer_url "https://raw.githubusercontent.com/creationix/nvm/v0.29.0/inst
 
 
 # Install js binaries for build
-RUN yum update -q -y && yum install -q npm rubygems  -y && yum clean all -q 
+RUN yum update -q -y && yum install -q npm rubygems  -y && yum clean all -q
+
+# Download and extract WAS 85 and create profile
+RUN cd /opt \
+        &&  wget -qO- ${filerurl}/was-${was8version}.tar.gz | tar xfz - \
+        && mv /opt/was85/java_1.7_64 ${jenkinshome}/buildtools/ibm-jdk-was85 \
+        && rm -rf /opt/was85 \
+		&& chown -R ${appuser}:${appuser} ${jenkinshome} \
+		&& ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
+
+# Link custom keystore
+RUN  cd ${jenkinshome}/buildtools \
+	&& rm ./ibm-jdk-was85/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./ibm-jdk-was85/jre/lib/security/cacerts \
+	&& ls -l ./ibm-jdk-was85/jre/lib/security/cacerts
 
 # Install nodejs
 RUN curl -o- ${installer_url} | bash \
