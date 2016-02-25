@@ -9,7 +9,7 @@ dockerslave="i43248"
 jenkins = Hudson.instance
 
 
-minimumRequiredSlavesPerLabel = ['android': 0, 'nodejs': 0, 'wmb': 0, 'was7': 0, 'was85': 0, 'java': 0, 'sonargraph': 0 ]
+minimumRequiredSlavesPerLabel = ['android': 0, 'nodejs': 0, 'wmb': 0, 'was85': 0, 'java': 0, 'sonargraph': 0 ]
 
 def getEnviron(computer) {
     def env

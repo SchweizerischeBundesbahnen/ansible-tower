@@ -1,14 +1,13 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM registry.sbb.ch/kd_wzu/jenkins-slave-base
+FROM registry.sbb.ch/kd_wzu/jenkins-slave-was85
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
-ENV labels "swarm nodejs"
+ENV labels "nodejs"
 ENV nodejs_version "v4.2.2"
 ENV installer_url "https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh"
 
-
 # Install js binaries for build
-RUN yum update -q -y && yum install -q npm rubygems  -y && yum clean all -q 
+RUN yum update -q -y && yum install -q npm rubygems  -y && yum clean all -q
 
 # Install nodejs
 RUN curl -o- ${installer_url} | bash \

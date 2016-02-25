@@ -26,7 +26,7 @@ else
 fi
 
 # define registry to push to
-REGISTRY="registry.sbb.ch"
+REGISTRY="registry.sbb.ch/kd_wzu"
 
 echo ""
 echo ""
