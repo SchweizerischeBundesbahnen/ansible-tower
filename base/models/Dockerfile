@@ -19,7 +19,7 @@ EXPOSE 8170
 VOLUME /var/www/models
 
 # Copy httpdconfig for models on port 8170
-COPY config/models.conf /etc/httpd/conf.d/models.conf
+COPY configs/models.conf /etc/httpd/conf.d/models.conf
 
 # Copy startupscript and Chmod
 COPY run-models.sh /run-models.sh 
