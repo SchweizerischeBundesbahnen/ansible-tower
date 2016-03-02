@@ -53,6 +53,7 @@ EXPOSE 7999 8120 9120 10120 11120
 #Getting files to set image
 COPY configs/setenv.sh /opt/stash/bin/setenv.sh
 COPY configs/stash.sh /opt/stash/stash.sh
+COPY configs/ssh-server-keys.pem ${stash_home}/shared/config/ssh-server-keys.pem
 RUN chmod 755 /opt/stash/bin/setenv.sh /opt/stash/stash.sh
 
 RUN chown -R ${appuser}:${appuser} ${stash_home}
