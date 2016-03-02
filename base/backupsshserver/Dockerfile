@@ -15,8 +15,8 @@ RUN adduser ${user} -U -u 1000 --home /home/${user} \
 	&& usermod -a -G wheel ${user} \
 	&& mkdir -p /var/backup /home/${user}/.ssh
 
-# copy public key of wzuscheduler to authorized_keys
-COPY configs/wzuscheduler_id_rsa.pub /home/${user}/.ssh/authorized_keys
+# copy public keys 
+COPY configs/authorized_keys /home/${user}/.ssh/authorized_keys
 	
 # install supervisor
 RUN yum update -y \
