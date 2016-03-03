@@ -1,6 +1,5 @@
 #!/bin/bash
-# This shell script takes care of starting and stopping
-#
+# Just clone the git-repository to $repodir and symlink this script to /etc/init.d/projectname
 # chkconfig: - 85 15
 
 repodir="/etc/wzu-docker"
