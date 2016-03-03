@@ -96,14 +96,15 @@ function unpack() {
   else
     P="32";
   fi
-  ZIPROOTDIR="${TMPDIR}/${FILENAME}-unpacked/"
-  DATADIR="${ZIPROOTDIR}/jdk${V}_${P}/"
+  ZIPROOTDIR="${TMPDIR}/${FILENAME}-unpacked"
+  DATADIR="${ZIPROOTDIR}/jdk${V}_${P}"
   mkdir -p ${DATADIR} || error
 
   if [ ${FORMAT} == "exe" ]; then
     7z e -bb0 -o${TMPDIR} ${TMPDIR}/${FILENAME} > /dev/null 2>&1  || error
     unzip -q ${TMPDIR}/tools.zip -d ${DATADIR} || error
     rm ${TMPDIR}/tools.zip
+    for file in $(find "${DATADIR}" -name "*pack"); do ${JAVA_HOME}/bin/unpack200 -r "${file}" "${file/%pack/jar}"; done
   else
     tar xzf ${TMPDIR}/${FILENAME} -C ${DATADIR} || error
   fi
@@ -128,7 +129,7 @@ function add_cert() {
 function usage() {
   echo -e "Download the oracle JDK from command line, uploads to svn, adds certificates and pushes to nexus, all unattended\n"
   echo -e "$0 [<versions>]\n"
-  echo "  [<versions>] Something like 8u73 7u64"
+  echo "  [<versions>] Something like 8u74 7u80"
   exit 1
 }
 
