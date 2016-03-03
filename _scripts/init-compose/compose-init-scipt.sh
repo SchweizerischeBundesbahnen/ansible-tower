@@ -3,7 +3,8 @@
 #
 # chkconfig: - 85 15
 
+repodir="/etc/wzu-docker"
 projectname="basename $0"
-composefile="/etc/wzu-docker/_scripts/${projectname}-config/docker-compose.yml"
+composefile="${repodir}/_scripts/${projectname}-config/docker-compose.yml"
 
-source compose-functions.sh
+source ${repodir}/_scripts/init-compose/compose-functions.sh
