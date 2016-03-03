@@ -1,0 +1,12 @@
+nexus:
+  image: sonatype/nexus
+  volumes:
+    - /var/data/p2:/sonatype-work
+    - /var/data/p2/temp:/tmp
+  environment:
+   MIN_HEAP: 512m
+   MAX_HEAP: 1024m
+   JAVA_OPTS: -server -XX:MaxPermSize=1024m -Djava.net.preferIPv4Stack=true -Xss1m
+  ports:
+    - 8061:8081
+  restart: always
