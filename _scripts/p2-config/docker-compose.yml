@@ -4,8 +4,8 @@ nexus:
     - /var/data/p2:/sonatype-work
     - /var/data/p2/temp:/tmp
   environment:
-   MIN_HEAP: 512m
-   MAX_HEAP: 1024m
+   MIN_HEAP: 2048m
+   MAX_HEAP: 4096m
    JAVA_OPTS: -server -XX:MaxPermSize=1024m -Djava.net.preferIPv4Stack=true -Xss1m
   ports:
     - 8061:8081
