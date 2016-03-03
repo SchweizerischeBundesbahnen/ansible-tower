@@ -17,7 +17,7 @@ varnish:
     - nexus
   environment:
     CACHE_SIZE: 1g
-    VCL_CONFIG: /data/varnish/varnish.vcl
+    VCL_CONFIG: /data/varnish/repoarchive.vcl
   ports:
     - 80:80
   restart: always

@@ -5,13 +5,14 @@
 
 composefile="/etc/wzu-docker/_scripts/repoarchive-config/docker-compose.yml"
 projectname="repoarchive"
+PATH=$PATH:/usr/local/bin
 
 function start_container() {
     docker-compose -f $composefile -p $projectname start
 }
 
 function init_container() {
-    docker-compose -f $composefile -p $projectname create
+    docker-compose -f $composefile -p $projectname up -d 
 }
 
 function stop_container() {
@@ -43,7 +44,7 @@ function reinitialize_container() {
 
 function update() {
   pull_container
-  reinitialize_container
+  init_container
 }
 
 case "$1" in
