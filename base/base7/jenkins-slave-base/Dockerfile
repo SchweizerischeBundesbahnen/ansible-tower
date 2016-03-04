@@ -183,8 +183,8 @@ RUN pip install ansible-tower-cli
 
 # Install oc-cli (see https://issues.sbb.ch/browse/CLOUD-421)
 RUN wget -qO- "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=mirror&g=com.openshift&a=oc-client&v=LATEST&e=rpm" -O oc.rpm \
-    && rpm -ivh oc.rpm 
-    && rm -f oc.rpm
+    && rpm -ivh oc.rpm \
+    && rm -f oc.rpm \
     && oc version
 
 # Start Slave
