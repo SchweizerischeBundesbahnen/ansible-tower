@@ -181,5 +181,11 @@ RUN chown -R ${appuser}:${appuser} ${jenkinshome}
 # Install ansible-tower-cli (@see https://github.com/ansible/tower-cli)
 RUN pip install ansible-tower-cli
 
+# Install oc-cli (see https://issues.sbb.ch/browse/CLOUD-421)
+RUN wget --quiet "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=mirror\\&g=com.openshift\\&a=oc-client\\&v=LATEST\\&e=rpm" -O oc.rpm \
+    && rpm -ivh oc.rpm 
+    && rm -f oc.rpm
+    && oc version
+
 # Start Slave
 CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
