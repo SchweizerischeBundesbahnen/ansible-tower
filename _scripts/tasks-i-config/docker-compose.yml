@@ -1,0 +1,11 @@
+jira:
+  image: registry.sbb.ch/kd_wzu/jira:latest
+  volumes:
+    - /var/data/tasks:/var/data/jira
+  environment:
+   APP_URL: tasks-i.sbb.ch
+  ports:
+    - 8020:8020
+    - 9020:9020
+    - 10020:10020
+  restart: always
