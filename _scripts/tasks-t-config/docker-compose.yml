@@ -5,7 +5,7 @@ jira:
   environment:
    APP_URL: tasks-t.sbb.ch
   ports:
-    - 8020:8020
-    - 9020:9020
-    - 10020:10020
+    - 8021:8020
+    - 9021:9020
+    - 10021:10020
   restart: always
