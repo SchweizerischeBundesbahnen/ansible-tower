@@ -3,31 +3,21 @@ nexus:
   volumes:
     - /var/data/repo:/sonatype-work
     - /var/data/repo/temp:/tmp
-  links:
-    - varnishrepoarchive:repoarchive.sbb.ch
-    - varnishrepoext:repo.sbb-ext.net
   environment:
    MIN_HEAP: 4096m
    MAX_HEAP: 10240m
    JAVA_OPTS: -server -XX:MaxPermSize=1024m -Djava.net.preferIPv4Stack=true -Xss1m
+  restart: always
+
+varnish:
+  image: registry.sbb.ch/kd_wzu/varnish
+  links:
+    - nexus
+  volumes:
+    - /etc/wzu-docker/_scripts/repo-config/varnish:/data/varnish
+  environment:
+    CACHE_SIZE: 30g
+    VCL_CONFIG: /data/varnish/repo.vcl
+  restart: always
   ports:
-      - 8060:8081
-  restart: always
-
-varnishrepoarchive:
-  image: registry.sbb.ch/kd_wzu/varnish
-  volumes:
-    - /etc/wzu-docker/_scripts/repo-config/varnish:/data/varnish
-  environment:
-    CACHE_SIZE: 30g
-    VCL_CONFIG: /data/varnish/repoarchive.vcl
-  restart: always
-
-varnishrepoext:
-  image: registry.sbb.ch/kd_wzu/varnish
-  volumes:
-    - /etc/wzu-docker/_scripts/repo-config/varnish:/data/varnish
-  environment:
-    CACHE_SIZE: 30g
-    VCL_CONFIG: /data/varnish/repoext.vcl
-  restart: always
+      - 8060:80
