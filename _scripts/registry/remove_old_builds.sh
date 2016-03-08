@@ -4,12 +4,13 @@ BRANCH=$1
 dryrun=$2
 
 # max build to keep
-MAX_BUILDS=5
+MAX_BUILDS=4
 
 # usage
 if [ ! "$#" -gt 0 ]
 then
   echo "Usage: $0 dev --dry-run"
+  echo "       $0 master --dry-run"
   exit 1
 fi
 
@@ -33,11 +34,15 @@ for image in ${list}; do
 		else
 			tags=`curl --silent -X GET https://registry.sbb.ch/v2/${image:1: -1}/tags/list | jq '.tags[]' | grep ${BRANCH} | grep -v "latest"`
 		fi
+		to_delete=`expr ${tagcount} - ${MAX_BUILDS}`
+		echo "Will delete ${to_delete} tags"
 		for tag in ${tags}; do
-		      #if [ "${tag:1: -1}" = "${TAG_TO_DELETE}" ]; then
-		      echo "processing ${image:1: -1}:${tag:1: -1}"
-		      #./delete_docker_registry_image --image ${image:1: -1}:${tag:1: -1} $dryrun
-		      #fi
+			# this list is ordered by name. The oldest image is the first in the list.
+			echo "processing ${image:1: -1}:${tag:1: -1}"
+			if [ ${to_delete} -gt 0 ]; then
+				to_delete=`expr ${to_delete} - 1`
+				echo "./delete_docker_registry_image --image ${image:1: -1}:${tag:1: -1} $dryrun"
+			fi
 	        done
 	fi
 done
