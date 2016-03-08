@@ -1,9 +1,9 @@
 # This is the base Dockerfile for all SBB Dockerfiles @WZU
-FROM schweizerischebundesbahnen/base
+FROM registry.sbb.ch/kd_wzu/base
 
 MAINTAINER Roger Bobst <roger.bobst@sbb.ch>
 
-ENV jdkurl ${filerurl}/jdk/jdk-7u79-linux-x64.tar.gz
+ENV jdkurl ${filerurl}/jdk/jdk-7u80-linux-x64.tar.gz
 
 # Get and Install Java
 RUN curl -s ${jdkurl} -o /opt/jdk.tar.gz \

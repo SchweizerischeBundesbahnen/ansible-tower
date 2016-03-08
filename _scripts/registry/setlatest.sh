@@ -14,7 +14,7 @@ for image in $MODULE_LIST; do
 	
 	image=`basename $image`
 	echo $image
-	sudo docker pull registry.sbb.ch/$image:$TAG
-	sudo docker tag registry.sbb.ch/$image:$TAG registry.sbb.ch/$image:latest
-	sudo docker push registry.sbb.ch/$image:latest
+	sudo docker pull registry.sbb.ch/kd_wzu/$image:$TAG
+	sudo docker tag registry.sbb.ch/kd_wzu/$image:$TAG registry.sbb.ch/kd_wzu/$image:latest
+	sudo docker push registry.sbb.ch/kd_wzu/$image:latest
 done

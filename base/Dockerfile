@@ -33,5 +33,9 @@ ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 RUN echo "export LC_ALL=en_US.UTF-8" > /etc/profile.d/lang.sh
 
+# Set TZ variable
+ENV TZ Europe/Zurich
+
 # Change timezone to Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+

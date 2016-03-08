@@ -4,6 +4,8 @@
 GIT_BRANCH=$1
 git checkout "${GIT_BRANCH}"
 
+NOCACHE=$2
+
 GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
 echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
@@ -30,7 +32,7 @@ TAG=${TAG}${TAG_SUFFIX}
 echo "Tag for deployment: ${TAG}"
 
 # define registry to push to
-REGISTRY="registry.sbb.ch"
+REGISTRY="registry.sbb.ch/kd_wzu"
 
 echo ""
 echo ""
@@ -61,19 +63,18 @@ do
     echo ""
     
     DOCKERFILE=$TOBUILD/Dockerfile
-    SEARCH=`grep "FROM schweizerischebundesbahnen" ${DOCKERFILE}`
+    SEARCH=`grep "FROM registry.sbb.ch/kd_wzu" ${DOCKERFILE}`
     echo "Dockerfile: ${DOCKERFILE}"
     echo "Old from: ${SEARCH}"
     sed -ri "s#${SEARCH}#${SEARCH}:${TAG}#g" ${DOCKERFILE}
-    sed -ri "s#schweizerischebundesbahnen#${REGISTRY}#g" ${DOCKERFILE}
     SEARCH=`grep "FROM ${REGISTRY}" ${DOCKERFILE}`
     echo "New from: ${SEARCH}"
 
     IMAGE=`basename $TOBUILD`
 
     # build and push images
-    echo "docker build --rm --no-cache -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}"
-    sudo docker build --rm --no-cache -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}
+    echo "docker build --rm ${NOCACHE} -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}"
+    sudo docker build --rm ${NOCACHE} -t ${REGISTRY}/${IMAGE}:${TAG} ./${TOBUILD}
     if [ $? -ne 0 ]; then
         echo "BUILD failed! Image=$IMAGE"
         exit -1

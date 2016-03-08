@@ -22,16 +22,29 @@ android_memory_limit=20g
 
 # how many executors per kind of slave
 declare -A execount
-execount[was7]=1
-execount[was85]=2
-execount[java]=2
+execount[was85]=1
+execount[java]=1
 execount[wmb]=1
 execount[nodejs]=1
 execount[android]=1
 execount[sonargraph]=5
 
+# repolink parameter
+REPO_LINK="--link repocache:repo.sbb.ch"
+
 containername=$imagename-$randomint-$master_hostname
 slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1`-$tag
+
+
+
+function checkVarnish() {
+  local _varnishCount=`sudo docker ps | grep varnish | wc -l`
+  if [ ${_varnishCount} -lt 1 ]; then
+        echo "No varnish running! Starting jenkins slave without repo link"
+	unset REPO_LINK
+  fi
+}
+
 
 function check_reserved() {
 
@@ -45,11 +58,11 @@ function check_reserved() {
 }
 
 function create_android_container() {
-	sudo docker run --privileged -d -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
+	sudo docker run --privileged -d ${REPO_LINK} -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
 
 function create_privileged_container() {
-	sudo docker run --privileged -d -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
+	sudo docker run --privileged -d ${REPO_LINK} -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
 }
 
 function create_container() {
@@ -58,7 +71,7 @@ function create_container() {
 		containername=$labels-$randomint-$master_hostname
 		slavename=$labels-$randomint-`echo $HOSTNAME | cut -d"." -f1`
 	fi
-        sudo docker run -d -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
+        sudo docker run -d ${REPO_LINK} -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
 
 function usage() {
@@ -72,6 +85,8 @@ then
 fi
 
 check_reserved
+
+checkVarnish
 
 if [[ $imagename =~ .*android.* ]]
 then

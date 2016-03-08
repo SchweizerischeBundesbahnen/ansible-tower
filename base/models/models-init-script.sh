@@ -1,23 +1,22 @@
 #!/bin/bash
-# confluence    This shell script takes care of starting and stopping
-#               the confluence container.
+# models        This shell script takes care of starting and stopping
+#               the models container.
 #
 # chkconfig: - 85 15
-APP_URL=confluence-t.sbb.ch
-opts=" -p 8040:8040 -p 9040:9040 -p 10040:10040 -d -e APP_URL=${APP_URL} -v /var/data/confluence:/var/data/confluence -v /var/data/confluence/log:/opt/confluence/logs"
-containername=confluence
-imagename=registry.sbb.ch/kd_wzu/confluence:5.4.4
+opts=" -p 80:8170 -d -v /var/www/models"
+containername=models
+imagename=registry.sbb.ch/kd_wzu/models
 
 function start_container() {
-	docker start $containername
+        docker start $containername
 }
 
 function init_container() {
-	docker run $opts --name $containername $imagename 
+        docker run $opts --name $containername $imagename
 }
 
 function stop_container() {
-	docker stop $containername 
+        docker stop $containername
 }
 
 function reinitialize_container() {
@@ -45,7 +44,7 @@ case "$1" in
     reinitialize_container
     ;;
   update)
-   update 
+   update
    ;;
   status)
     docker ps --all

@@ -1,4 +1,4 @@
-FROM schweizerischebundesbahnen/base
+FROM registry.sbb.ch/kd_wzu/base
  
 MAINTAINER igor.masen@sbb.ch
 

@@ -1,5 +1,5 @@
 #Docker image for wzuscheduler
-FROM schweizerischebundesbahnen/jenkins-master
+FROM registry.sbb.ch/kd_wzu/jenkins-master
 MAINTAINER igor.masen@sbb.ch
 
 ENV appversion 1.625.3
@@ -8,7 +8,7 @@ ENV appversion 1.625.3
 USER root
 
 # install basic tools
-RUN yum install --quiet s3cmd git-svn openldap-clients openssl xmlstarlet -y \
+RUN yum install --quiet s3cmd git-svn openldap-clients openssl xmlstarlet p7zip p7zip-plugins which ant ant-contrib -y \
 	&& yum clean all -y
 
 # replace jenkins war
