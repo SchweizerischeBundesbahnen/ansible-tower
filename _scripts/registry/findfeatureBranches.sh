@@ -7,19 +7,25 @@ DELETE=$1
 list=`curl --silent -X GET https://registry.sbb.ch/v2/_catalog?n=1000 | jq '.repositories[]' | grep kd_wzu`
 all_tags=()
 
+function deleteTags() {
+	for tag in ${1}; do
+                echo "deleting tag ${tag:1: -1}"
+                ./cleanup.sh ${tag:1: -1}
+        done
+}
+
 # collect all tags of all images
 for image in ${list}; do
+	echo "Getting tags for ${image}\n"
+
 	tags=`curl --silent -X GET https://registry.sbb.ch/v2/${image:1: -1}/tags/list | jq '.tags[]' | grep -v -E 'latest|.*-dev|^\"[0-9]{3}|[0-9]{1}\.[0-9]{1}' | sort | uniq`
-	all_tags=( "${all_tags[@]}" "${tags[@]}" )
+
+	echo -en "${tags}\n"
+
+        if [ ! -z ${DELETE}  ]; then
+		deleteTags ${tags}
+	fi
+        
 done
 
-echo -en "${all_tags}"
-
-# if required, delete tags
-if [ ! -z ${DELETE}  ]; then
-	for tag in ${all_tags}; do
-		echo "deleting tag ${tag:1: -1}"
-		./cleanup.sh ${tag:1: -1} 
-	done
-fi
 
