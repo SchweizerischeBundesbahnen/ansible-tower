@@ -46,8 +46,6 @@ fi
 
 echo "Will deploy tag=${NEW_TAG} as latest on this docker host"
 
-exit
-
 # pull current images
 sudo docker pull registry.sbb.ch/kd_wzu/jenkins-slave-base:${NEW_TAG}
 sudo docker pull registry.sbb.ch/kd_wzu/jenkins-slave-was85:${NEW_TAG}

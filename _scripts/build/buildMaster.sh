@@ -46,9 +46,6 @@ echo ""
 echo ""
 
 
-# for WZU-4406 Tests
-exit
-
 for TOBUILD in $FILELIST ; 
 do
     echo ""
