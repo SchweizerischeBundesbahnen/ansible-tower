@@ -21,10 +21,11 @@ RUN cd /opt \
     && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip\
     && unzip license-server-installer.zip && rm license-server-installer.zip\
     && chown -R 10${idoffset}:10${idoffset} /opt/license-server\
+# Sanity check à la Igorova:
     &&  su - ${appuser} -c "export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh help"
 
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 RUN chown 10${idoffset}:10${idoffset} /opt/license-server/conf/service-config.properties
 
 # Start the license server
-CMD  export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run
+CMD  su - ${appuser} -c "export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run"
