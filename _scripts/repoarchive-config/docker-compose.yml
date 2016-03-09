@@ -1,0 +1,23 @@
+nexus:
+  image: sonatype/nexus
+  volumes:
+    - /var/data/repoarchive:/sonatype-work
+    - /var/data/repoarchive/temp:/tmp
+  environment:
+   MIN_HEAP: 512m
+   MAX_HEAP: 1024m
+   JAVA_OPTS: -server -XX:MaxPermSize=1024m -Djava.net.preferIPv4Stack=true -Xss1m
+  restart: always
+
+varnish:
+  image: registry.sbb.ch/kd_wzu/varnish
+  volumes:
+    - /etc/wzu-docker/_scripts/repoarchive-config/varnish:/data/varnish
+  links:
+    - nexus
+  environment:
+    CACHE_SIZE: 1g
+    VCL_CONFIG: /data/varnish/repoarchive.vcl
+  ports:
+    - 80:80
+  restart: always

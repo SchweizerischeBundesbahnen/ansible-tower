@@ -29,8 +29,7 @@ ENV orajdk832bitfile jdk-8u74-linux-i586.tar.gz
 ENV orajdk864bitfile jdk-8u74-linux-x64.tar.gz
 
 # Install dev tools
-RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig -y && yum clean all -q
-
+RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip -y && yum clean all -q
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp,_scripts} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
@@ -178,6 +177,15 @@ RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
 
 # Chown contents of home directory
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
+
+# Install ansible-tower-cli (@see https://github.com/ansible/tower-cli)
+RUN pip install ansible-tower-cli
+
+# Install oc-cli (see https://issues.sbb.ch/browse/CLOUD-421)
+RUN wget -qO- "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=mirror&g=com.openshift&a=oc-client&v=LATEST&e=rpm" -O oc.rpm \
+    && rpm -ivh oc.rpm \
+    && rm -f oc.rpm \
+    && oc version
 
 # Start Slave
 CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
