@@ -14,7 +14,7 @@ ENV appdomain jrebel-license.sbb.ch
 RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/license-server
 
 # Get the license-server
-RUN cd /opt && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip && unzip license-server-installer.zip && rm license-server-installer.zip && find ${appdata}
+RUN cd /opt && mkdir license-server && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip && unzip license-server-installer.zip && rm license-server-installer.zip && find /opt/license-server
 
 # Start the license server in ${apphome}
-CMD ${apphome}/license-server/bin/license-server.sh configure --port 8${idoffset} --listen ${appdomain}
+CMD /opt/license-server/bin/license-server.sh configure --port 8${idoffset} --listen ${appdomain}
