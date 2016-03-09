@@ -55,9 +55,9 @@ sudo docker pull registry.sbb.ch/kd_wzu/jenkins-slave-mobile-android:${NEW_TAG}
 
 # set latest tag
 sudo docker tag -f registry.sbb.ch/kd_wzu/jenkins-slave-base:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-base:latest
-sudo docker tag registry.sbb.ch/kd_wzu/jenkins-slave-was85:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-was85:latest
-sudo docker tag registry.sbb.ch/kd_wzu/jenkins-slave-wmb:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-wmb:latest
-sudo docker tag registry.sbb.ch/kd_wzu/jenkins-slave-js:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-js:latest
+sudo docker tag -f registry.sbb.ch/kd_wzu/jenkins-slave-was85:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-was85:latest
+sudo docker tag -f registry.sbb.ch/kd_wzu/jenkins-slave-wmb:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-wmb:latest
+sudo docker tag -f registry.sbb.ch/kd_wzu/jenkins-slave-js:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-js:latest
 sudo docker tag -f registry.sbb.ch/kd_wzu/jenkins-slave-mobile-android:${NEW_TAG} registry.sbb.ch/kd_wzu/jenkins-slave-mobile-android:latest
   
 
