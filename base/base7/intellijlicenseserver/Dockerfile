@@ -14,7 +14,7 @@ ENV appdomain intellij-license.sbb.ch
 RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/license-server
 
 # Get the license-server
-RUN cd /opt && mkdir license-server && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip && unzip license-server-installer.zip && rm license-server-installer.zip && find /opt/license-server
+RUN cd /opt && mkdir license-server && cd license-server && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip && unzip license-server-installer.zip && rm license-server-installer.zip && find /opt/license-server
 
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 
