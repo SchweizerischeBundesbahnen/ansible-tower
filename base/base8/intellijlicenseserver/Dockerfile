@@ -12,12 +12,12 @@ ENV appdomain intellij-license.sbb.ch
 EXPOSE 8${idoffset}
 
 # Create Data directory structure and add user jira to the image
-RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/license-server
+RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome}
 
 # Get the license-server
 RUN cd /opt && mkdir license-server && cd license-server && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip && unzip license-server-installer.zip && rm license-server-installer.zip &&  /opt/license-server/bin/license-server.sh help
 
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 
-# Start the license server in ${apphome}
-CMD   /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run
+# Start the license server
+CMD  echo "/opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run" > ${apphome}/bla.sh && sleep 500000
