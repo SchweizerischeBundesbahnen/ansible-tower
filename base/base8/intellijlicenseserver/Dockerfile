@@ -1,5 +1,5 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM registry.sbb.ch/kd_wzu/base7
+FROM registry.sbb.ch/kd_wzu/base8
 MAINTAINER Christian Eichenberger <u214892@sbb.ch>
 
 #Environment variables
