@@ -4,8 +4,8 @@ nexus:
     - /var/data/repoarchive:/sonatype-work
     - /var/data/repoarchive/temp:/tmp
   environment:
-   MIN_HEAP: 512m
-   MAX_HEAP: 1024m
+   MIN_HEAP: 1024m
+   MAX_HEAP: 1536m
    JAVA_OPTS: -server -XX:MaxPermSize=1024m -Djava.net.preferIPv4Stack=true -Xss1m
   restart: always
 
