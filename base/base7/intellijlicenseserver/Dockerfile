@@ -9,6 +9,7 @@ ENV datadir /var/data
 ENV apphome /var/data/intellijlicenseserver
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 ENV appdomain intellij-license.sbb.ch
+EXPOSE 8${idoffset}
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/license-server
