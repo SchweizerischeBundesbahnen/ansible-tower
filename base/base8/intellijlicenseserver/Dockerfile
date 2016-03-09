@@ -20,4 +20,4 @@ RUN cd /opt && mkdir license-server && cd license-server && wget -q "https://dow
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 
 # Start the license server in ${apphome}
-CMD   /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} && /opt/license-server/bin/license-server.sh run
+CMD   /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run
