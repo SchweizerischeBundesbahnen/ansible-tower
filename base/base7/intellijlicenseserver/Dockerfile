@@ -20,5 +20,5 @@ RUN cd /opt && mkdir license-server && cd license-server && wget -q "https://dow
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 
 # Start the license server in ${apphome}
-CMD /bin/bash -c "sleep 500"
+CMD /bin/bash -c "sleep 500000"
 #/opt/license-server/bin/license-server.sh configure --port 8${idoffset} --listen ${appdomain}
