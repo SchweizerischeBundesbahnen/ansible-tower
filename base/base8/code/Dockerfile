@@ -16,7 +16,7 @@ ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 1${idoffset} --home ${code_home} && mkdir -p ${code_home}/shared && mkdir -p ${plugin_folder}
 
 #Getting code and setting it up and backing up old settings
-RUN wget --quiet http://www.atlassian.com/software/code/downloads/binary/atlassian-bitbucket-${codeversion}.tar.gz -O /opt/atlassian-code-${codeversion}.tar.gz \
+RUN wget --quiet http://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-${codeversion}.tar.gz -O /opt/atlassian-code-${codeversion}.tar.gz \
 	&& cd /opt \
 	&& tar xfz atlassian-code-${codeversion}.tar.gz \
 	&& rm -f /opt/atlassian-code-${codeversion}.tar.gz \
@@ -32,11 +32,11 @@ RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassia
 #Support Tools Plugin in Version 3.7.22
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.support.stp/version/30765 -O ${plugin_folder}/atlassian-support-tools-plugin.jar
 #Categories in Version 1.3.1
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.code-project-categories/version/100000041 -O  ${plugin_folder}/code-project-categories.jar
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communardo.plugin.stash-project-categories/version/100000041 -O  ${plugin_folder}/code-project-categories.jar
 #Workzone in Version 4.2.0
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/4020000000 -O ${plugin_folder}/workzone.jar
 #Unmerged Branch Hook in Version 2.0.0
-RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.code.plugin.code-protect-unmerged-branch-hook/version/200 -O ${plugin_folder}/code-protect-unmerged-branch-hook.jar
+RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/200 -O ${plugin_folder}/code-protect-unmerged-branch-hook.jar
 #REST API Browser in Version 3.2.0
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.labs.rest-api-browser/version/30200 -O ${plugin_folder}/rest-browser.jar
 #Webhook in Version 2.1.1, Disabled for now
