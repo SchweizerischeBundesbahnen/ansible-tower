@@ -45,7 +45,7 @@ RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassia
 #RUN wget --quiet http://repo.sbb.ch/service/local/repositories/hosted.mwe-wzu.releases/content/ch/sbb/code/enforce-message-hook-plugin/2.2/enforce-message-hook-plugin-2.2.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
 # since we just mount HOME/shared/data we have to link code-configuration.properties from another mount
-RUN ln -s ${code_home}/conf/code-config.properties ${code_home}/shared/code-config.properties
+RUN ln -s ${code_home}/conf/code-config.properties ${code_home}/shared/bitbucket.properties
 RUN ln -s ${code_home}/conf/server.xml ${code_home}/shared/server.xml
 
 #Exposing Port to make Code accessible
