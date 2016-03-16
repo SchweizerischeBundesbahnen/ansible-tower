@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# One way to set the BITBUCKET HOME path is here via this variable.  Simply uncomment it and set a valid path like
-# /bitbucket/home.  You can of course set it outside in the command terminal; that will also work.
+# One way to set the STASH HOME path is here via this variable.  Simply uncomment it and set a valid path like
+# /stash/home.  You can of course set it outside in the command terminal; that will also work.
 #
-if [ "x${BITBUCKET_HOME}" = "x" ]; then
-    export BITBUCKET_HOME="/var/data/code"
+if [ "x${STASH_HOME}" = "x" ]; then
+    export STASH_HOME="/var/data/stash"
 
 fi
 
@@ -75,7 +75,7 @@ JMX_REMOTE_PORT=3333
 # If `hostname -i` returns a local address then JMX-RMI communication may fail because the address returned by JMX for
 # the RMI-JMX stub will not resolve for non-local clients. To fix this you will need to explicitly specify the
 # IP address / host name of this server that is reachable / resolvable by JMX clients. e.g.
-# RMI_SERVER_HOSTNAME="-Djava.rmi.server.hostname=non.local.name.of.my.bitbucket.server"
+# RMI_SERVER_HOSTNAME="-Djava.rmi.server.hostname=non.local.name.of.my.stash.server"
 #
 #RMI_SERVER_HOSTNAME="-Djava.rmi.server.hostname="
 
@@ -259,14 +259,14 @@ elif [ "x$JMX_REMOTE_AUTH" = "xssl" ]; then
     JMX_OPTS="-Dcom.sun.management.jmxremote.port=${JMX_REMOTE_PORT} ${RMI_SERVER_HOSTNAME} -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl.need.client.auth=true -Djavax.net.ssl.keyStore=${JAVA_KEYSTORE} -Djavax.net.ssl.keyStorePassword=${JAVA_KEYSTORE_PASSWORD} -Djavax.net.ssl.trustStore=${JAVA_TRUSTSTORE} -Djavax.net.ssl.trustStorePassword=${JAVA_TRUSTSTORE_PASSWORD}"
 fi
 
-BITBUCKET_HOME_MINUSD=-Dbitbucket.home=$BITBUCKET_HOME
+STASH_HOME_MINUSD=-Dstash.home=$STASH_HOME
 
 if [ "x$JVM_LIBRARY_PATH" != "x" ]; then
     JVM_LIBRARY_PATH_MINUSD=-Djava.library.path=$JVM_LIBRARY_PATH
     JVM_REQUIRED_ARGS="${JVM_REQUIRED_ARGS} ${JVM_LIBRARY_PATH_MINUSD}"
 fi
 
-JAVA_OPTS="-Xms${JVM_MINIMUM_MEMORY} -Xmx${JVM_MAXIMUM_MEMORY} ${JAVA_OPTS} ${JVM_REQUIRED_ARGS} ${JVM_SUPPORT_RECOMMENDED_ARGS} ${BITBUCKET_HOME_MINUSD}"
+JAVA_OPTS="-Xms${JVM_MINIMUM_MEMORY} -Xmx${JVM_MAXIMUM_MEMORY} ${JAVA_OPTS} ${JVM_REQUIRED_ARGS} ${JVM_SUPPORT_RECOMMENDED_ARGS} ${STASH_HOME_MINUSD}"
 
 # PermGen size needs to be increased if encountering OutOfMemoryError: PermGen problems.
 MAX_PERM_SIZE=256m
@@ -277,7 +277,7 @@ export JAVA_OPTS
 CATALINA_OPTS="${JMX_OPTS} ${CATALINA_OPTS}"
 export CATALINA_OPTS
 
-if [ "x$BITBUCKET_HOME_MINUSD" != "x" ]; then
+if [ "x$STASH_HOME_MINUSD" != "x" ]; then
     echo "Using STASH_HOME:      $STASH_HOME"
 fi
 
