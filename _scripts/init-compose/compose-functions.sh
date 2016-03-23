@@ -1,10 +1,8 @@
-#!/bin/bash
-# This shell script takes care of starting and stopping
-#
-# chkconfig: - 85 15
+#!/usr/bin/env bash
+# This shell script is a functions repository for init scripts
+# @author u210691 <igor.masen@sbb.ch>
+# @version 1.0
 
-composefile="/etc/wzu-docker/_scripts/repoarchive-config/docker-compose.yml"
-projectname="repoarchive"
 PATH=$PATH:/usr/local/bin
 
 function start_container() {
@@ -12,7 +10,7 @@ function start_container() {
 }
 
 function init_container() {
-    docker-compose -f $composefile -p $projectname up -d 
+    docker-compose -f $composefile -p $projectname up -d
 }
 
 function stop_container() {
@@ -61,7 +59,7 @@ case "$1" in
     reinitialize_container
     ;;
   update)
-   update 
+   update
    ;;
   status)
     status

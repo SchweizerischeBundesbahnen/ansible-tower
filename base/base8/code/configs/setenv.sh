@@ -4,7 +4,7 @@
 # /stash/home.  You can of course set it outside in the command terminal; that will also work.
 #
 if [ "x${STASH_HOME}" = "x" ]; then
-    export STASH_HOME="/var/data/stash"
+    export STASH_HOME="/var/data/code"
 
 fi
 
