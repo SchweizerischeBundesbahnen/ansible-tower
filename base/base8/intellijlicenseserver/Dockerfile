@@ -27,7 +27,7 @@ RUN cd /opt \
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 RUN chown 10${idoffset}:10${idoffset} /opt/license-server/conf/service-config.properties
 
-COPY configs/service.config.xml ${apphome}/.jb-license-server
+COPY configs/service-config.xml ${apphome}/.jb-license-server
 RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 
 # Start the license server
