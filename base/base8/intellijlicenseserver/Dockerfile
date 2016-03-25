@@ -11,8 +11,8 @@ ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 ENV appdomain intellij-license.sbb.ch
 EXPOSE 8${idoffset}
 
-# Create Data directory structure and add user jira to the image
-RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome}
+# Create Data directory structure and add appuser to the image
+RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/.jb-license-server
 
 # Get the license-server
 RUN cd /opt \
@@ -27,5 +27,10 @@ RUN cd /opt \
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 RUN chown 10${idoffset}:10${idoffset} /opt/license-server/conf/service-config.properties
 
+COPY configs/service.config.xml ${apphome}/.jb-license-server
+RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
+
 # Start the license server
 CMD  su - ${appuser} -c "export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run"
+
+#docker pull  registry.sbb.ch/kd_wzu/intellijlicenseserver:MWESERVICE-10146 && docker run -d -p 8080:8080 --net=host -e "appdomain=v01049" -e "idoffset=080" --name intellijlicenserver registry.sbb.ch/kd_wzu/intellijlicenseserver:MWESERVICE-10146
