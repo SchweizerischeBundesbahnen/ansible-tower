@@ -34,7 +34,7 @@ if [ "${MODE}" == "BACKUP" ]; then
     echo "Backing up Filesystem."
     duplicityBackup
   else
-    echo "Unknown TYPE detected"
+    echo "Unknown TYPE: ${TYPE}"
   fi
 elif [ "${MODE}" == "RESTORE" ]; then
   if [ "${TYPE}" == "DB" ]; then
