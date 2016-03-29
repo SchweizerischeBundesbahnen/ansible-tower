@@ -20,7 +20,7 @@ function duplicityRestore {
   ./duplicity-backup.sh --restore /var/data/${NAME}_migrate --config ${CONFIGFILE}
 }
 
-if [ -z "${TYPE}" ]; then
+if [ -z "${MODE}" ]; then
   echo "MODE is not set, defaulting to Backup."
   MODE="BACKUP"
 fi
@@ -45,8 +45,8 @@ elif [ "${MODE}" == "RESTORE" ]; then
     echo "Restoring Filesystem."
     duplicityRestore
   else
-    echo "Unknown TYPE detected"
+    echo "Unknown TYPE: ${TYPE}"
   fi
 else
-  echo "Unknown MODE detected"
+  echo "Unknown MODE: ${MODE}"
 fi
