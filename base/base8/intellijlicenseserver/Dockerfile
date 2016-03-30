@@ -24,7 +24,7 @@ RUN cd /opt \
 # copy configs to installation dir
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 COPY configs/intellijlicenseserver.sh /opt/license-server/bin/wzu-license-server.sh
-RUN chown -R 10${idoffset}:10${idoffset} /opt/license-server
+RUN chown -R 10${idoffset}:10${idoffset} /opt/license-server && chmod u+x /opt/license-server/bin/wzu-license-server.sh
 
 # copy configs to appuser home
 COPY configs/server-config.xml ${apphome}/.jb-license-server/server-config.xml
