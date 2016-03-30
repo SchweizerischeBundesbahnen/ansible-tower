@@ -8,7 +8,6 @@ ENV idoffset 180
 ENV datadir /var/data
 ENV apphome /var/data/intellijlicenseserver
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
-ENV appdomain intellij-license.sbb.ch
 EXPOSE 8${idoffset}
 
 # Create Data directory structure and add appuser to the image
@@ -33,5 +32,5 @@ RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 # Start the license server
 USER ${appuser}
 # Sanity check à la Igorova:
-RUN /opt/license-server/bin/wzu-license-server.sh help
+RUN /opt/license-server/bin/license-server.sh help
 CMD "/opt/license-server/bin/wzu-license-server.sh"
