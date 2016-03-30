@@ -35,7 +35,7 @@ if [ -n "${APP_URL}" ]; then
 fi
 
 echo "Starting Application";
-export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen 0.0.0.0 && /opt/license-server/bin/license-server.sh run &
+export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port ${APP_PORT} --listen 0.0.0.0 && /opt/license-server/bin/license-server.sh run &
 
 child=$! 
 wait "$child"
