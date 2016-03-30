@@ -21,10 +21,12 @@ RUN cd /opt \
     && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip\
     && unzip license-server-installer.zip && rm license-server-installer.zip
 
+# copy configs to installation dir
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
 COPY configs/intellijlicenseserver.sh /opt/license-server/bin/wzu-license-server.sh
-RUN chown -R 10${idoffset}:10${idoffset} /opt/license-server\
+RUN chown -R 10${idoffset}:10${idoffset} /opt/license-server
 
+# copy configs to appuser home
 COPY configs/server-config.xml ${apphome}/.jb-license-server/server-config.xml
 RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 
