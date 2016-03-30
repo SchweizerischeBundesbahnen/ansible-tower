@@ -11,7 +11,8 @@ function databaseBackup {
 }
 
 function databaseRestore {
-  echo "Not implemented yet"
+  export MODE=RESTORE
+  ./bin/dump.sh
 }
 
 function duplicityBackup {
