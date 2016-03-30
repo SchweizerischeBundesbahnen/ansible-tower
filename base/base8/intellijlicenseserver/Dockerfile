@@ -19,19 +19,16 @@ RUN cd /opt \
     && mkdir license-server \
     && cd license-server \
     && wget -q "https://download.jetbrains.com/lcsrv/license-server-installer.zip"  -O license-server-installer.zip\
-    && unzip license-server-installer.zip && rm license-server-installer.zip\
-    && chown -R 10${idoffset}:10${idoffset} /opt/license-server\
-# Sanity check à la Igorova:
-    &&  su - ${appuser} -c "export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh help"
+    && unzip license-server-installer.zip && rm license-server-installer.zip
 
 COPY configs/service-config.properties /opt/license-server/conf/service-config.properties
-RUN chown 10${idoffset}:10${idoffset} /opt/license-server/conf/service-config.properties
+COPY configs/intellijlicenseserver.sh /opt/license-server/bin/wzu-license-server.sh
+RUN chown -R 10${idoffset}:10${idoffset} /opt/license-server\
 
 COPY configs/server-config.xml ${apphome}/.jb-license-server/server-config.xml
 RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 
 # Start the license server
-COPY configs/intellijlicenseserver.sh /opt/license-server/bin/wzu-license-server.sh
 USER ${appuser}
 # Sanity check à la Igorova:
 RUN /opt/license-server/bin/wzu-license-server.sh help
