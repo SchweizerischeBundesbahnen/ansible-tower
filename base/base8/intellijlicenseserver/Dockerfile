@@ -31,4 +31,6 @@ COPY configs/server-config.xml ${apphome}/.jb-license-server/server-config.xml
 RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 
 # Start the license server
-CMD  su - ${appuser} -c "export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run"
+COPY configs/intellijlicenseserver.sh /opt/license-server/conf/intellijlicenseserver.sh
+USER ${appuser}
+CMD "/opt/confluence.sh"
