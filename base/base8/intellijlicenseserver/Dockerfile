@@ -8,7 +8,6 @@ ENV idoffset 180
 ENV datadir /var/data
 ENV apphome /var/data/intellijlicenseserver
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
-ENV appdomain intellij-license.sbb.ch
 EXPOSE 8${idoffset}
 
 # Create Data directory structure and add appuser to the image
@@ -31,4 +30,4 @@ COPY configs/server-config.xml ${apphome}/.jb-license-server/server-config.xml
 RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 
 # Start the license server
-CMD  su - ${appuser} -c "export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} --listen ${appdomain} && /opt/license-server/bin/license-server.sh run"
+CMD  su - ${appuser} -c "export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --https.proxyUser ${fileruser} --http.proxyUser ${fileruser} --https.proxyPassword ${filerpassword} --http.proxyPassword ${filerpassword} --port 8${idoffset} && /opt/license-server/bin/license-server.sh run"
