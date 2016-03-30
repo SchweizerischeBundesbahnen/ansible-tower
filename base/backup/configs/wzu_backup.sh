@@ -3,7 +3,7 @@
 cd wzu-backup
 git pull
 
-CONFIG=${NAME}.conf
+CONFIG="conf/${NAME}.conf"
 source ${CONFIG}
 
 function databaseBackup {
