@@ -1,0 +1,9 @@
+intellijlicenserver:
+  image: registry.sbb.ch/kd_wzu/intellijlicenseserver:latest
+  environment:
+   appdomain: "intellij.license.sbb.ch"
+   idoffset: "080"
+  nets: "host"
+  ports:
+    - 8080:8080
+  restart: always
