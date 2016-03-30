@@ -31,6 +31,6 @@ COPY configs/server-config.xml ${apphome}/.jb-license-server/server-config.xml
 RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 
 # Start the license server
-COPY configs/intellijlicenseserver.sh /opt/license-server/conf/intellijlicenseserver.sh
+COPY configs/intellijlicenseserver.sh /opt/license-server/intellijlicenseserver.sh
 USER ${appuser}
-CMD "/opt/confluence.sh"
+CMD "/opt/intellijlicenseserver.sh"
