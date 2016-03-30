@@ -3,7 +3,6 @@ intellijlicenserver:
   environment:
    APP_URL: intellij-license.sbb.ch
    idoffset: "080"
-  nets: "host"
   ports:
     - 8080:8080
   restart: always
