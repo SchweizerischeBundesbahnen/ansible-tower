@@ -1,6 +1,6 @@
 jira:
-#  image: registry.sbb.ch/kd_wzu/jira:latest
-  image: jiratest
+  image: registry.sbb.ch/kd_wzu/jira:latest
+#  image: jiratest
   volumes_from:
     - issues_i_FData
   environment:
