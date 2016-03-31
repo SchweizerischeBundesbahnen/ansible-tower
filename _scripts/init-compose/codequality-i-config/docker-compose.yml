@@ -1,0 +1,29 @@
+jira:
+  image: registry.sbb.ch/kd_wzu/sonar:latest
+  environment:
+    APP_URL: codequality-i.sbb.ch
+    HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    https_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    MYSQL_HOST: mysql
+    MYSQL_DBNAME: sonar
+    MYSQL_USER: root
+    MYSQL_PASSSWORD: CHANGEME
+  ports:
+    - 8110:8110
+    - 9110:9110
+    - 10110:10110
+  restart: always
+  links:
+    - mysql
+
+mysql:
+  image: registry.sbb.ch/kd_wzu/mysql:5.6
+  volumes:
+   - /etc/wzu-docker/base/base8/sonar/configs/custom_mysql.cnf:/etc/mysql/conf.d/custom.cnf
+  volumes_from:
+    - codequality_i_DBData
+  environment:
+    - MYSQL_ROOT_PASSWORD=CHANGEME
+    - MYSQL_DATABASE=sonar
