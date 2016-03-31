@@ -20,7 +20,7 @@ function duplicityBackup {
 }
 
 function duplicityRestore {
-  ./bin/duplicity-backup.sh --restore /var/data/${NAME} --config ${CONFIG}
+  ./bin/duplicity-backup.sh --restore /var/data/${APPNAME}/${NAME} --config ${CONFIG}
 }
 
 function migrate() {
@@ -28,11 +28,11 @@ function migrate() {
   then
     echo "Migration script found. Starting migration."
     ./migration/${NAME}.sh \
-    && mv /var/data/${NAME} /var/data/${APPNAME}
+    && mv /var/data/${APPNAME}/${NAME}/{.,}* /var/data/${APPNAME}/
     return $?
   else
     echo "File ${NAME}.sh not found or not executable."
-    mv /var/data/${NAME} /var/data/${APPNAME}
+    mv /var/data/${APPNAME}/${NAME}/{.,}* /var/data/${APPNAME}/
   fi
 }
 
