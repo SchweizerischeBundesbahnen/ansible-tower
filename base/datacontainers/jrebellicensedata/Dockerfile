@@ -12,8 +12,9 @@ VOLUME /var/data
 #USER ${appuser}
 CMD set -e \
     && set -x \
-    && ls -al ${apphome} \
-    && curl --insecure https://fsvctip:sommer11@svn.sbb.ch/svn/wzu/${ZIPNAME} -o ${apphome}/data/${ZIPNAME}\
-    && unzip ${apphome}/data/${ZIPNAME} -d${apphome}/data \
-    && rm -f ${apphome}/data/${ZIPNAME} \
+    && echo "apphome=${apphome}" \
+    && sudo ls -al ${apphome} && echo -e "\n"\
+    && sudo curl --insecure https://fsvctip:sommer11@svn.sbb.ch/svn/wzu/${ZIPNAME} -o ${apphome}/data/${ZIPNAME}\
+    && sudo unzip ${apphome}/data/${ZIPNAME} -d${apphome}/data \
+    && sudo rm -f ${apphome}/data/${ZIPNAME} \
     && echo "Data container for JRebel License Primary"
