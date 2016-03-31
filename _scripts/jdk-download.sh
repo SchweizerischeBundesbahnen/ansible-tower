@@ -144,7 +144,7 @@ function add_cert() {
 function usage() {
   echo -e "Download the oracle JDK from command line, uploads to svn, adds certificates and pushes to nexus, all unattended\n"
   echo -e "$0 [<versions>]\n"
-  echo "  [<versions>] Something like 8u74 7u80"
+  echo "  [<versions>] Something like 8u77 7u80"
   exit 1
 }
 
