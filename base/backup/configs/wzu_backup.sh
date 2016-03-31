@@ -27,7 +27,8 @@ function migrate() {
   if [[ -x "migration/${NAME}.sh" ]]
   then
     echo "Migration script found. Starting migration."
-    ./migration/${NAME}.sh
+    ./migration/${NAME}.sh \
+    && mv /var/data/${NAME} /var/data/${APPNAME}
     return $?
   else
     echo "File ${NAME}.sh not found or not executable."
