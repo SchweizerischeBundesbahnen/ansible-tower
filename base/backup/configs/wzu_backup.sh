@@ -3,7 +3,7 @@
 cd wzu-backup
 git pull
 
-CONFIG=${NAME}.conf
+CONFIG="conf/${NAME}.conf"
 source ${CONFIG}
 
 function databaseBackup {
@@ -11,7 +11,8 @@ function databaseBackup {
 }
 
 function databaseRestore {
-  echo "Not implemented yet"
+  export MODE=RESTORE
+  ./bin/dump.sh
 }
 
 function duplicityBackup {
