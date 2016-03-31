@@ -26,7 +26,7 @@ function getStageEnvParams {
         source ${CNF_NAME}
 }
 
-# Download env file
+# Download DBConfig file
 function getDBConfig {
         echo "DBConfig ${ENV_SRV_URL}/${APP_URL}.dbconfig.xml"
         wget ${ENV_SRV_URL}/${APP_URL}.dbconfig.xml -O /var/data/jira/dbconfig.xml
@@ -41,6 +41,7 @@ trap _term SIGTERM
 
 getGlobalEnvParams
 getDBConfig
+# Create necessary directories
 mkdir -p /var/data/jira/{logs,temp}
 # If app_url is set, try to get it
 if [ -n "${APP_URL}" ]; then
