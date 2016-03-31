@@ -1,3 +1,8 @@
+jrebel_license_primary_FData:
+  environment:
+    ZIPNAME: jrebel-license-20151202.zip
+  restart: always
+
 jrebel_license_primary:
     volumes_from:
           - jrebel_license_primary_FData
