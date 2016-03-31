@@ -18,7 +18,7 @@ confluence:
 mysql:
   image: registry.sbb.ch/kd_wzu/mysql:5.6
   volumes:
-   - /etc/wzu-docker/base/base8/confluence/configs/custom_mysql.cnf:/etc/mysql/conf.d/custom.cnf
+   - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
   volumes_from:
     - confluence_i_DBData
   environment:
