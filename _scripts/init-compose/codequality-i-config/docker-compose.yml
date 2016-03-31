@@ -1,4 +1,4 @@
-jira:
+sonar:
   image: registry.sbb.ch/kd_wzu/sonar:latest
   environment:
     APP_URL: codequality-i.sbb.ch
@@ -8,7 +8,7 @@ jira:
     https_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     MYSQL_HOST: mysql
     MYSQL_DBNAME: sonar
-    MYSQL_USER: root
+    MYSQL_USER: sonar
     MYSQL_PASSSWORD: CHANGEME
   ports:
     - 8110:8110
