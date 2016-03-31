@@ -28,11 +28,11 @@ function migrate() {
   then
     echo "Migration script found. Starting migration."
     ./migration/${NAME}.sh \
-    && mv /var/data/${APPNAME}/${NAME}/{.,}* /var/data/${APPNAME}/
+    && mv /var/data/${APPNAME}/${NAME}/${APPNAME}/{.,}* /var/data/${APPNAME}/
     return $?
   else
     echo "File ${NAME}.sh not found or not executable."
-    mv /var/data/${APPNAME}/${NAME}/{.,}* /var/data/${APPNAME}/
+    mv /var/data/${APPNAME}/${NAME}/${APPNAME}/{.,}* /var/data/${APPNAME}/
   fi
 }
 
