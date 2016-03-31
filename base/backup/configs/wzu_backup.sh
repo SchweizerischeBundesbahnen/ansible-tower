@@ -6,9 +6,9 @@ git pull
 CONFIG="conf/${NAME}.conf"
 source ${CONFIG}
 
-export MODE=${MODE}
-export NAME=${NAME}
-export APPNAME=${APPNAME}
+export MODE
+export NAME
+export APPNAME
 
 function databaseBackup {
   ./bin/dump.sh
