@@ -2,11 +2,11 @@
 FROM registry.sbb.ch/kd_wzu/base
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 ENV datadir /var/data
-ENV appuser jira
-ENV userhome /var/data/jira
-ENV idoffset 20
+ENV appuser confluence
+ENV userhome /var/data/confluence
+ENV idoffset 40
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${userhome}
 VOLUME /var/data
-User jira
+User confluence
 #CMD ["tail", "-f","/dev/null"]
-CMD ["echo", "Data container for JIRA"]
+CMD ["echo", "Data container for Confluence"]

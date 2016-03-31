@@ -1,28 +1,26 @@
-jira:
-#  image: registry.sbb.ch/kd_wzu/jira:latest
-  image: jiratest
+confluence:
+  image: registry.sbb.ch/kd_wzu/confluence:latest
   volumes_from:
-    - issues_i_FData
+        - confluence_i_FData
   environment:
-    APP_URL: issues-i.sbb.ch
+    APP_URL: confluence-i.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     https_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
   ports:
-    - 8020:8020
-    - 9020:9020
-    - 10020:10020
+    - 8040:8040
+    - 9040:9040
+    - 10040:10040
   restart: always
   links:
     - mysql
-
 mysql:
   image: registry.sbb.ch/kd_wzu/mysql:5.6
   volumes:
-   - /etc/wzu-docker/base/base8/jira/configs/custom_mysql.cnf:/etc/mysql/conf.d/custom.cnf
+   - /etc/wzu-docker/base/base8/confluence/configs/custom_mysql.cnf:/etc/mysql/conf.d/custom.cnf
   volumes_from:
-    - issues_i_DBData
+    - confluence_i_DBData
   environment:
     - MYSQL_ROOT_PASSWORD=verysecret
-    - MYSQL_DATABASE=jira
+    - MYSQL_DATABASE=confluence
