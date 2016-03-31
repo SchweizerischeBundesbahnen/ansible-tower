@@ -9,7 +9,7 @@ sonar:
     MYSQL_HOST: mysql
     MYSQL_DBNAME: sonar
     MYSQL_USER: sonar
-    MYSQL_PASSSWORD: CHANGEME
+    MYSQL_PASSWORD: CHANGEME
   ports:
     - 8110:8110
     - 9110:9110
