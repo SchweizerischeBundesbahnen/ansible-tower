@@ -6,7 +6,7 @@ ENV idoffset 150
 ENV datadir /var/data
 ENV apphome /var/data/jrebellicenseserver
 
-RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/data && mkdir -p ${apphome}/logs
+RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/data && mkdir -p ${apphome}/logs && chown -R ${appuser}:${appuser} ${apphome}
 
 VOLUME /var/data
 USER ${appuser}
