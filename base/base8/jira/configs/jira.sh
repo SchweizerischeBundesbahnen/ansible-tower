@@ -41,6 +41,7 @@ trap _term SIGTERM
 
 getGlobalEnvParams
 getDBConfig
+mkdir -p /var/data/jira/{logs,temp}
 # If app_url is set, try to get it
 if [ -n "${APP_URL}" ]; then
         getStageEnvParams
