@@ -26,7 +26,7 @@ function duplicityBackup {
 }
 
 function duplicityRestore {
-  rm -rf /var/data/${APPNAME}/${NAME}/
+  rm -rf /var/data/${APPNAME}/{.,}*
   ./bin/duplicity-backup.sh --restore /var/data/${APPNAME}/${NAME} --config ${CONFIG}
   return $?
 }
