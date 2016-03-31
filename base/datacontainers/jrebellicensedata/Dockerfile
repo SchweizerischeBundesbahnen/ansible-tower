@@ -10,11 +10,4 @@ RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${appho
 
 VOLUME /var/data
 #USER ${appuser}
-CMD su - ${appuser} -c 'set -e \
-    && set -x \
-    && echo "apphome=${apphome}" \
-    && sudo ls -al ${apphome} && echo -e "\n"\
-    && sudo curl --insecure https://fsvctip:sommer11@svn.sbb.ch/svn/wzu/${ZIPNAME} -o ${apphome}/data/${ZIPNAME}\
-    && sudo unzip ${apphome}/data/${ZIPNAME} -d${apphome}/data \
-    && sudo rm -f ${apphome}/data/${ZIPNAME} \
-    && echo "Data container for JRebel License Primary"'
+CMD echo "nix"
