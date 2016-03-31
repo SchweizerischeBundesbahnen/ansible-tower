@@ -6,21 +6,29 @@ git pull
 CONFIG="conf/${NAME}.conf"
 source ${CONFIG}
 
+export MODE=${MODE}
+export NAME=${NAME}
+export APPNAME=${APPNAME}
+
 function databaseBackup {
   ./bin/dump.sh
+  return $?
 }
 
 function databaseRestore {
-  export MODE=RESTORE
   ./bin/dump.sh
+  return $?
 }
 
 function duplicityBackup {
   ./bin/duplicity-backup.sh --backup --config ${CONFIG}
+  return $?
 }
 
 function duplicityRestore {
+  rm -rf /var/data/${APPNAME}/${NAME}/
   ./bin/duplicity-backup.sh --restore /var/data/${APPNAME}/${NAME} --config ${CONFIG}
+  return $?
 }
 
 function migrate() {
@@ -38,6 +46,11 @@ function migrate() {
 
 if [ -z "${NAME}" ]; then
   echo "Error: NAME is not set, exiting."
+  exit 1
+fi
+
+if [ -z "${APPNAME}}" ]; then
+  echo "Error: APPNAME is not set, exiting."
   exit 1
 fi
 
