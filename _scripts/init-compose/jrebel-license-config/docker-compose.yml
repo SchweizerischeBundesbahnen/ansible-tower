@@ -1,7 +1,7 @@
 jrebel_license_primary_FData:
   image: registry.sbb.ch/kd_wzu/jrebellicensedata:WZU-4491
   environment:
-    ZIPNAME: jrebel-license-20151202.zip
+    ZIPNAME: jrebel-license-primary-20160403.zip
   restart: always
 
 jrebel_license_primary:
