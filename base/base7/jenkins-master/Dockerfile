@@ -6,7 +6,7 @@ MAINTAINER igor.masen@sbb.ch
 ENV datadir /var/data
 ENV appname jenkins-master
 ENV appuser jenkins
-ENV appversion 1.642.3
+ENV appversion 1.642.4
 ENV offset 50
 ENV JAVA_HOME /opt/jdk
 ENV jenkinshome ${datadir}/${appname}
