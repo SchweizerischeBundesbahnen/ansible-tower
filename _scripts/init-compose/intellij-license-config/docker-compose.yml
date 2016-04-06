@@ -3,6 +3,7 @@ intellijlicenserver:
   ports:
     - 8080:8180
    environment:
+#      APP_URL: intellij-license.sbb.ch
       proxy_host: "webproxy.sbb.ch"
       proxy_port: "8080"
       proxy_user: "fitba001"
