@@ -2,4 +2,10 @@ intellijlicenserver:
   image: registry.sbb.ch/kd_wzu/intellijlicenseserver:latest
   ports:
     - 8080:8180
+   environment:
+#      APP_URL: intellij-license.sbb.ch
+      proxy_host: "webproxy.sbb.ch"
+      proxy_port: "8080"
+      proxy_user: "fitba001"
+      proxy_password: "sommer09"
   restart: always
