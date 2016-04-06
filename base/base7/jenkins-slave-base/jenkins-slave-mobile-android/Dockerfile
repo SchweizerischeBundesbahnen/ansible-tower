@@ -36,7 +36,7 @@ RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${
 RUN ln -sf `find ${jenkinshome}/buildtools/android-sdk-linux -name zipalign | tail -n 1` ${jenkinshome}/buildtools/android-sdk-linux/tools/zipalign
 
 # Run jenkins
-CMD echo "set -e; export jenkinshome=${jenkinshome} master=${master}" > ${jenkinshome}/.codequality/android2.sh && cat ${jenkinshome}/.codequality/android.sh >> ${jenkinshome}/.codequality/android2.sh && chown ${appuser}:${appuser} "${jenkinshome}/.codequality/android2.sh" && chmod u+x "${jenkinshome}/.codequality/android2.sh" && su - ${appuser} -c "${jenkinshome}/.codequality/android2.sh" \
+CMD \
 # / OTM-63 Build mit Android Emulator funktioniert nicht\
          && su - ${appuser} -c "source ${jenkinshome}/env.sh ${jenkinshome}/buildtools/android-sdk-linux/tools/android list target \
 		 && ( echo no | ${jenkinshome}/buildtools/android-sdk-linux/tools/android create avd -f -a -c 512M -s WVGA800 -n hudson_de-CH_160_WVGA_android-19_x86 -t android-19 --abi x86) \
