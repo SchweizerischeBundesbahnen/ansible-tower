@@ -34,8 +34,9 @@ if [ -n "${APP_URL}" ]; then
         getStageEnvParams
 fi
 
-echo "Starting Application";
-export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --port 8180 --listen "0.0.0.0" && /opt/license-server/bin/license-server.sh run &
+echo "Configuring and starting Application";
+# https://www.jetbrains.com/help/license_server/configuring_proxy_settings.html
+export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --port 8180 --listen "0.0.0.0" --https.proxyHost ${proxy_host} --http.proxyHost ${proxy_host} --https.proxyPort ${proxy_port} --http.proxyPort ${proxy_port} --https.proxyUser ${proxy_user} --http.proxyUser ${proxy_user} --https.proxyPassword ${proxy_password} --http.proxyPassword ${proxy_password} && /opt/license-server/bin/license-server.sh run &
 
 child=$! 
 wait "$child"
