@@ -33,6 +33,7 @@ COPY configs/server.xml /opt/jira/conf/
 COPY configs/setenv.sh /opt/jira/bin/
 RUN chmod 755  /opt/jira/bin/setenv.sh
 COPY configs/jira.sh /opt/jira/jira.sh
+
 USER jira
 
 # run jira

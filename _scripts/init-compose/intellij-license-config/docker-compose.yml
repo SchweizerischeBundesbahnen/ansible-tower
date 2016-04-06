@@ -1,0 +1,5 @@
+intellijlicenserver:
+  image: registry.sbb.ch/kd_wzu/intellijlicenseserver:latest
+  ports:
+    - 8080:8180
+  restart: always
