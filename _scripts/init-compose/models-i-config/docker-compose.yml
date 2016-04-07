@@ -1,0 +1,7 @@
+models:
+  image: registry.sbb.ch/kd_wzu/models:latest
+  volumes:
+    - /var/www/models
+  ports:
+    - 8170:8170
+  restart: always

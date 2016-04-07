@@ -11,7 +11,7 @@ ENV apphome /var/data/jrebellicenseserver
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
 
 
-# Create Data directory structure and add user jira to the image
+# Create Data directory structure and add user jrebel to the image
 RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/license-server
 
 
@@ -21,5 +21,3 @@ RUN cd /opt && wget -q "http://dl.zeroturnaround.com/license-server/license-serv
 
 # Start the license server in ${apphome}
 CMD rm -f /RUNNING_PID && /opt/jdk/bin/java -Dhttp.port=8${idoffset} -Drebel.ls.loglevel=ERROR -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
-#CMD rm -f /RUNNING_PID && /opt/jdk/bin/java -Dhttp.port=8${idoffset} -Drebel.ls.loglevel=debug -Drebel.ls.logPerformance=true -Drebel.ls.logfile=${apphome}/logs/license-server.log -Drebel.ls.dataDir=${apphome}/data -jar /opt/license-server/lib/license-server.jar >> ${apphome}/logs/license-server.out 2>&1
-

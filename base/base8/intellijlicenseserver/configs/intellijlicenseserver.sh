@@ -26,30 +26,17 @@ function getStageEnvParams {
         source ${CNF_NAME}
 }
 
-# Download DBConfig file
-function getDBConfig {
-        echo "DBConfig ${ENV_SRV_URL}/${APP_URL}.dbconfig.xml"
-        wget ${ENV_SRV_URL}/${APP_URL}.dbconfig.xml -O /var/data/jira/dbconfig.xml
-        # If file does not exist,quit
-        if [ $? -ne 0 ]; then
-                echo "Unable to get DBConfig"
-                exit 1
-        fi
-        source ${CNF_NAME}
-}
 trap _term SIGTERM
 
 getGlobalEnvParams
-getDBConfig
-# Create necessary directories
-mkdir -p /var/data/jira/{logs,temp}
 # If app_url is set, try to get it
 if [ -n "${APP_URL}" ]; then
         getStageEnvParams
 fi
 
-echo "Starting Application";
-/opt/jira/bin/start-jira.sh -fg &
+echo "Configuring and starting Application";
+# https://www.jetbrains.com/help/license_server/configuring_proxy_settings.html
+export JAVA_HOME=/opt/jdk && /opt/license-server/bin/license-server.sh configure --port 8180 --listen "0.0.0.0" --https.proxyHost ${proxy_host} --http.proxyHost ${proxy_host} --https.proxyPort ${proxy_port} --http.proxyPort ${proxy_port} --https.proxyUser ${proxy_user} --http.proxyUser ${proxy_user} --https.proxyPassword ${proxy_password} --http.proxyPassword ${proxy_password} && /opt/license-server/bin/license-server.sh run &
 
 child=$! 
 wait "$child"
