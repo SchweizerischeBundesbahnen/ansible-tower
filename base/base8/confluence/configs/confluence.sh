@@ -35,12 +35,14 @@ function getConfluenceConfig {
                 echo "Failed to get Confluence Configfile!"
                 exit 1
         fi
-        source ${CNF_NAME}
 }
 trap _term SIGTERM
 
 getGlobalEnvParams
-getConfluenceConfig
+# If this is a new installation (not a restore/restart) get the latest configfile from server
+if [ ! -f /var/data/confluence/confluence.cfg.xml ]; then
+	getConfluenceConfig
+fi
 # If app_url is set, try to get it
 if [ -n "${APP_URL}" ]; then
         getStageEnvParams

@@ -1,6 +1,6 @@
 jrebel_license_primary:
-  volumes_from:
-          - jrebel_license_primary_FData
+  volumes:
+          - jrebel_license_primary_FData:/var/data
   environment:
 #      APP_URL: jrebel-license.sbb.ch
       HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
