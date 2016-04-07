@@ -10,11 +10,4 @@ RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${appho
 
 VOLUME /var/data
 USER ${appuser}
-CMD set -e \
-    && set -x \
-    && echo "apphome=${apphome}" \
-    && ls -al ${apphome} \
-    && curl --insecure https://fsvctip:sommer11@svn.sbb.ch/svn/wzu/${ZIPNAME} -o ${apphome}/data/${ZIPNAME}\
-    && unzip ${apphome}/data/${ZIPNAME} -d${apphome}/data \
-    && rm -f ${apphome}/data/${ZIPNAME} \
-    && echo "Data container for JRebel License Primary"
+CMD echo "Data container for JRebel License Primary"
