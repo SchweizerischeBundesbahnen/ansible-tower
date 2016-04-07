@@ -39,6 +39,7 @@ function getConfluenceConfig {
 trap _term SIGTERM
 
 getGlobalEnvParams
+# If this is a new installation (not a restore/restart) get the latest configfile from server
 if [ ! -f /var/data/confluence/confluence.cfg.xml ]; then
 	getConfluenceConfig
 fi
