@@ -1,4 +1,4 @@
-jrebel_license_primary:
+jrebel_license_failover:
   volumes:
           - jrebel_license_failover_FData:/var/data
   environment:
