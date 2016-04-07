@@ -33,4 +33,4 @@ RUN chown -R 10${idoffset}:10${idoffset} ${apphome}
 USER ${appuser}
 # Sanity check à la Igorova:
 RUN /opt/license-server/bin/license-server.sh help
-CMD export proxy_host=${proxy_host} && export proxy_port=${proxy_host} && proxy_user=${proxy_user} && proxy_password=${proxy_password} && /opt/license-server/bin/wzu-license-server.sh
+CMD export proxy_host=${proxy_host} && export proxy_port=${proxy_port} && proxy_user=${proxy_user} && proxy_password=${proxy_password} && /opt/license-server/bin/wzu-license-server.sh
