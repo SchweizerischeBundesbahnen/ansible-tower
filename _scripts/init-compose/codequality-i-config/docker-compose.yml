@@ -14,6 +14,7 @@ sonar:
     - 8110:8110
     - 9110:9110
     - 10110:10110
+    - 3106
   restart: always
   links:
     - mysql
@@ -23,6 +24,8 @@ mysql:
   volumes:
      - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
      - codequality_i_DBData:/var/lib/mysql
+  ports:
+     - 3306:3306
   environment:
-    - MYSQL_ROOT_PASSWORD: CHANGEME
-    - MYSQL_DATABASE: sonar
+     MYSQL_ROOT_PASSWORD: CHANGEME
+     MYSQL_DATABASE: sonar
