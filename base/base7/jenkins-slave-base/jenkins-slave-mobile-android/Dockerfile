@@ -7,7 +7,7 @@ ENV labels "android"
 ENV ANDROID_HOME ${jenkinshome}/buildtools/android-sdk-linux
 
 # Install qemu and kvm
-RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
+RUN yum install -q qemu-kvm qemu-kvm-tools npm -y && yum clean all -q
 
 # Get android sdk and Gradle from wzufiler
 RUN cd ${jenkinshome}/buildtools \
