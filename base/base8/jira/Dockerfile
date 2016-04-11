@@ -8,7 +8,7 @@ ENV jirahome /var/data/jira
 ENV idoffset 20
 ENV appuser jira
 ENV mysqlconnectorversion 5.1.36
-ENV jiraversion 6.4.11
+ENV jiraversion 7.0
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${jirahome}
