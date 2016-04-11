@@ -27,13 +27,6 @@ if [ "$RUNNING" == "false" ]; then
   exit 3
 fi
 
-GHOST=$(docker inspect --format="{{ .State.Ghost }}" $CONTAINER)
-
-if [ "$GHOST" == "true" ]; then
-  echo "WARNING - $CONTAINER has been ghosted."
-  exit 1
-fi
-
 STARTED=$(docker inspect --format="{{ .State.StartedAt }}" $CONTAINER)
 NETWORK=$(docker inspect --format="{{ .NetworkSettings.IPAddress }}" $CONTAINER)
 
