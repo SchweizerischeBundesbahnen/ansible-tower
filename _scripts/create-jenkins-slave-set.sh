@@ -32,15 +32,17 @@ labelMap[sonargraph]="jenkins-slave-was85"
 
 
 function checkOrStartVarnish() {
-  local _varnishCount=`sudo docker ps | grep varnish | wc -l`
-  if [ ${_varnishCount} -lt 1 ]; then
-	echo "No varnish running! Starting varnish container"
-	sudo docker run -p 80:80 --restart=always -d --name repocache -v /etc/wzu/jenkins-varnish-config:/data/varnish --env 'VCL_CONFIG=/data/varnish/repo.sbb.ch.vcl' --env 'CACHE_SIZE=20g' registry.sbb.ch/kd_wzu/varnish
-	if [ $? -ne 0 ]; then
-		echo "Starting varnish container failed!"
-		exit -1
-	fi 
-  fi
+  VARNISHNAME=varnish
+  ./check-docker-container.sh ${VARNISHNAME}
+
+	if [ $? -gt 2 ]; then
+	  sudo docker rm ${VARNISHNAME}
+	fi
+
+	if [ $? -gt 1 ]; then
+		sudo docker run -p 80:80 --restart=always -d --name ${VARNISHNAME} -v /etc/wzu/jenkins-varnish-config:/data/varnish --env 'VCL_CONFIG=/data/varnish/repo.sbb.ch.vcl' --env 'CACHE_SIZE=20g' registry.sbb.ch/kd_wzu/varnish
+	fi
+
 }
 
 
