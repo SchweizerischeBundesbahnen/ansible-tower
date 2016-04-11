@@ -38,11 +38,12 @@ slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1`-$tag
 
 
 function checkVarnish() {
-  local _varnishCount=`sudo docker ps | grep varnish | wc -l`
-  if [ ${_varnishCount} -lt 1 ]; then
-        echo "No varnish running! Starting jenkins slave without repo link"
-	unset REPO_LINK
-  fi
+  VARNISHNAME=repocache
+  ./check-docker-container.sh ${VARNISHNAME}
+	if [ $? -gt 0 ]; then
+    echo "No varnish running! Starting jenkins slave without repo link"
+    unset REPO_LINK
+	fi
 }
 
 
