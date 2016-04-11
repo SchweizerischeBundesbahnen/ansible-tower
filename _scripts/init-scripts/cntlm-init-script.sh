@@ -3,7 +3,7 @@
 #               the cntlm container.
 #
 # chkconfig: - 85 15
-opts=" -p 3128:3128 -d "
+opts=" -p 3400:3128 -d "
 containername=cntlm
 imagename=dacr/cntlm
 
