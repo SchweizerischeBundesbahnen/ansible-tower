@@ -33,7 +33,7 @@ labelMap[sonargraph]="jenkins-slave-was85"
 
 function checkOrStartVarnish() {
   VARNISHNAME=repocache
-  ./check-docker-container.sh ${VARNISHNAME}
+  sudo ./check-docker-container.sh ${VARNISHNAME}
 
 	if [ $? -gt 2 ]; then
 	  sudo docker rm ${VARNISHNAME}
