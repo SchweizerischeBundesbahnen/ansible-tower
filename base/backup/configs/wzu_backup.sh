@@ -9,6 +9,7 @@ source ${CONFIG}
 export MODE
 export NAME
 export APPNAME
+export BASE_DIR
 
 function databaseBackup {
   ./bin/dump.sh
