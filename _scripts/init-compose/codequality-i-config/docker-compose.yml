@@ -25,7 +25,7 @@ mysql:
      - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
      - codequality_i_DBData:/var/lib/mysql
   ports:
-     - 3306:3306
+     - 3110:3306
   environment:
      MYSQL_ROOT_PASSWORD: CHANGEME
      MYSQL_DATABASE: sonar
