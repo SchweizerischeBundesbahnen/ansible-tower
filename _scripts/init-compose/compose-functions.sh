@@ -6,23 +6,23 @@
 PATH=$PATH:/usr/local/bin
 
 function start_container() {
-    docker-compose -f $composefile -p $projectname start
+  docker-compose -f $composefile -p $projectname start
 }
 
 function init_container() {
-    docker-compose -f $composefile -p $projectname up -d
+  docker-compose -f $composefile -p $projectname up -d
 }
 
 function stop_container() {
-        docker-compose -f $composefile -p $projectname stop
+  docker-compose -f $composefile -p $projectname stop
 }
 
 function delete_container() {
-        docker-compose -f $composefile -p $projectname rm
+  docker-compose -f $composefile -p $projectname rm
 }
 
 function pull_container() {
-    docker-compose -f $composefile -p $projectname pull
+  docker-compose -f $composefile -p $projectname pull
 }
 
 function remove_container() {
@@ -32,7 +32,6 @@ function remove_container() {
 function removeall_container() {
   docker-compose -p $projectname -f $composefile rm -vf
 }
-
 
 function status() {
   docker-compose -p $projectname -f $composefile ps
