@@ -1,7 +1,7 @@
 sonar:
   image: registry.sbb.ch/kd_wzu/sonar:latest
   environment:
-    APP_URL: codequality-i.sbb.ch
+    APP_URL: codequality.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
@@ -18,12 +18,11 @@ sonar:
   restart: always
   links:
     - mysql
-
 mysql:
   image: registry.sbb.ch/kd_wzu/mysql:5.6
   volumes:
      - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
-     - codequality_i_DBData:/var/lib/mysql
+     - codequality_p_DBData:/var/lib/mysql
   ports:
      - 3110:3306
   environment:
