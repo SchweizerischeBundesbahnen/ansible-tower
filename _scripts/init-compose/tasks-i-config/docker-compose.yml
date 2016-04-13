@@ -15,6 +15,7 @@ jira:
   restart: always
   links:
     - mysql
+	
 mysql:
   image: registry.sbb.ch/kd_wzu/mysql:5.6
   volumes:
@@ -25,4 +26,4 @@ mysql:
     MYSQL_ROOT_PASSWORD: verysecret
     MYSQL_DATABASE: jira
   ports:
-    - 127.0.0.1:3021:3306    MYSQL_DATABASE: jira
+    - 127.0.0.1:3021:3306
