@@ -1,5 +1,5 @@
 code:
-  image: registry.sbb.ch/kd_wzu/code:305-dev
+  image: registry.sbb.ch/kd_wzu/code:latest
   volumes:
     - /var/data/code-app/log:/var/data/code/log
     - /var/data/code-app/caches:/var/data/code/caches
