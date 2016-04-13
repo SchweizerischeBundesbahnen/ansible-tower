@@ -23,5 +23,6 @@ mysql:
     - tasks_i_DBData:/var/lib/mysql
   environment:
     MYSQL_ROOT_PASSWORD: verysecret
+    MYSQL_DATABASE: jira
   ports:
     - 127.0.0.1:3021:3306    MYSQL_DATABASE: jira
