@@ -25,3 +25,4 @@ mysql:
     - MYSQL_DATABASE=confluence
   ports:
     - 127.0.0.1:3040:3306
+  restart: always
