@@ -26,9 +26,23 @@ function getStageEnvParams {
         source ${CNF_NAME}
 }
 
+# Download Confluence config
+function getConfluenceConfig {
+        echo "Getting app_url variables from ${ENV_SRV_URL}/${APP_URL}"
+        wget ${ENV_SRV_URL}/${APP_URL}.confluence.cfg.xml -O /var/data/confluence/confluence.cfg.xml
+        # If file does not exist,quit
+        if [ $? -ne 0 ]; then
+                echo "Failed to get Confluence Configfile!"
+                exit 1
+        fi
+}
 trap _term SIGTERM
 
 getGlobalEnvParams
+# If this is a new installation (not a restore/restart) get the latest configfile from server
+if [ ! -f /var/data/confluence/confluence.cfg.xml ]; then
+	getConfluenceConfig
+fi
 # If app_url is set, try to get it
 if [ -n "${APP_URL}" ]; then
         getStageEnvParams

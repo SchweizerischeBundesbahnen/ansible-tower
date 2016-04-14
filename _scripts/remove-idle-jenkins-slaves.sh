@@ -1,9 +1,14 @@
 #!/bin/bash
+#
+# Removes old and idle slaves from slave host. Takes at least one argument: the ci master url
+# The second optional argument is for the automatic rollover and is just a definition of "old"
+#
+
 
 # which master to use
 master=$1
 
-# definition of old
+# default definition of old
 old=" days"
 
 
@@ -12,10 +17,16 @@ function usage() {
         exit 1
 }
 
-if [ -z $master ]
-then
+# check required argument
+if [ -z $master ]; then
         usage
 fi
+
+# optional argument
+if [ $# -eq 2 ]; then
+        old=${2}
+fi
+
 
 
 # list of all old containers

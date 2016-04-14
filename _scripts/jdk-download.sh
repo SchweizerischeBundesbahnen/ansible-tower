@@ -11,6 +11,8 @@ DEPS=( "7z" "ant" "keytool" "curl" "which" )
 VERSIONS=( "$@" )
 PLATFORMS=( "i586" "x64" )
 OSS=( "linux" "windows" )
+
+#OSS=( "windows" )
 HEADER="Cookie: oraclelicense=accept-securebackup-cookie"
 BUILDID="-1"
 TMPDIR="/tmp/jdk-downloader"
@@ -69,18 +71,31 @@ function nexus_upload() {
     echo "Skipping upload of artifact jdk-${VER}-${OS}-${PLATFORM}-sbb.zip to Nexus"
     return
   fi
+
   ARTIFACT="oracle-jdk-$V-$P"
-  curl -f \
- -F r=hosted.mwe-wzu.releases  \
- -F hasPom=false  \
- -F e=zip  \
- -F g=ch.sbb.eaio  \
- -F a=${ARTIFACT}  \
- -F v=${VER}  \
- -F p=zip  \
- -F file=@${TMPDIR}/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" \
- -u admin:${ADMINPWD}  \
- http://repo.sbb.ch/service/local/artifact/maven/content || error
+
+  for REV in {01..99}
+  do
+      curl -f \
+     -F r=hosted.mwe-wzu.releases  \
+     -F hasPom=false  \
+     -F e=zip  \
+     -F g=ch.sbb.eaio  \
+     -F a=${ARTIFACT}  \
+     -F v=${VER}_r${REV}  \
+     -F p=zip  \
+     -F file=@${TMPDIR}/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" \
+     -u admin:${ADMINPWD}  \
+     http://repo.sbb.ch/service/local/artifact/maven/content
+
+    if [ $? -eq 0 ]
+    then
+      return
+    else
+      continue
+    fi
+  done
+  error
 }
 
 function unpack() {
@@ -129,7 +144,7 @@ function add_cert() {
 function usage() {
   echo -e "Download the oracle JDK from command line, uploads to svn, adds certificates and pushes to nexus, all unattended\n"
   echo -e "$0 [<versions>]\n"
-  echo "  [<versions>] Something like 8u74 7u80"
+  echo "  [<versions>] Something like 8u77 7u80"
   exit 1
 }
 

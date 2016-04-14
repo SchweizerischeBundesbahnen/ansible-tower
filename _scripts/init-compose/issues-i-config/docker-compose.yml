@@ -1,0 +1,29 @@
+jira:
+  image: registry.sbb.ch/kd_wzu/jira:latest
+  volumes:
+    - issues_i_FData:/var/data
+  environment:
+    APP_URL: issues-i.sbb.ch
+    HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    https_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+  ports:
+    - 8020:8020
+    - 9020:9020
+    - 10020:10020
+  restart: always
+  links:
+    - mysql
+
+mysql:
+  image: registry.sbb.ch/kd_wzu/mysql:5.6
+  volumes:
+   - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
+   - issues_i_DBData:/var/lib/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: verysecret
+    MYSQL_DATABASE: jira
+  ports:
+    - 127.0.0.1:3020:3306
+  restart: always
