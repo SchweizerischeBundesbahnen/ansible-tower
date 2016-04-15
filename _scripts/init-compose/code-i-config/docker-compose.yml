@@ -7,7 +7,7 @@ code:
     - /var/data/code-data/shared/data:/var/data/stash/shared/data
     - /var/data/code-app/conf:/var/data/stash/conf 
   environment:
-    APP_URL: code.sbb.ch
+    APP_URL: code-i.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
