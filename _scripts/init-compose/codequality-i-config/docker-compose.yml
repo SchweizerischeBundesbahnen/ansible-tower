@@ -6,26 +6,23 @@ sonar:
     HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     https_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
-    MYSQL_HOST: mysql
+    MYSQL_HOST: localhost 
     MYSQL_DBNAME: sonar
     MYSQL_USER: sonar
     MYSQL_PASSWORD: CHANGEME
   ports:
     - 8110:8110
     - 9110:9110
-    - 10110:10110
-    - 3106
   restart: always
-  links:
-    - mysql
-
+  net: "host"
 mysql:
   image: registry.sbb.ch/kd_wzu/mysql:5.6
   volumes:
      - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
      - codequality_i_DBData:/var/lib/mysql
   ports:
-     - 3110:3306
+     - 3306:3306
   environment:
      MYSQL_ROOT_PASSWORD: CHANGEME
      MYSQL_DATABASE: sonar
+  restart: always
