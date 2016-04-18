@@ -8,16 +8,5 @@ nexus:
    MAX_HEAP: 10240m
    JAVA_OPTS: -server -XX:MaxPermSize=1024m -Djava.net.preferIPv4Stack=true -Xss1m
   restart: always
-
-varnish:
-  image: registry.sbb.ch/kd_wzu/varnish
-  links:
-    - nexus
-  volumes:
-    - /etc/wzu-docker/_scripts/repo-config/varnish:/data/varnish
-  environment:
-    CACHE_SIZE: 30g
-    VCL_CONFIG: /data/varnish/repo.vcl
-  restart: always
   ports:
-      - 8060:80
+      - 8060:8081 
