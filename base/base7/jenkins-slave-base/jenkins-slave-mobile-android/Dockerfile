@@ -27,7 +27,7 @@ RUN cd ${jenkinshome}/buildtools \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Add gradle.properties
-COPY configs/* ${jenkinshome}/.codequality/
+COPY configs/* ${jenkinshome}/.gradle/
 
 # Add ANDROID_HOME to environment 
 RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${jenkinshome}/env.sh
