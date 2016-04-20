@@ -3,7 +3,7 @@ FROM registry.sbb.ch/kd_wzu/jenkins-slave-was85
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV labels "nodejs"
-ENV nodejs_version "v4.2.2"
+ENV nodejs_version "v5.9.0"
 ENV installer_url "https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh"
 
 # Install js binaries for build
