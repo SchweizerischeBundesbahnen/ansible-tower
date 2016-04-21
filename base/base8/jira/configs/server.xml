@@ -113,7 +113,12 @@
         -->
 
 
-        <Connector port="9020" enableLookups="false" protocol="AJP/1.3" URIEncoding="UTF-8"/>
+        <Connector port="9020" enableLookups="false" protocol="AJP/1.3" URIEncoding="UTF-8"
+                   disableUploadTimeout="true"
+                   maxThreads="400"
+                   minSpareThreads="50"
+                   maxSpareThreads="100"/>
+
 
         <Engine name="Catalina" defaultHost="localhost">
             <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
