@@ -1,11 +1,11 @@
 code:
   image: registry.sbb.ch/kd_wzu/stash:latest
   volumes:
-    - /var/data/code-app/log:/var/data/stash/log
-    - /var/data/code-app/caches:/var/data/stash/caches
-    - /var/data/code-app/logs:/opt/stash/logs
-    - /var/data/code-data/shared/data:/var/data/stash/shared/data
-    - /var/data/code-app/conf:/var/data/stash/conf 
+    - code_i_FData:/var/data/stash/shared/data
+    - code_i_FLog1:/var/data/stash/log
+    - code_i_FCaches:/var/data/stash/caches
+    - code_i_FLog2:/opt/stash/logs
+    - code_i_FConf:/var/data/stash/conf 
   environment:
     APP_URL: code-i.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
@@ -19,18 +19,18 @@ code:
     - 10120:10120
     - 11120:11120
   restart: always
-#  links:
-#    - mysql
-#mysql:
-#  image: registry.sbb.ch/kd_wzu/mysql:5.6
-#  volumes:
-#    - /etc/wzu-docker/_scripts/my.cnf:/etc/mysql/my.cnf
-#  environment:
-#    - MYSQL_ROOT_PASSWORD=verysecret
-#    - MYSQL_DATABASE=code
-#codebackup:
-#  image: registry.sbb.ch/kd_wzu/mysql-backup:latest
-#  volumes:
-#    - /opt/stash/code-data/mysql-backup:/backup
-#  links:
-#    - mysql
+  links:
+    - mysql
+
+mysql:
+  image: registry.sbb.ch/kd_wzu/mysql:5.6
+  volumes:
+   - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
+   - code_i_DBData:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=verysecret
+    - MYSQL_DATABASE=code
+  ports:
+    - 127.0.0.1:3120:3306
+  restart: always
+
