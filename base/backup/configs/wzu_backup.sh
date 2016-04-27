@@ -46,7 +46,7 @@ elif [ "${MODE}" == "RESTORE" ]; then
               exit 1
         fi
         echo "Restore script found. Starting Restore."
-        ./backup_scripts/${NAME}.sh
+        ./restore_scripts/${NAME}.sh
         exit $?
       else
             echo "File ${NAME}.sh not found or not executable."
