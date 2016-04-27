@@ -31,7 +31,7 @@ if [ "${MODE}" == "BACKUP" ]; then
         fi
         echo "Backup script found. Starting Backup."
         ./backup_scripts/${NAME}.sh
-        return $?
+        exit $?
     else
         echo "File ${NAME}.sh not found or not executable."
     fi
@@ -47,7 +47,7 @@ elif [ "${MODE}" == "RESTORE" ]; then
         fi
         echo "Restore script found. Starting Restore."
         ./backup_scripts/${NAME}.sh
-        return $?
+        exit $?
       else
             echo "File ${NAME}.sh not found or not executable."
       fi
