@@ -1,5 +1,5 @@
 ci-ng:
-  image: jenkins
+  image: registry.sbb.ch/kd_wzu/ci-ng-master:latest
   volumes:
     - /var/data/ci-ng-master:/var/data/ci-ng-master
   environment:
