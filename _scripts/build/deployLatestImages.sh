@@ -38,8 +38,12 @@ function getPR() {
 }
 
 # check arguments, only try to get PR if arg count=1
+echo "$0 started with arguments:"
+echo "1: $1"
+echo "2: $2"
 if [ "$#" -eq 1 ]; then 
 	NEW_TAG=`getPR ${1}`
+	echo "TAG=${NEW_TAG}"
 elif [ "$#" -eq 2 ]; then
 	NEW_TAG=${2}
 fi
