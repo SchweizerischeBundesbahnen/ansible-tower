@@ -16,11 +16,7 @@ export STAGE
 export APPNAME
 export BASE_DIR
 export RESTORE_DIR
-export CONTAINER
-export DB_PORT
-export DB_ADDR
-export DB_NAME
-export DB_PASS
+
 if [ -z "${NAME}" ]; then
       echo "Error: NAME is not set, exiting."
       exit 1
