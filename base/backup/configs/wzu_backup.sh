@@ -1,8 +1,6 @@
 #!/bin/bash
 
 cd wzu-backup
-git fetch
-git checkout feature/newBackup
 git pull
 
 CONFIG="conf/${NAME}.conf"
