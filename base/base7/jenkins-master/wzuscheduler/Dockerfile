@@ -1,5 +1,5 @@
 #Docker image for wzuscheduler
-FROM registry.sbb.ch/kd_wzu/jenkins-master
+FROM registry.sbb.ch/kd_wzu/jenkins-master:WZU-4433-jenkins-upgrade
 MAINTAINER igor.masen@sbb.ch
 
 ENV appversion 1.651.1
