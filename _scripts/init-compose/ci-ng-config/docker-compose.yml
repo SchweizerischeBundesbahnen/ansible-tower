@@ -6,6 +6,6 @@ ci-ng:
    APP_URL: ci-ng.sbb.ch
    JENKINS_HOME: /var/data/ci-ng-master
   ports:
-    - 8080:8080
+    - 8080:8051
     - 50000:50000
   restart: always
