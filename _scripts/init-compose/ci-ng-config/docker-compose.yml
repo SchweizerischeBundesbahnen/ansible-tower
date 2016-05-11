@@ -5,7 +5,6 @@ ci-ng:
   environment:
    APP_URL: ci-ng.sbb.ch
    JENKINS_HOME: /var/data/ci-ng-master
-   JENKINS_VERSION: 2.2
   ports:
     - 8080:8051
     - 50000:50000
