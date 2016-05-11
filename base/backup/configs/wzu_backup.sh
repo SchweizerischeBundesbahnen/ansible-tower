@@ -13,7 +13,7 @@ export DESTINATION_STAGE
 export STAGE
 export APPNAME
 export BASE_DIR
-export RESTORE_DIR
+export DB_RESTORE_DIR
 
 if [ -z "${NAME}" ]; then
       echo "Error: NAME is not set, exiting."
