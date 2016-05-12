@@ -8,6 +8,7 @@ RUN yum install -y -q \
 	which \
     mydumper \
     duplicity \
+    mysql \
     && yum clean all -q
 
 COPY configs/wzu_backup.sh /var/wzu_backup.sh

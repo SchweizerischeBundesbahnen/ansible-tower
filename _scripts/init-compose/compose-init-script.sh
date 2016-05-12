@@ -1,6 +1,8 @@
 #!/bin/bash
 # Just clone the git-repository to $repodir and symlink this script to /etc/init.d/projectname
 # chkconfig: - 85 15
+set -e
+set -x
 
 repodir="/etc/wzu-docker"
 projectname=`basename $0`
