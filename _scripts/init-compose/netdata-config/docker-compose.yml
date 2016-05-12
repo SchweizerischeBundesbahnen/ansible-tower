@@ -1,0 +1,5 @@
+netdata:
+  image: docker.io/mabeulux88/netdata
+  ports:
+    - 8200:19999
+  restart: always
