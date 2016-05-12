@@ -2,7 +2,7 @@
 FROM registry.sbb.ch/kd_wzu/base7
 MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
-#Environment variables
+# Environment variables
 ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
