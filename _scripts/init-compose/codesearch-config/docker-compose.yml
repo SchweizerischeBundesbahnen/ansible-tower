@@ -1,0 +1,7 @@
+elasticsearch:
+   image: elasticsearch:2.3
+   volumes:
+     - /var/data/code/elasticsearch/data:/usr/share/elasticsearch/data
+   ports:
+     - 9200:9200
+     - 9300:9300
