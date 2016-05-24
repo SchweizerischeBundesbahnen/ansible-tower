@@ -1,0 +1,17 @@
+hub:
+  image: docker.io/selenium/hub:latest
+  ports:
+    - 4444:4444
+  restart: always
+
+ffnode:
+  image: docker.io/selenium/node-firefox
+  links:
+    - hub:hub
+  restart: always
+
+chromenode:
+  image: docker.io/selenium/node-chrome
+  links:
+    - hub:hub
+  restart: always
