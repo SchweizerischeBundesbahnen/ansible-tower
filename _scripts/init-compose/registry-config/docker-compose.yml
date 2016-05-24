@@ -1,0 +1,21 @@
+registry:
+  image: registry:2
+  volumes:
+    - /var/data/registry:/var/lib/registry
+  environment:
+   SEARCH_BACKEND: sqlalchemy
+  ports:
+    - 5000:5000
+  restart: always
+
+web:
+  image: konradkleine/docker-registry-frontend:v2
+  environment:
+    ENV_DOCKER_REGISTRY_HOST: registry
+    ENV_DOCKER_REGISTRY_PORT: 5000
+    ENV_MODE_BROWSE_ONLY: "false"
+  links:
+    - registry
+  ports:
+    - 8081:80
+  restart: always
