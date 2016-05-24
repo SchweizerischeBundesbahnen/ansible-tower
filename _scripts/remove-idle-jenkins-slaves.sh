@@ -31,8 +31,7 @@ for container in $ACTIVEJENKINSSLAVES; do
     time=`echo ${container} | sed 's/#/ /g' | awk '{print $4}'`
     echo "Checking Container ${container}"
     if (( "$time" > $timethreshold )); then 
-        echo "Container ${container} is ${time} hours old and exceeds timethreshold of 
-${timethreshold} hours, try to remove..."
+        echo "Container ${container} is ${time} hours old and exceeds timethreshold of ${timethreshold} hours, try to remove..."
         # check if busy
         port=`echo ${container} | sed 's/#/ /g' | awk '{print $3}'`
         idle=`curl -s --data-urlencode script@idle_slaves.groovy $master/scriptText --user fsvctip:sommer11 |  grep ${port:8: -11} | wc -l`
