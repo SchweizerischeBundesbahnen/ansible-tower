@@ -46,14 +46,17 @@ RUN wget --quiet https://marketplace.atlassian.com/download/plugins/de.communard
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.izymes.workzone/version/3001002020 -O ${plugin_folder}/workzone.jar
 #Unmerged Branch Hook in Version 1.1
 RUN wget --quiet https://marketplace.atlassian.com/download/plugins/com.atlassian.stash.plugin.stash-protect-unmerged-branch-hook/version/110 -O ${plugin_folder}/stash-protect-unmerged-branch-hook.jar
-#Webhook in Version 2.1.2
-RUN wget --quiet http://repo.sbb.ch/content/repositories/mirror/ch/sbb/stash/jenkins-push-webhook/2.1.2/jenkins-push-webhook-2.1.2.jar -O ${plugin_folder}/jenkins-push-webhook.jar
+#Webhook in Version 2.1.3
+RUN wget --quiet http://repo.sbb.ch/content/repositories/mirror/ch/sbb/stash/jenkins-push-webhook/2.1.3/jenkins-push-webhook-2.1.3.jar -O ${plugin_folder}/jenkins-push-webhook.jar
 #Commit Enforcer in Version 2.2
 RUN wget --quiet http://repo.sbb.ch/service/local/repositories/mirror/content/ch/sbb/stash/enforce-message-hook-plugin/2.2/enforce-message-hook-plugin-2.2.jar -O ${plugin_folder}/enforce-message-hook-plugin.jar
 
-# since we just mount HOME/shared/data we have to link stash-configuration.properties from another mount
-RUN ln -s ${stash_home}/conf/stash-config.properties ${stash_home}/shared/stash-config.properties
-RUN ln -s ${stash_home}/conf/server.xml ${stash_home}/shared/server.xml
+# Mounting Config, growing files, logs and repos externally
+RUN ln -s ${datadir}/mounted/conf/stash-config.properties ${stash_home}/shared/stash-config.properties \
+    && ln -s ${datadir}/mounted/conf/server.xml ${stash_home}/shared/server.xml \
+    && ln -s ${datadir}/mounted/log ${stash_home}/log \
+    && ln -s ${datadir}/mounted/caches ${stash_home}/caches \
+    && ln -s ${datadir}/mounted/data ${stash_home}/shared/data
 
 #Exposing Port to make Stash accessible
 EXPOSE 7999 8120 9120 10120 11120
@@ -62,8 +65,9 @@ EXPOSE 7999 8120 9120 10120 11120
 COPY configs/setenv.sh /opt/stash/bin/setenv.sh
 COPY configs/stash.sh /opt/stash/stash.sh
 COPY configs/ssh-server-keys.pem ${stash_home}/shared/config/ssh-server-keys.pem
-RUN chmod 755 /opt/stash/bin/setenv.sh /opt/stash/stash.sh
-
-RUN chown -R ${appuser}:${appuser} ${stash_home}
+RUN chmod 755 /opt/stash/bin/setenv.sh /opt/stash/stash.sh \
+    && chown ${appuser}:${appuser} /opt/stash/bin/setenv.sh /opt/stash/stash.sh \
+    && chown -R ${appuser}:${appuser} ${stash_home}
+    
 USER stash
 CMD "/opt/stash/stash.sh"
