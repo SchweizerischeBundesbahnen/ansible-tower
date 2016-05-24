@@ -13,7 +13,7 @@ web:
   environment:
     ENV_DOCKER_REGISTRY_HOST: registry
     ENV_DOCKER_REGISTRY_PORT: 5000
-    ENV_MODE_BROWSE_ONLY: false
+    ENV_MODE_BROWSE_ONLY: "false"
   links:
     - registry
   ports:
