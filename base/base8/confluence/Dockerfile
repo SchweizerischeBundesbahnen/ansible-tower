@@ -6,7 +6,7 @@ ENV appuser confluence
 ENV datadir /var/data
 ENV confluence_version 5.8.14
 ENV confluence_home /var/data/confluence
-ENV mysqlconnectorversion 5.1.38
+ENV mysqlconnectorversion 5.9.10
 
 # Create Data directory structure and add user to the image
 RUN mkdir -p ${datadir} \
