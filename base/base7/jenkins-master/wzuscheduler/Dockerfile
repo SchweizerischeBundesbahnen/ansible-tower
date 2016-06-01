@@ -3,7 +3,7 @@ FROM registry.sbb.ch/kd_wzu/jenkins-master
 
 MAINTAINER igor.masen@sbb.ch
 
-ENV appversion 1.651.1
+ENV appversion 1.651.2
 
 # change back to root, to make changes on jenkins-master image
 USER root
