@@ -1,7 +1,7 @@
 code:
-  image: registry.sbb.ch/kd_wzu/stash:latest
+  image: registry.sbb.ch/kd_wzu/code:latest
   volumes:
-    - code_i_FData:/var/data/mounted
+    - /var/data/code:/var/data/mounted
   environment:
     APP_URL: code-i.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
@@ -15,18 +15,18 @@ code:
     - 10120:10120
     - 11120:11120
   restart: always
-  links:
-    - mysql
+#  links:
+#    - mysql
 
-mysql:
-  image: registry.sbb.ch/kd_wzu/mysql:5.6
-  volumes:
-   - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
-   - code_i_DBData:/var/lib/mysql
-  environment:
-    - MYSQL_ROOT_PASSWORD=verysecret
-    - MYSQL_DATABASE=code
-  ports:
-    - 127.0.0.1:3120:3306
-  restart: always
+#mysql:
+#  image: registry.sbb.ch/kd_wzu/mysql:5.6
+#  volumes:
+#   - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
+#   - code_i_DBData:/var/lib/mysql
+#  environment:
+#    - MYSQL_ROOT_PASSWORD=verysecret
+#    - MYSQL_DATABASE=code
+#  ports:
+#    - 127.0.0.1:3120:3306
+#  restart: always
 

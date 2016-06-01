@@ -36,7 +36,7 @@ if [ -n "${APP_URL}" ]; then
 fi
 
 echo "Starting Application";
-/opt/code/bin/start-bitbucket.sh -fg &
+/opt/code/bin/start-webapp.sh -fg &
 
 child=$!
 wait "$child"
