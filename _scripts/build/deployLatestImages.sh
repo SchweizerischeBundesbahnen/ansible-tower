@@ -17,29 +17,28 @@ function getPR() {
 	git checkout "${GIT_BRANCH}"
 
 	GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
-	echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
 	# Finding the pull request based on the commit via Stash
 	BRANCH=`basename $GIT_BRANCH`
-	echo "branch=${BRANCH}"
 	PR="`python _scripts/build/extract_open_pull_request_id.py "refs/heads/${BRANCH}" ${GIT_COMMIT_BEFORE_LAST}`"
 
 	# validate id
 	if [[ ${PR} =~ ^-?[0-9]+$ ]]
 	then
-	    echo "pr=${PR} is valid, used as tag"
-	    NEW_TAG=${PR}
+	    echo "${PR}"
 	else
 	    echo "pr=${PR} is NOT valid, exiting..."
 	    exit -1
 	fi
-
-	echo ${PR}
 }
 
 # check arguments, only try to get PR if arg count=1
+echo "$0 started with arguments:"
+echo "1: $1"
+echo "2: $2"
 if [ "$#" -eq 1 ]; then 
 	NEW_TAG=`getPR ${1}`
+	echo "TAG=${NEW_TAG}"
 elif [ "$#" -eq 2 ]; then
 	NEW_TAG=${2}
 fi
