@@ -9,9 +9,3 @@ mysql_code:
   ports:
     - 3120:3306
   restart: always
-#codebackup:
-#  image: registry.sbb.ch/kd_wzu/mysql-backup:latest
-#  volumes:
-#    - /opt/stash/code-data/mysql-backup:/backup
-#  links:
-#    - mysql
