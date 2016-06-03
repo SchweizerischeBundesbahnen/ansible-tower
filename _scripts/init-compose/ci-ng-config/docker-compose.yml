@@ -5,7 +5,9 @@ ci-ng:
   environment:
    APP_URL: ci-ng.sbb.ch
    JENKINS_HOME: /var/data/ci-ng-master
+   JAVA_OPTS: "-Dcom.sun.management.jmxremote.port=10050 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
   ports:
     - 8051:8080
+    - 10051:10050
     - 50000:50000
   restart: always
