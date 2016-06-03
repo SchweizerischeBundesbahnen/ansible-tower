@@ -1,11 +1,11 @@
 ci-ng:
-  image: registry.sbb.ch/kd_wzu/jenkins-ng-master:WZU-4433-jenkins-upgrade
+  image: registry.sbb.ch/kd_wzu/ci-ng-master:latest
   volumes:
     - /var/data/ci-ng-master:/var/data/ci-ng-master
   environment:
    APP_URL: ci-ng.sbb.ch
    JENKINS_HOME: /var/data/ci-ng-master
   ports:
-    - 8080:8051
+    - 8051:8080
     - 50000:50000
   restart: always

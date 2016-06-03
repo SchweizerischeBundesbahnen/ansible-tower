@@ -1,0 +1,11 @@
+wzuscheduler:
+  image: registry.sbb.ch/kd_wzu/jenkins-ng-master:latest
+  volumes:
+    - /var/data/wzuscheduler:/var/data/wzuscheduler
+  environment:
+   APP_URL: wzuscheduler.sbb.ch
+   JENKINS_HOME: /var/data/wzuscheduler
+  ports:
+    - 8051:8080
+    - 50000:50000
+  restart: always
