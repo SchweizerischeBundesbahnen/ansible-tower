@@ -1,5 +1,5 @@
 ci-ng:
-  image: registry.sbb.ch/kd_wzu/jenkins-ng-master:WZU-4433-jenkins-upgrade
+  image: registry.sbb.ch/kd_wzu/ci-ng-master:latest-dev
   volumes:
     - /var/data/ci-ng-master:/var/data/ci-ng-master
   environment:
