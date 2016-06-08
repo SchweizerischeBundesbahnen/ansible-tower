@@ -35,4 +35,4 @@ general-log = "mysql_general.log"
 expire_logs_days = 5
 
 #Added on 12.06.2014
-tmpdir=/var/lib/mysql/mysqltmp
+tmpdir=/var/tmp

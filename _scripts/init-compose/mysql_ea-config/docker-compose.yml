@@ -3,6 +3,7 @@ mysql_ea:
   volumes:
    - /etc/wzu-docker/_scripts/init-compose/mysql_ea-config/mysql_ea.cnf:/etc/mysql/conf.d/custom.cnf
    - mysql_ea_DBData:/var/lib/mysql
+   - mysql_ea_DBTmp:/var/tmp
   environment:
     - MYSQL_ROOT_PASSWORD=verysecret
   ports:
