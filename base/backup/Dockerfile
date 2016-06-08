@@ -13,5 +13,4 @@ RUN yum install -y -q \
 
 COPY configs/wzu_backup.sh /var/wzu_backup.sh
 RUN git clone https://code.sbb.ch/scm/kd_wzu/wzu-backup.git
-RUN ln -sf /dev/stdout /var/log/duplicity-backup.log
 CMD /var/wzu_backup.sh
