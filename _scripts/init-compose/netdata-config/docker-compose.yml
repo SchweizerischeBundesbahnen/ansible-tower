@@ -1,0 +1,10 @@
+netdata:
+  image: docker.io/mabeulux88/netdata
+  volumes:
+     - /proc:/host/proc:ro
+     - /sys:/host/sys:ro
+  cap_add:
+     - SYS_PTRACE
+  ports:
+     - 8200:19999
+  restart: always

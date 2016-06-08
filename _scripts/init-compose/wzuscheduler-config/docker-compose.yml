@@ -1,13 +1,12 @@
-ci-ng:
+wzuscheduler:
   image: registry.sbb.ch/kd_wzu/jenkins-ng-master:latest
   volumes:
-    - /var/data/ci-ng-master:/var/data/ci-ng-master
+    - /var/data/wzuscheduler:/var/data/jenkins-master
   environment:
-   APP_URL: ci-ng.sbb.ch
-   JENKINS_HOME: /var/data/ci-ng-master
+   APP_URL: wzuscheduler.sbb.ch
+   JENKINS_HOME: /var/data/jenkins-master
    JAVA_OPTS: "-Dcom.sun.management.jmxremote.port=10050 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
   ports:
-    - 8051:8080
-    - 10051:10050
-    - 50000:50000
+    - 8055:8080
+    - 10055:10050
   restart: always
