@@ -30,8 +30,7 @@ collation-server=latin1_swedish_ci
 log-bin=mysql-bin
 general-log=1
 binlog_format=mixed
-general-log = "mysql_general.log"
-# - general-log-file = "/var/data/mysql/mysql_general.log"
+general-log-file = "/var/tmp/mysql_general.log"
 expire_logs_days = 5
 
 #Added on 12.06.2014
