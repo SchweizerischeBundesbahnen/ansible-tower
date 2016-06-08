@@ -7,7 +7,7 @@ ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
 ENV mvn33version 3.3.9
-ENV swarmversion 1.26
+ENV swarmversion 2.1
 ENV appuser jenkins
 ENV portoffset 91
 ENV datadir /var/data
@@ -168,12 +168,6 @@ COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/Sonargraph
 
 # Add download settings xml script
 COPY configs/download_settingsxml.sh ${jenkinshome}/_scripts/download_settingsxml.sh
-
-# Add security limits for jenkins user
-RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	hard nproc	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	soft nofile	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	hard nofile	10000" >> /etc/security/limits.conf
 
 # Chown contents of home directory
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
