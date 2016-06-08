@@ -12,7 +12,7 @@ export SOURCE_STAGE
 export DESTINATION_STAGE
 export STAGE
 export APPNAME
-export BASE_DIR
+export DB_BASE_DIR
 export DB_RESTORE_DIR
 
 if [ -z "${NAME}" ]; then
