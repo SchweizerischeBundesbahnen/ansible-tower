@@ -169,12 +169,6 @@ COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/Sonargraph
 # Add download settings xml script
 COPY configs/download_settingsxml.sh ${jenkinshome}/_scripts/download_settingsxml.sh
 
-# Add security limits for jenkins user
-RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	hard nproc	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	soft nofile	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	hard nofile	10000" >> /etc/security/limits.conf
-
 # Chown contents of home directory
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
 
