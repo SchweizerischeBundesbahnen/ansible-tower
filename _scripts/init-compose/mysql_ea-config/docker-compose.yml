@@ -1,0 +1,10 @@
+mysql_ea:
+  image: registry.sbb.ch/kd_wzu/mysql:5.1.73
+  volumes:
+   - /etc/wzu-docker/_scripts/init-compose/mysql_ea-config/mysql_ea.cnf:/etc/mysql/conf.d/custom.cnf
+   - mysql_ea_DBData:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=verysecret
+  ports:
+    - 3306:3306
+  restart: always
