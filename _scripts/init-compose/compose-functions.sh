@@ -6,7 +6,7 @@
 PATH=$PATH:/usr/local/bin
 
 function start_container() {
-  docker-compose -f $composefile -p $projectname start
+  docker-compose -f $composefile -p $projectname up -d --no-recreate
 }
 
 function init_container() {
@@ -29,10 +29,6 @@ function remove_container() {
   docker-compose -p $projectname -f $composefile rm -f
 }
 
-function removeall_container() {
-  docker-compose -p $projectname -f $composefile rm -vf
-}
-
 function status() {
   docker-compose -p $projectname -f $composefile ps
 }
@@ -45,7 +41,6 @@ function reinitialize_container() {
   stop_container
   delete_container
   init_container
-  start_container
 }
 
 function update() {
@@ -76,9 +71,6 @@ case "$1" in
   remove)
     remove_container
     ;;
-  removeall)
-    removeall_container
-    ;;
   status)
     status
     ;;
@@ -89,3 +81,4 @@ case "$1" in
     echo $"Usage: $0 {start|stop|status|restart|init|reinit|update|logs|remove|removeall}"
     exit 2
 esac
+
