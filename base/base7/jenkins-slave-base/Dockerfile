@@ -7,7 +7,7 @@ ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
 ENV mvn33version 3.3.9
-ENV swarmversion 1.26
+ENV swarmversion 2.1
 ENV appuser jenkins
 ENV portoffset 91
 ENV datadir /var/data
@@ -169,12 +169,6 @@ COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/Sonargraph
 # Add download settings xml script
 COPY configs/download_settingsxml.sh ${jenkinshome}/_scripts/download_settingsxml.sh
 
-# Add security limits for jenkins user
-RUN echo "jenkins	soft nproc	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	hard nproc	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	soft nofile	10000" >> /etc/security/limits.conf \
-	&& echo "jenkins	hard nofile	10000" >> /etc/security/limits.conf
-
 # Chown contents of home directory
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}
 
@@ -188,4 +182,4 @@ RUN wget -qO- "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=mirror
     && oc version
 
 # Start Slave
-CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
+CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"

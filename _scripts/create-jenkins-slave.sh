@@ -24,7 +24,6 @@ android_memory_limit=20g
 declare -A execount
 execount[was85]=1
 execount[java]=1
-execount[wmb]=1
 execount[nodejs]=1
 execount[android]=1
 execount[sonargraph]=5
