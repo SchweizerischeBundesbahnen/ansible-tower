@@ -3,8 +3,8 @@ mkdir -p ${jenkinshome}/buildtools \
 	&& cd ${jenkinshome}/buildtools \
 	&& wget -qO- ${filerurl}/android-sdk.tar.gz | tar xfz - \
 	&& cd ${jenkinshome}/buildtools/android-sdk-linux \
-        && wget -q ${filerurl}/android-sdk-update.sh -O android-sdk-update.sh \
-        && chmod +x ./android-sdk-update.sh \
+    && wget -q https://code.sbb.ch/projects/KD_WZU/repos/wzu-docker/browse/base/base7/androidsdk/configs/android-sdk-update.sh?raw -O android-sdk-update.sh \
+    && chmod +x ./android-sdk-update.sh \
 
 # Update android sdk
 export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux JAVA_HOME=/opt/jdk && PATH=$PATH:/opt/jdk/bin && ${jenkinshome}/buildtools/android-sdk-linux/android-sdk-update.sh
