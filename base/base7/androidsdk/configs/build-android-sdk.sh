@@ -1,4 +1,4 @@
-# Get android sdk
+# Get android sdk, definition from develop of wzu-docker
 mkdir -p ${jenkinshome}/buildtools \
 	&& cd ${jenkinshome}/buildtools \
 	&& wget -qO- ${filerurl}/android-sdk.tar.gz | tar xfz - \
