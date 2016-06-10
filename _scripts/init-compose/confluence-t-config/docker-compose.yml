@@ -1,5 +1,5 @@
 confluence:
-  image: registry.sbb.ch/kd_wzu/confluence:latest
+  image: registry.sbb.ch/kd_wzu/confluence:WZU-4688-Confluence-5.10
   volumes_from:
         - confluence_t_FData
   environment:
