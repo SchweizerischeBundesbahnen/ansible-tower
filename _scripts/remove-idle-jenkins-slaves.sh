@@ -9,7 +9,7 @@
 master=$1
 
 # default definition of old
-old=" days"
+timethreshold=$2
 
 
 function usage() {
@@ -18,33 +18,28 @@ function usage() {
 }
 
 # check required argument
-if [ -z $master ]; then
+if [ -z $master ] || [ -z $timethreshold ]; then
         usage
 fi
-
-# optional argument
-if [ $# -eq 2 ]; then
-        old=${2}
-fi
-
 
 
 # list of all old containers
 # exclude sonargraph container from list
-OLD_CONTAINERS=`sudo docker ps | grep "$old" | grep -v "sonargraph" | grep "jenkins-slave" | awk '{print $13}'`
+ACTIVEJENKINSSLAVES=`sudo docker ps --format "{{.ID}}#{{.Names}}#{{.Ports}}#{{.RunningFor}}" | grep "jenkins-slave" | grep "hours" | sed 's/ hours//g'`
 
-for container in $OLD_CONTAINERS; do
-
-  #echo "processing: $container"
-  
-  # check if busy
-  idle=`curl -s --data-urlencode script@idle_slaves.groovy $master/scriptText --user fsvctip:sommer11 |  grep ${container:8: -11} | wc -l`
-  if [ "$idle" == "1" ]; then 
-    container_id=`sudo docker ps | grep $container | awk '{print $1}'`
-    echo "stopping container with id=$container_id"
-
-    sudo docker kill $container_id
-    sudo docker rm $container_id
-  fi
-
+for container in $ACTIVEJENKINSSLAVES; do
+    time=`echo ${container} | sed 's/#/ /g' | awk '{print $4}'`
+    echo "Checking Container ${container}"
+    if (( "$time" > $timethreshold )); then 
+        echo "Container ${container} is ${time} hours old and exceeds timethreshold of ${timethreshold} hours, try to remove..."
+        # check if busy
+        port=`echo ${container} | sed 's/#/ /g' | awk '{print $3}'`
+        idle=`curl -s --data-urlencode script@idle_slaves.groovy $master/scriptText --user fsvctip:sommer11 |  grep ${port:8: -11} | wc -l`
+        if [ "$idle" == "1" ]; then 
+            container_id=`sudo docker ps | grep $port | awk '{print $1}'`
+            echo "Stopping container with id=$container_id"
+            sudo docker kill $container_id
+            sudo docker rm $container_id
+        fi
+    fi
 done

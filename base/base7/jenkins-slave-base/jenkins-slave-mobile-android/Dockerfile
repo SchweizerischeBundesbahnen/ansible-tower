@@ -7,7 +7,7 @@ ENV labels "android"
 ENV ANDROID_HOME ${jenkinshome}/buildtools/android-sdk-linux
 
 # Install qemu and kvm
-RUN yum install -q qemu-kvm qemu-kvm-tools -y && yum clean all -q
+RUN yum install -q qemu-kvm qemu-kvm-tools npm -y && yum clean all -q
 
 # Get android sdk and Gradle from wzufiler
 RUN cd ${jenkinshome}/buildtools \
@@ -27,7 +27,7 @@ RUN cd ${jenkinshome}/buildtools \
 	&& chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Add gradle.properties
-COPY configs/* ${jenkinshome}/.codequality/
+COPY configs/* ${jenkinshome}/.gradle/
 
 # Add ANDROID_HOME to environment 
 RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${jenkinshome}/env.sh
@@ -36,13 +36,13 @@ RUN echo "export ANDROID_HOME=${jenkinshome}/buildtools/android-sdk-linux" >> ${
 RUN ln -sf `find ${jenkinshome}/buildtools/android-sdk-linux -name zipalign | tail -n 1` ${jenkinshome}/buildtools/android-sdk-linux/tools/zipalign
 
 # Run jenkins
-CMD echo "set -e; export jenkinshome=${jenkinshome} master=${master}" > ${jenkinshome}/.codequality/android2.sh && cat ${jenkinshome}/.codequality/android.sh >> ${jenkinshome}/.codequality/android2.sh && chown ${appuser}:${appuser} "${jenkinshome}/.codequality/android2.sh" && chmod u+x "${jenkinshome}/.codequality/android2.sh" && su - ${appuser} -c "${jenkinshome}/.codequality/android2.sh" \
+CMD \
 # / OTM-63 Build mit Android Emulator funktioniert nicht\
-         && su - ${appuser} -c "source ${jenkinshome}/env.sh ${jenkinshome}/buildtools/android-sdk-linux/tools/android list target \
+         su - ${appuser} -c "source ${jenkinshome}/env.sh ${jenkinshome}/buildtools/android-sdk-linux/tools/android list target \
 		 && ( echo no | ${jenkinshome}/buildtools/android-sdk-linux/tools/android create avd -f -a -c 512M -s WVGA800 -n hudson_de-CH_160_WVGA_android-19_x86 -t android-19 --abi x86) \
 		 && ${jenkinshome}/buildtools/android-sdk-linux/platform-tools/adb start-server \
 		 && (${jenkinshome}/buildtools/android-sdk-linux/tools/emulator-x86 -no-boot-anim -ports 5608,5609 -prop persist.sys.language=de -prop persist.sys.country=CH -avd hudson_de-CH_160_WVGA_android-19_x86 -no-snapshot-load -no-snapshot-save -no-window -noaudio -qemu -m 2047 -enable-kvm &)"\
 		 && sleep 30 \
 # \ OTM-63 Build mit Android Emulator funktioniert nicht\
-         && echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
+         && echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"
 

@@ -2,7 +2,7 @@
 FROM registry.sbb.ch/kd_wzu/base7
 MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
-#Environment variables
+# Environment variables
 ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
@@ -25,11 +25,11 @@ ENV orajdk632bitfile oracle-jdk-6-32b.tar.gz
 ENV orajdk664bitfile oracle-jdk-6.tar.gz
 ENV orajdk732bitfile jdk-7u80-linux-i586.tar.gz
 ENV orajdk764bitfile jdk-7u80-linux-x64.tar.gz
-ENV orajdk832bitfile jdk-8u74-linux-i586.tar.gz
-ENV orajdk864bitfile jdk-8u74-linux-x64.tar.gz
+ENV orajdk832bitfile jdk-8u92-linux-i586.tar.gz
+ENV orajdk864bitfile jdk-8u92-linux-x64.tar.gz
 
 # Install dev tools
-RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip -y && yum clean all -q
+RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip rpm-build -y && yum clean all -q
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp,_scripts} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
@@ -182,4 +182,4 @@ RUN wget -qO- "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=mirror
     && oc version
 
 # Start Slave
-CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive"
+CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"

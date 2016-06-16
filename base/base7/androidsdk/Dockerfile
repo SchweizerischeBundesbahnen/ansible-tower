@@ -15,5 +15,5 @@ COPY configs/build-android-sdk.sh /root/
 # add the script for upload m2 repo
 COPY configs/upload_android_m2repo.sh /root/
 
-# build the rpm on container start
+# update the android archive in svn on container start (configuration is taken from develop of wzu-docker)
 CMD /bin/bash ~/build-android-sdk.sh; /bin/bash ~/upload_android_m2repo.sh /output/buildtools/android-sdk-linux hosted.android.releases

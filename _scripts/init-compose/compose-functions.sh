@@ -6,23 +6,27 @@
 PATH=$PATH:/usr/local/bin
 
 function start_container() {
-    docker-compose -f $composefile -p $projectname start
+  docker-compose -f $composefile -p $projectname up -d --no-recreate
 }
 
 function init_container() {
-    docker-compose -f $composefile -p $projectname up -d
+  docker-compose -f $composefile -p $projectname up -d
 }
 
 function stop_container() {
-	docker-compose -f $composefile -p $projectname stop
+  docker-compose -f $composefile -p $projectname stop
 }
 
 function delete_container() {
-	docker-compose -f $composefile -p $projectname rm
+  docker-compose -f $composefile -p $projectname rm
 }
 
 function pull_container() {
-    docker-compose -f $composefile -p $projectname pull
+  docker-compose -f $composefile -p $projectname pull
+}
+
+function remove_container() {
+  docker-compose -p $projectname -f $composefile rm -f
 }
 
 function status() {
@@ -37,7 +41,6 @@ function reinitialize_container() {
   stop_container
   delete_container
   init_container
-  start_container
 }
 
 function update() {
@@ -61,6 +64,13 @@ case "$1" in
   update)
    update
    ;;
+  restart)
+   stop_container
+   start_container
+   ;;
+  remove)
+    remove_container
+    ;;
   status)
     status
     ;;
@@ -68,6 +78,7 @@ case "$1" in
     logs
     ;;
   *)
-    echo $"Usage: $0 {start|stop|status|init|reinit|update|logs}"
+    echo $"Usage: $0 {start|stop|status|restart|init|reinit|update|logs|remove|removeall}"
     exit 2
 esac
+

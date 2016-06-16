@@ -24,7 +24,6 @@ android_memory_limit=20g
 declare -A execount
 execount[was85]=1
 execount[java]=1
-execount[wmb]=1
 execount[nodejs]=1
 execount[android]=1
 execount[sonargraph]=5
@@ -38,11 +37,12 @@ slavename=${imagename:14}-$randomint-`echo $HOSTNAME | cut -d"." -f1`-$tag
 
 
 function checkVarnish() {
-  local _varnishCount=`sudo docker ps | grep varnish | wc -l`
-  if [ ${_varnishCount} -lt 1 ]; then
-        echo "No varnish running! Starting jenkins slave without repo link"
-	unset REPO_LINK
-  fi
+  VARNISHNAME=repocache
+  sudo ./check-docker-container.sh ${VARNISHNAME}
+	if [ $? -gt 0 ]; then
+    echo "No varnish running! Starting jenkins slave without repo link"
+    unset REPO_LINK
+	fi
 }
 
 

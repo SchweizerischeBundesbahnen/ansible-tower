@@ -5,10 +5,9 @@ numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 
 # how many slaves do we expect on hardware
 declare -A vmcountHW
-vmcountHW[was85]=16
-vmcountHW[java]=6
-vmcountHW[wmb]=2
-vmcountHW[nodejs]=4
+vmcountHW[was85]=12
+vmcountHW[java]=4
+vmcountHW[nodejs]=2
 vmcountHW[android]=2
 vmcountHW[sonargraph]=1
 
@@ -16,7 +15,6 @@ vmcountHW[sonargraph]=1
 declare -A vmcountVM
 vmcountVM[was85]=1
 vmcountVW[java]=1
-vmcountVM[wmb]=1
 vmcountVM[nodejs]=1
 vmcountVM[android]=1
 vmcountVM[sonargraph]=0
@@ -25,22 +23,23 @@ vmcountVM[sonargraph]=0
 declare -A labelMap
 labelMap[was85]="jenkins-slave-was85"
 labelMap[java]="jenkins-slave-base"
-labelMap[wmb]="jenkins-slave-wmb"
 labelMap[nodejs]="jenkins-slave-js"
 labelMap[android]="jenkins-slave-mobile-android"
 labelMap[sonargraph]="jenkins-slave-was85"
 
 
 function checkOrStartVarnish() {
-  local _varnishCount=`sudo docker ps | grep varnish | wc -l`
-  if [ ${_varnishCount} -lt 1 ]; then
-	echo "No varnish running! Starting varnish container"
-	sudo docker run -p 80:80 --restart=always -d --name repocache -v /etc/wzu/jenkins-varnish-config:/data/varnish --env 'VCL_CONFIG=/data/varnish/repo.sbb.ch.vcl' --env 'CACHE_SIZE=20g' registry.sbb.ch/kd_wzu/varnish
-	if [ $? -ne 0 ]; then
-		echo "Starting varnish container failed!"
-		exit -1
-	fi 
-  fi
+  VARNISHNAME=repocache
+  sudo ./check-docker-container.sh ${VARNISHNAME}
+
+	if [ $? -gt 2 ]; then
+	  sudo docker rm ${VARNISHNAME}
+	fi
+
+	if [ $? -gt 1 ]; then
+		sudo docker run -p 80:80 --restart=always -d --name ${VARNISHNAME} -v /etc/wzu/jenkins-varnish-config:/data/varnish --env 'VCL_CONFIG=/data/varnish/repo.sbb.ch.vcl' --env 'CACHE_SIZE=20g' registry.sbb.ch/kd_wzu/varnish
+	fi
+
 }
 
 

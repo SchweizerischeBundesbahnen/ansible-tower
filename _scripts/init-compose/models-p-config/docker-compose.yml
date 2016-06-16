@@ -1,0 +1,12 @@
+models:
+  image: registry.sbb.ch/kd_wzu/models:latest
+  environment:
+    HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+    https_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
+  volumes:
+    - models_p_FData:/var/www/models
+  ports:
+    - 8170:8170
+  restart: always
