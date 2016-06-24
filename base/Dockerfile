@@ -18,7 +18,7 @@ ENV keystore keystore-20150722
 ENV JAVA_HOME /opt/jdk
 
 # Install packages
-RUN yum install -q http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm -y \
+RUN yum install -q http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-7.noarch.rpm -y \
 	&& yum update -y \
 	&& yum -y install wget git subversion curl tar zip unzip sudo bzip2 \
 	&& yum clean all -q
