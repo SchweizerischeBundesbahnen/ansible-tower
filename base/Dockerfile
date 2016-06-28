@@ -12,7 +12,7 @@ ENV filerurl https://${fileruser}:${filerpassword}@svn.sbb.ch/svn/wzu
 ENV telesec_ssl ${filerurl}/telesec_serverpass_ca_1.der
 
 # wzu keystore
-ENV keystore keystore-20150722
+ENV keystore keystore-20160626
 
 # The wzu user name used for ssh debug sessions to the running container
 ENV JAVA_HOME /opt/jdk
