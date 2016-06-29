@@ -35,7 +35,7 @@ echo "Start if list of images to Build to push to $REGISTRY"
 echo "-------------------------------------"
 echo ""
 echo ""
-FILELIST=`find base -type d -print | grep -v -E ".git|_doc|_scripts|configs"`
+FILELIST=`find . -type d -print | grep -v -E ".git|_doc|_scripts|configs"`
 echo "$FILELIST"
 echo ""
 echo ""
