@@ -72,9 +72,9 @@ do
     echo ""
     
     DOCKERFILE=$TOBUILD/Dockerfile
-    SEARCH=`grep "FROM registry.sbb.ch/kd_wzu" ${DOCKERFILE} | cat`
+    echo "Dockerfile: ${DOCKERFILE}"
     if [ ! -z $SEARCH ]; then
-        echo "Dockerfile: ${DOCKERFILE}"
+        SEARCH=`grep "FROM registry.sbb.ch/kd_wzu" ${DOCKERFILE} | cat`
         echo "Old from: ${SEARCH}"
         sed -ri "s#${SEARCH}#${SEARCH}:${TAG}#g" ${DOCKERFILE}
         SEARCH=`grep "FROM ${REGISTRY}" ${DOCKERFILE}`
