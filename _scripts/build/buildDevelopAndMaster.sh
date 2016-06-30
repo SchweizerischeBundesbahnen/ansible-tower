@@ -1,5 +1,7 @@
 #!/bin/bash
-#
+
+set -e #fail fast
+set -x #echo everything
 
 GIT_BRANCH=$1
 git checkout "${GIT_BRANCH}"
@@ -9,7 +11,14 @@ NOCACHE=$2
 GIT_COMMIT_BEFORE_LAST=`git log --pretty=format:"%H" |head -2 | tail -1`
 echo "GIT_COMMIT_BEFORE_LAST=${GIT_COMMIT_BEFORE_LAST}"
 
-TAG_SUFFIX="-dev"
+if [[ $GIT_BRANCH =~ .*[/]develop.* ]]; then
+    TAG_SUFFIX="-dev"
+elif [[ $GIT_BRANCH =~ .[/]*master.* ]]; then
+    TAG_SUFFIX=""
+else
+    echo "This script should only be applied to develop and master"
+    exit -1
+fi
 LATEST_TAG_NAME="latest${TAG_SUFFIX}"
 
 # Finding the pull request based on the commit via Stash
