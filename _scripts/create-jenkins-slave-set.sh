@@ -5,27 +5,18 @@ numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 
 # how many slaves do we expect on hardware
 declare -A vmcountHW
-vmcountHW[was85]=12
-vmcountHW[java]=4
-vmcountHW[nodejs]=2
+vmcountHW[java]=20
 vmcountHW[android]=2
-vmcountHW[sonargraph]=1
 
 # how many slaves do we expect on vm
 declare -A vmcountVM
-vmcountVM[was85]=1
 vmcountVW[java]=1
-vmcountVM[nodejs]=1
 vmcountVM[android]=1
-vmcountVM[sonargraph]=0
 
 # which image belongs to which label
 declare -A labelMap
-labelMap[was85]="jenkins-slave-was85"
 labelMap[java]="jenkins-slave-base"
-labelMap[nodejs]="jenkins-slave-js"
 labelMap[android]="jenkins-slave-mobile-android"
-labelMap[sonargraph]="jenkins-slave-was85"
 
 
 function checkOrStartVarnish() {
@@ -49,7 +40,7 @@ if [ ! -z $master ]
 then
 	# start a varnish if none running
 	checkOrStartVarnish
-	
+
 	# get current running count
         running=`curl -s --data-urlencode script@running_slaves.groovy $master/scriptText --user fsvctip:sommer11`
         declare -A runningCount
@@ -76,7 +67,7 @@ then
                 done
 	fi
 
-		
+
 	# compare running with expected and start slaves if required
 	for label in "${!vmcount[@]}"
 	do
@@ -87,7 +78,7 @@ then
 			while [ $count -lt $required ]
 			do
 				echo "starting $label with ${labelMap[$label]}"
-				./create-jenkins-slave.sh registry.sbb.ch/kd_wzu ${labelMap[$label]} latest $master $label
+				./create-jenkins-slave.sh registry.sbb.ch/kd_wzu ${labelMap[$label]} latest $master "$label"
 				if [ $? -ne 0 ]; then
                                         echo "BUILD failed! Image=${labelMap[$label]}"
                                         exit -1

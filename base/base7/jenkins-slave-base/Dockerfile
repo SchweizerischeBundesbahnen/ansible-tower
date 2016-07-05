@@ -17,8 +17,8 @@ ENV ciuser overridethis
 ENV cipassword overridethis
 ENV executors 1
 ENV settingsxmlurl ${filerurl}/ci-admin-files/settings.xml
-ENV labels swarm
-ENV slavename $labels
+ENV labels "swarm was85 java nodejs"
+ENV slavename swarm
 ENV externalport 12345
 ENV host example.sbb.ch
 ENV orajdk632bitfile oracle-jdk-6-32b.tar.gz
@@ -27,15 +27,19 @@ ENV orajdk732bitfile jdk-7u80-linux-i586.tar.gz
 ENV orajdk764bitfile jdk-7u80-linux-x64.tar.gz
 ENV orajdk832bitfile jdk-8u92-linux-i586.tar.gz
 ENV orajdk864bitfile jdk-8u92-linux-x64.tar.gz
+ENV was8version "8.5-OM08"
+ENV nodejs_version "v5.9.0"
+ENV installer_url "https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh"
 
 # Install dev tools
-RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip rpm-build -y && yum clean all -q
+RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip rpm-build npm rubygems -y && yum clean all -q
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp,_scripts} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
 
 # Adding Jenkins SSH Keys for access to Stash: https://issues.sbb.ch/browse/MWESERVICE-6123
 COPY configs/id_rsa* ${jenkinshome}/.ssh/
+
 RUN chown -R ${appuser}:${appuser} ${jenkinshome}/.ssh && chmod 700 ${jenkinshome}/.ssh && chmod 600 ${jenkinshome}/.ssh/*
 
 # Download Ant 1
@@ -169,9 +173,6 @@ COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/Sonargraph
 # Add download settings xml script
 COPY configs/download_settingsxml.sh ${jenkinshome}/_scripts/download_settingsxml.sh
 
-# Chown contents of home directory
-RUN chown -R ${appuser}:${appuser} ${jenkinshome}
-
 # Install ansible-tower-cli (@see https://github.com/ansible/tower-cli)
 RUN pip install ansible-tower-cli
 
@@ -180,6 +181,51 @@ RUN wget -qO- "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=mirror
     && rpm -ivh oc.rpm \
     && rm -f oc.rpm \
     && oc version
+
+# Download and extract WAS 85 and create profile
+RUN cd /opt \
+        &&  wget -qO- ${filerurl}/was-${was8version}.tar.gz | tar xfz - \
+        && ln -s /opt/was85 ${jenkinshome}/buildtools/was85 \
+        && /bin/bash ${jenkinshome}/buildtools/was85/profiles/default/bin/versionInfo.sh \
+		&& chown -R ${appuser}:${appuser} ${jenkinshome} /opt/was85*
+
+# Link WAS JDK for Jenkins
+RUN cd ${jenkinshome}/buildtools \
+        && ln -s ${jenkinshome}/buildtools/was85/java_1.7_64 ibm-jdk-was85 \
+		&& ${jenkinshome}/buildtools/ibm-jdk-was85/bin/java -version
+
+# Link custom keystore
+RUN  cd ${jenkinshome}/buildtools \
+	&& rm ./ibm-jdk-was85/jre/lib/security/cacerts \
+	&& ln -s /opt/jdk/jre/lib/security/cacerts ./ibm-jdk-was85/jre/lib/security/cacerts \
+	&& ls -l ./ibm-jdk-was85/jre/lib/security/cacerts
+
+# Create environment file
+RUN echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
+
+# Modify IBM JDK security settings
+COPY java.security /opt/was85/java_1.7_64/jre/lib/security/java.security
+
+# Install nodejs
+RUN curl -o- ${installer_url} | bash \
+	&& source /root/.bashrc \
+	&& nvm install ${nodejs_version} \
+	&& nvm alias default ${nodejs_version} \
+	&& cp -r /root/.nvm/versions/node/${nodejs_version}/{bin,lib,share} /usr/local \
+	&& rm -f /bin/node \
+	&& ln -s /usr/local/bin/node /bin/node
+
+# Install packages for build
+RUN npm install bower grunt grunt-cli gulp --silent && gem install bundle
+
+# Add node binaries to path
+RUN echo 'export PATH=$PATH:/node_modules/.bin' >> ${jenkinshome}/env.sh
+
+# Set npm-registry to SBB proxy manually (https://issues.sbb.ch/browse/WZU-4080,https://issues.sbb.ch/browse/MWESERVICE-8786)
+RUN echo 'registry = http://repo.sbb.ch/content/groups/mirror.npm' >> ${jenkinshome}/.npmrc
+
+# Chown jenkinshome
+RUN chown -R ${appuser}:${appuser} ${jenkinshome}
 
 # Start Slave
 CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"
