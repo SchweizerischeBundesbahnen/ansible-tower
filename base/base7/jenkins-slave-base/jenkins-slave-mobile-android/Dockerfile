@@ -3,7 +3,7 @@ FROM registry.sbb.ch/kd_wzu/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV gradle2version 2.5
-ENV labels "android"
+ENV labels "android java"
 ENV ANDROID_HOME ${jenkinshome}/buildtools/android-sdk-linux
 
 # Install qemu and kvm

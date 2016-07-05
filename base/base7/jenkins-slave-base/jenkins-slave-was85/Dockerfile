@@ -2,7 +2,7 @@
 FROM registry.sbb.ch/kd_wzu/jenkins-slave-base
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
-ENV labels "was85"
+ENV labels "was85 java"
 ENV was8version "8.5-OM08"
 
 # Download and extract WAS 85 and create profile
