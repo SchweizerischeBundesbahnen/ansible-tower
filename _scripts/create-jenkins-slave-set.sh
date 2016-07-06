@@ -7,16 +7,19 @@ numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 declare -A vmcountHW
 vmcountHW[java]=20
 vmcountHW[android]=2
+vmcountHW[sonargraph]=1
 
 # how many slaves do we expect on vm
 declare -A vmcountVM
 vmcountVW[java]=1
 vmcountVM[android]=1
+vmcountVM[sonargraph]=0
 
 # which image belongs to which label
 declare -A labelMap
 labelMap[java]="jenkins-slave-base"
 labelMap[android]="jenkins-slave-mobile-android"
+labelMap[sonargraph]="jenkins-slave-base"
 
 
 function checkOrStartVarnish() {

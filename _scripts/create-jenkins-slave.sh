@@ -22,9 +22,7 @@ android_memory_limit=20g
 
 # how many executors per kind of slave
 declare -A execount
-execount[was85]=1
 execount[java]=1
-execount[nodejs]=1
 execount[android]=1
 execount[sonargraph]=5
 
@@ -58,11 +56,11 @@ function check_reserved() {
 }
 
 function create_android_container() {
-	sudo docker run --privileged -d ${REPO_LINK} -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
+	sudo docker run --privileged -d ${REPO_LINK} -p $randomint:$randomint --memory=$android_memory_limit -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
 
 function create_privileged_container() {
-	sudo docker run --privileged -d ${REPO_LINK} -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag} 
+	sudo docker run --privileged -d ${REPO_LINK} -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename  -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
 
 function create_container() {
@@ -71,7 +69,7 @@ function create_container() {
 		containername=$labels-$randomint-$master_hostname
 		slavename=$labels-$randomint-`echo $HOSTNAME | cut -d"." -f1`
 	fi
-        sudo docker run -d ${REPO_LINK} -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e labels=$labels -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
+        sudo docker run -d ${REPO_LINK} -p $randomint:$randomint -e master=$master -e executors=${execount["$labels"]} -e ciuser=fsvctip -e cipassword=sommer11 -e slavename=$slavename -e externalport=$randomint -e host=$HOSTNAME -e additional_args="${additional_args}" --name $containername ${registry}/${imagename}:${tag}
 }
 
 function usage() {
