@@ -11,7 +11,7 @@ _term() {
 
 # Load global application env Parameters
 function getGlobalEnvParams {
-	export CATALINA_OPTS="${CATALINA_OPTS} -XX:MaxPermSize=769M"
+	export CATALINA_OPTS="${CATALINA_OPTS}"
 }
 
 # Download env file
