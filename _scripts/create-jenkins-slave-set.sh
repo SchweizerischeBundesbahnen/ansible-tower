@@ -19,7 +19,7 @@ vmcountVM[sonargraph]=0
 declare -A labelMap
 labelMap[java]="jenkins-slave-base"
 labelMap[android]="jenkins-slave-mobile-android"
-labelMap[sonargraph]="jenkins-slave-base"
+labelMap[sonargraph]="jenkins-slave-sonar"
 
 
 function checkOrStartVarnish() {
