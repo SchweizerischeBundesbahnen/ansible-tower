@@ -1,7 +1,7 @@
 confluence:
   image: registry.sbb.ch/kd_wzu/confluence:latest
-  volumes_from:
-        - confluence_t_FData
+  volumes:
+        - confluence_t_FData:/var/data
   environment:
     APP_URL: confluence-t.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
@@ -18,9 +18,11 @@ confluence:
 mysql:
   image: registry.sbb.ch/kd_wzu/mysql:5.6
   volumes:
-   - /etc/wzu-docker/base/base8/confluence/configs/custom_mysql.cnf:/etc/mysql/conf.d/custom.cnf
-  volumes_from:
-    - confluence_t_DBData
+   - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
+   - confluence_t_DBData:/var/lib/mysql
   environment:
     - MYSQL_ROOT_PASSWORD=verysecret
     - MYSQL_DATABASE=confluence
+  ports:
+    - 127.0.0.1:3040:3306
+  restart: always
