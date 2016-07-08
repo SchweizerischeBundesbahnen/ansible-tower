@@ -17,7 +17,7 @@ vmcountVM[sonargraph]=0
 
 # which image belongs to which label
 declare -A labelMap
-labelMap[java]="jenkins-slave-base"
+labelMap[java]="jenkins-slave-java"
 labelMap[android]="jenkins-slave-android"
 labelMap[sonargraph]="jenkins-slave-sonargraph"
 
