@@ -164,12 +164,6 @@ RUN  cd ${jenkinshome}/buildtools \
 	&& rm ./oracle-jdk-8/jre/lib/security/cacerts \
 	&& ln -s /opt/jdk/jre/lib/security/cacerts ./oracle-jdk-8/jre/lib/security/cacerts
 
-# Create Sonargraph Directories
-RUN mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect/
-
-# Add sonargraph license, see https://issues.sbb.ch/browse/MVBUD-1248 and https://www.hello2morrow.com/doc/sg7/ReportGeneration-Maven.html
-COPY configs/SonargraphArchitect.license ${jenkinshome}/.hello2morrow/SonargraphArchitect/SonargraphArchitect.license
-
 # Add download settings xml script
 COPY configs/download_settingsxml.sh ${jenkinshome}/_scripts/download_settingsxml.sh
 
@@ -204,7 +198,7 @@ RUN  cd ${jenkinshome}/buildtools \
 RUN echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 
 # Modify IBM JDK security settings
-COPY java.security /opt/was85/java_1.7_64/jre/lib/security/java.security
+COPY java.security.was85 /opt/was85/java_1.7_64/jre/lib/security/java.security
 
 # Install nodejs
 RUN curl -o- ${installer_url} | bash \
