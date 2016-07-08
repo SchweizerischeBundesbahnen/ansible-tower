@@ -38,7 +38,7 @@ if [ "$1" = 'ansible-tower' ]; then
         #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
         echo -e "[http]\n\tsslVerify = false"> ${DATA}/awx/.gitconfig && ${DATA}/awx/.gitconfig
     fi
-    chown -R awx:awx ${DATA}/awx ${SETTINGS}
+    chown -R awx:awx ${DATA}/awx ${SETTINGS} ${LOGS}
     chown -R postgres:104 ${DATA}/postgres
     
     

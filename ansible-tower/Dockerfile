@@ -6,6 +6,7 @@ MAINTAINER sebastian.graf@sbb.ch
 
 ENV ANSIBLE_TOWER_VER 2.4.5
 ENV DATA /external/data
+ENV LOGS /external/logs
 ENV SETTINGS /external/settings
 ENV GIT_SSL_NO_VERIFY 1
 
@@ -50,14 +51,17 @@ RUN echo "Caring about postgres-database" \
     && echo "Caring about ldap.py" \
     && mv /etc/tower/conf.d/ldap.py /etc/tower/conf.d/ldap.py.bak \
     && ln -sf ${SETTINGS}/ldap.py /etc/tower/conf.d/ldap.py \
-    && ln -sf /proc/1/fd/1 /var/log/apache2/error.log \
-    && ln -sf /proc/1/fd/1 /var/log/apache2/access.log \
-    && ln -sf /proc/1/fd/1 /var/log/apache2/other_vhosts_access.log \
-    && ln -sf /proc/1/fd/1 /var/log/tower/callback_receiver.log \
-    && ln -sf /proc/1/fd/1 /var/log/tower/fact_receiver.log \
-    && ln -sf /proc/1/fd/1 /var/log/tower/socketio_service.log \
-    && ln -sf /proc/1/fd/1 /var/log/tower/task_system.log \
-    && ln -sf /proc/1/fd/1 /var/log/tower/tower.log
+    && echo "Caring about log files" \
+    && mkdir -p ${LOGS}/apache2 \
+    && ln -sf ${LOGS}/apache2/error.log /var/log/apache2/error.log \
+    && ln -sf ${LOGS}/apache2/access.log /var/log/apache2/access.log \
+    && ln -sf ${LOGS}/apache2/other_vhosts_access.log /var/log/apache2/other_vhosts_access.log \
+    && mkdir -p ${LOGS}/tower \
+    && ln -sf ${LOGS}/tower/callback_receiver.log /var/log/tower/callback_receiver.log \
+    && ln -sf ${LOGS}/tower/fact_receiver.log /var/log/tower/fact_receiver.log \
+    && ln -sf ${LOGS}/tower/socketio_service.log /var/log/tower/socketio_service.log \
+    && ln -sf ${LOGS}/tower/task_system.log /var/log/tower/task_system.log \
+    && ln -sf ${LOGS}/tower/tower.log /var/log/tower/tower.log
     
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
