@@ -4,7 +4,7 @@
 # File: create-jenkins-slave.sh
 # Description: create a jenkins Docker slave from the internal Docker repo:
 # - registry (e.g. "registry-t.sbb.ch"
-# - imagename (e.g. "jenkins-slave-mobile-android")
+# - imagename (e.g. "jenkins-slave-android")
 # - tag (e.g "WZU-2994")
 # - master url (e.g. "https://ci.sbb.ch")
 # - labels (e.g. "android")
