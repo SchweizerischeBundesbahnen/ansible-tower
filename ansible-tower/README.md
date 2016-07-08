@@ -9,11 +9,17 @@ Laufen des Ansible-Towers.
 1.1. settings/settings.py
 1.2. settings/certs/domain.crt und settings/certs/domain.key
 1.3. settings/license
-2. awx
+2.1 awx
+2.2 logs/apache-2
+2.3 logs/tower
 
-3. Container erstellen
+3. Container erstellen mit docker-compose
 ```
-# docker run -t -d -p 443:443 -p 8080:8080 -v ~/awx/:/var/lib/awx -v ~/settings:/settings -e SERVER_NAME=localhost --name=ansible-tower registry.sbb.ch/kd_wzu/ansible-tower
+cd /etc/
+git clone https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
+ln -s  /etc/wzu-docker/_scripts/init-compose/compose-init-script.sh /etc/init.d/deploy-t
+chkconfig deploy-t on
+service deploy-t init
 ```
 
 Die Dateien von /settings werden nach /etc/tower kopiert.
