@@ -21,8 +21,6 @@ RUN wget --quiet http://repo.sbb.ch/content/groups/mirror/org/jenkins-ci/main/je
 
 # expose port 8050 for jenkins
 EXPOSE 8050
-# expose port 9050 for jenkins ajp
-EXPOSE 9050
 # expose port for JMX
 EXPOSE 10050
 # expose port for slave communication jnlp
