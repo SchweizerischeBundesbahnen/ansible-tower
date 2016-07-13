@@ -199,7 +199,7 @@ RUN  cd ${jenkinshome}/buildtools \
 RUN echo 'export WAS85RUNTIME=/var/data/jenkins/buildtools/was85' >> ${jenkinshome}/env.sh
 
 # Modify IBM JDK security settings
-COPY java.security.was85 /opt/was85/java_1.7_64/jre/lib/security/java.security
+COPY java.security /opt/was85/java_1.7_64/jre/lib/security/java.security
 
 # Install nodejs
 RUN curl -o- ${installer_url} | bash \
