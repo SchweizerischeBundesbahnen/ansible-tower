@@ -45,5 +45,5 @@ CMD \
 		 && sleep 30 \
  		 && su - ${appuser} -c "source ${jenkinshome}/env.sh ${jenkinshome}/buildtools/android-sdk-linux/tools/adb devices" \
 # \ OTM-63 Build mit Android Emulator funktioniert nicht\
-         && echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"
+         && echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels \"${labels}\" -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"
 
