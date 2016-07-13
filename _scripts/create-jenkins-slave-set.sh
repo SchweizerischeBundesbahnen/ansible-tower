@@ -21,6 +21,10 @@ labelMap[java]="jenkins-slave-java"
 labelMap[android]="jenkins-slave-android"
 labelMap[sonargraph]="jenkins-slave-sonargraph"
 
+declare -A runningCount
+runningCount[java]="0"
+runningCount[android]="0"
+runningCount[sonargraph]="0"
 
 function checkOrStartVarnish() {
   VARNISHNAME=repocache
@@ -46,11 +50,10 @@ then
 
 	# get current running count
         running=`curl -s --data-urlencode script@running_slaves.groovy $master/scriptText --user fsvctip:sommer11`
-        declare -A runningCount
         for line in $running; do
         	#echo $line
-                IFS='=' read -a array <<< "$line"
-                runningCount[${array[0]}]=${array[1]}
+          IFS='=' read -a array <<< "$line"
+          runningCount[${array[0]}]=${array[1]}
 	done
 
 	# Hardware or virtualmachine?
