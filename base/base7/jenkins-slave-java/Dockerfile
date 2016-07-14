@@ -227,4 +227,4 @@ USER jenkins
 CMD echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh \
   && ${jenkinshome}/run.sh \
   && source ${jenkinshome}/env.sh \
-  && /opt/jdk/bin/java  -Djava.net.useSystemProxies=true -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels "${labels}" -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId
+  && /opt/jdk/bin/java ${JAVA_OPTS} -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels "${labels}" -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId
