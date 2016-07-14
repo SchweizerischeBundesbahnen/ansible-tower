@@ -50,21 +50,25 @@ RUN cd ${jenkinshome}/buildtools \
 # Download Maven 3.0
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn30version}/binaries/apache-maven-${mvn30version}-bin.tar.gz" | tar xfz - \
+	&& ln -s apache-maven-3.0* apache-maven-3.0 \
 	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.1
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn31version}/binaries/apache-maven-${mvn31version}-bin.tar.gz" | tar xfz - \
+	&& ln -s apache-maven-3.1* apache-maven-3.1 \
 	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.2
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn32version}/binaries/apache-maven-${mvn32version}-bin.tar.gz" | tar xfz - \
+	&& ln -s apache-maven-3.2* apache-maven-3.2 \
 	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.3
 RUN cd ${jenkinshome}/buildtools \
         && wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn33version}/binaries/apache-maven-${mvn33version}-bin.tar.gz" | tar xfz - \
+        && ln -s apache-maven-3.3* apache-maven-3.3 \
         && rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Create symlink for m2
