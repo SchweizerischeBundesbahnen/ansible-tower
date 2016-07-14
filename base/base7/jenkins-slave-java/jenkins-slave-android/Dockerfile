@@ -6,6 +6,8 @@ ENV gradle2version 2.5
 ENV labels "android java"
 ENV ANDROID_HOME ${jenkinshome}/buildtools/android-sdk-linux
 
+USER root
+
 # Install qemu and kvm
 RUN yum install -q qemu-kvm qemu-kvm-tools npm -y && yum clean all -q
 
