@@ -29,7 +29,10 @@ ENV orajdk832bitfile jdk-8u92-linux-i586.tar.gz
 ENV orajdk864bitfile jdk-8u92-linux-x64.tar.gz
 
 # Install dev tools
-RUN yum install -q python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip rpm-build -y && yum clean all -q
+RUN yum install -q python-requests-kerberos python-python-devel python-kerberos python-pip krb5-devel krb5-libs krb5-workstation ansible python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip rpm-build -y && yum clean all -q
+
+# Install Ansible Libraries for Windows Support WZU-4762
+RUN pip install "pywinrm>=0.1.1"
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp,_scripts} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
