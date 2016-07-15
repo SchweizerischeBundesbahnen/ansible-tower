@@ -34,6 +34,9 @@ RUN yum install -q python-requests-kerberos python-python-devel python-kerberos 
 # Install Ansible Libraries for Windows Support WZU-4762
 RUN pip install "pywinrm>=0.1.1"
 
+# Add kerberos config
+COPY configs/krb5.conf /etc/krb5.conf
+
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp,_scripts} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
 
