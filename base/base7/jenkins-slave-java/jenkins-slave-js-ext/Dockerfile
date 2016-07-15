@@ -1,6 +1,8 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM registry.sbb.ch/kd_wzu/jenkins-slave-js
+FROM registry.sbb.ch/kd_wzu/jenkins-slave-java
 MAINTAINER Igor Masen <igor.masen@sbb.ch>
+
+USER root
 
 # Install js binaries for build
 RUN yum update -q -y && yum install -q gcc freetype fontconfig GraphicsMagick  -y && yum clean all -q 
