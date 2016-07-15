@@ -6,7 +6,7 @@ MAINTAINER igor.masen@sbb.ch
 ENV datadir /var/data
 ENV appname jenkins-master
 ENV appuser jenkins
-ENV appversion 1.651.3
+ENV appversion 2.7.1
 ENV offset 50
 ENV JAVA_HOME /opt/jdk
 ENV jenkinshome ${datadir}/${appname}
@@ -21,8 +21,6 @@ RUN wget --quiet http://repo.sbb.ch/content/groups/mirror/org/jenkins-ci/main/je
 
 # expose port 8050 for jenkins
 EXPOSE 8050
-# expose port 9050 for jenkins ajp
-EXPOSE 9050
 # expose port for JMX
 EXPOSE 10050
 # expose port for slave communication jnlp
