@@ -6,6 +6,7 @@ set -e
 repodir="/etc/wzu-docker"
 projectname=`basename $0`
 composefile="${repodir}/_scripts/init-compose/${projectname}-config/docker-compose.yml"
+export HOSTNAME=`hostname`
 
 source ${repodir}/_scripts/init-compose/compose-functions.sh
 
