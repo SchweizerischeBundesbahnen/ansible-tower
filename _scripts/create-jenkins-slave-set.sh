@@ -3,15 +3,15 @@
 master=$1
 numcpus=`cat /proc/cpuinfo | grep processor | wc -l`
 
-# how many slaves do we expect on hardware
+# how many slaves do we expect on hardware (PROD)
 declare -A vmcountHW
 vmcountHW["java"]=20
 vmcountHW["android"]=2
 vmcountHW["sonargraph"]=1
 
-# how many slaves do we expect on vm
+# how many slaves do we expect on vm (Testumgebung)
 declare -A vmcountVM
-vmcountVM["java"]=2
+vmcountVM["java"]=4
 vmcountVM["android"]=0
 vmcountVM["sonargraph"]=0
 
