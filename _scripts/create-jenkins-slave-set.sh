@@ -11,7 +11,7 @@ vmcountHW["sonargraph"]=1
 
 # how many slaves do we expect on vm (Testumgebung)
 declare -A vmcountVM
-vmcountVM["java"]=4
+vmcountVM["java"]=2
 vmcountVM["android"]=0
 vmcountVM["sonargraph"]=0
 
