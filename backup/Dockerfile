@@ -14,11 +14,6 @@ RUN dnf install -y -q \
   hostname \
   && dnf clean all -q
 
-# Set locale to en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
-RUN echo "export LC_ALL=en_US.UTF-8" > /etc/profile.d/lang.sh
-
 # Set TZ variable
 ENV TZ Europe/Zurich
 
