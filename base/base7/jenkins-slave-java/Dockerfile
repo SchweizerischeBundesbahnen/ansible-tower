@@ -32,7 +32,34 @@ ENV nodejs_version "v5.9.0"
 ENV installer_url "https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh"
 
 # Install dev tools
-RUN yum install -q ansible python-lxml glibc.i686 libgcc.i686 xmlstarlet graphviz mingw32 mingw32-nsis gtk2.i686 xorg-x11-server-Xvfb redhat-lsb xmlstarlet expect libaio perl-XML-Twig python-pip rpm-build npm rubygems -y && yum clean all -q
+RUN yum install -q python-requests-kerberos \
+    python-devel \
+    python-kerberos \
+    python-pip \
+    krb5-devel \
+    krb5-libs \
+    krb5-workstation \
+    ansible \
+    python-lxml \
+    glibc.i686 \
+    libgcc.i686 \
+    xmlstarlet \
+    graphviz \
+    gtk2.i686 \
+    xorg-x11-server-Xvfb \
+    redhat-lsb \
+    xmlstarlet \
+    expect \
+    libaio \
+    perl-XML-Twig \
+    rpm-build -y \
+    && yum clean all -q
+
+# Install Ansible Libraries for Windows Support WZU-4762
+RUN pip install "pywinrm>=0.1.1" ansible-tower-cli
+
+# Add kerberos config
+COPY configs/krb5.conf /etc/krb5.conf
 
 # Create Data directory structure and add user jenkins to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${portoffset} --home ${jenkinshome} && mkdir -p ${jenkinshome}/{bin,m2,buildtools,.ssh,temp,_scripts} && mkdir -p ${jenkinshome}/m2/repository ${jenkinshome}/workspace && mkdir -p ${jenkinshome}/.hello2morrow/SonargraphArchitect && echo "${appuser}:${appuser}" | chpasswd
@@ -170,9 +197,6 @@ RUN  cd ${jenkinshome}/buildtools \
 
 # Add download settings xml script
 COPY configs/download_settingsxml.sh ${jenkinshome}/_scripts/download_settingsxml.sh
-
-# Install ansible-tower-cli (@see https://github.com/ansible/tower-cli)
-RUN pip install ansible-tower-cli
 
 # Install oc-cli (see https://issues.sbb.ch/browse/CLOUD-421)
 RUN wget -qO- "http://repo.sbb.ch/service/local/artifact/maven/redirect?r=mirror&g=com.openshift&a=oc-client&v=LATEST&e=rpm" -O oc.rpm \
