@@ -11,6 +11,7 @@ RUN dnf install -y -q \
   mydumper \
   duplicity \
   mysql \
+  hostname \
   && dnf clean all -q
 
 # Set locale to en_US.UTF-8
