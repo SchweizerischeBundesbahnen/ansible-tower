@@ -1,8 +1,8 @@
 FROM fedora:latest
-MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
+MAINTAINER Lukas Elsner <lukas.elsner@sbb.ch>
 
 RUN rpm --import https://copr-be.cloud.fedoraproject.org/results/nibbler/mydumper/pubkey.gpg
-RUN dnf install 'dnf-command(config-manager)'
+RUN dnf install -y 'dnf-command(config-manager)'
 RUN dnf config-manager --add-repo https://copr-be.cloud.fedoraproject.org/results/nibbler/mydumper/
 RUN dnf install -y -q \
   https://twindb.com/twindb-release-latest.noarch.rpm \
