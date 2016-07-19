@@ -1,15 +1,15 @@
 FROM fedora:latest
 MAINTAINER Pascal Bieri <pascal.bieri@sbb.ch>
 
-RUN yum install -y -q https://twindb.com/twindb-release-latest.noarch.rpm
+RUN dnf install -y -q https://twindb.com/twindb-release-latest.noarch.rpm
 
-RUN yum install -y -q \
+RUN dnf install -y -q \
 	git \
 	which \
   mydumper \
   duplicity \
   mysql \
-  && yum clean all -q
+  && dnf clean all -q
 
 # Set locale to en_US.UTF-8
 ENV LANG en_US.UTF-8
