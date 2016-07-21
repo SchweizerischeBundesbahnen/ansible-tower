@@ -3,7 +3,7 @@ jira:
   volumes:
     - atc-tasks_p_FData:/var/data
   environment:
-    APP_URL: atc-issues.sbb.ch
+    APP_URL: atc-tasks.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     HTTPS_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
     http_proxy: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
