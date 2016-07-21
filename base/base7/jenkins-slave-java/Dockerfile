@@ -52,6 +52,7 @@ RUN yum install -q python-requests-kerberos \
     expect \
     libaio \
     perl-XML-Twig \
+    gem \
     rpm-build -y \
     && yum clean all -q
 
