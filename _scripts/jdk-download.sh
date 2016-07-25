@@ -115,7 +115,7 @@ function unpack() {
   mkdir -p ${DATADIR} || error
 
   if [ ${FORMAT} == "exe" ]; then
-    7z e -o${TMPDIR} ${TMPDIR}/${FILENAME} > /dev/null 2>&1  || error
+    7z e -y -o${TMPDIR} ${TMPDIR}/${FILENAME} > /dev/null 2>&1  || error
     unzip -q ${TMPDIR}/tools.zip -d ${DATADIR} || error
     rm ${TMPDIR}/tools.zip
     for file in $(find "${DATADIR}" -name "*pack"); do ${JAVA_HOME}/bin/unpack200 -r "${file}" "${file/%pack/jar}"; done
