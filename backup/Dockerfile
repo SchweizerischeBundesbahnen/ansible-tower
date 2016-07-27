@@ -13,6 +13,7 @@ RUN dnf install -y -q \
   mysql \
   hostname \
   s3cmd \
+  gnupg \
   && dnf clean all -q
 
 # Set TZ variable
@@ -22,5 +23,9 @@ ENV TZ Europe/Zurich
 RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 
 COPY configs/wzu_backup.sh /var/wzu_backup.sh
+
+COPY configs/.s3cfg /root/.s3cfg
+
 RUN git clone https://code.sbb.ch/scm/kd_wzu/wzu-backup.git
+
 CMD /var/wzu_backup.sh
