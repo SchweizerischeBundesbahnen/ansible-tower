@@ -12,6 +12,7 @@ RUN dnf install -y -q \
   duplicity \
   mysql \
   hostname \
+  s3cmd \
   && dnf clean all -q
 
 # Set TZ variable
