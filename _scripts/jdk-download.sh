@@ -22,6 +22,8 @@ PLATFORM=
 VER=
 OS=
 DATADIR=
+V=
+P=
 
 # use one of those
 #CURLVERBOSITY=" -S -v "
@@ -110,6 +112,7 @@ function unpack() {
   else
     P="32";
   fi
+  R=${VER:2}
   ZIPROOTDIR="${TMPDIR}/${FILENAME}-unpacked"
   DATADIR="${ZIPROOTDIR}/jdk${V}_${P}"
   mkdir -p ${DATADIR} || error
@@ -119,8 +122,10 @@ function unpack() {
     unzip -q ${TMPDIR}/tools.zip -d ${DATADIR} || error
     rm ${TMPDIR}/tools.zip
     for file in $(find "${DATADIR}" -name "*pack"); do ${JAVA_HOME}/bin/unpack200 -r "${file}" "${file/%pack/jar}"; done
+    cp ${TMPDIR}/src.zip ${DATADIR} || error
   else
     tar xzf ${TMPDIR}/${FILENAME} -C ${DATADIR} || error
+    cp ${DATADIR}/jdk${V}.0_${R}/src.zip ${TMPDIR} || error
   fi
 }
 
