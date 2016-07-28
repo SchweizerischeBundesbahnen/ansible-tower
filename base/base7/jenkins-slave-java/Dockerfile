@@ -3,6 +3,7 @@ FROM registry.sbb.ch/kd_wzu/base7
 MAINTAINER Igor Masen <igor.masen@sbb.ch>
 
 # Environment variables
+ENV mvn30version 3.0.5
 ENV mvn31version 3.1.1
 ENV mvn32version 3.2.5
 ENV mvn33version 3.3.9
@@ -73,6 +74,12 @@ RUN chown -R ${appuser}:${appuser} ${jenkinshome}/.ssh && chmod 700 ${jenkinshom
 RUN cd ${jenkinshome}/buildtools \
 	&& wget -qO- ${filerurl}/apache-ant-1.8.tar.gz | tar xfz - \
 	&& ln -s apache-ant-1.8* apache-ant-1.8
+
+# Download Maven 3.0
+RUN cd ${jenkinshome}/buildtools \
+	&& wget -qO- "http://mirror.switch.ch/mirror/apache/dist/maven/maven-3/${mvn30version}/binaries/apache-maven-${mvn30version}-bin.tar.gz" | tar xfz - \
+	&& ln -s apache-maven-3.0* apache-maven-3.0 \
+	&& rm -f `find ${jenkinshome}/buildtools/apache-maven*/conf/settings.xml`
 
 # Download Maven 3.1
 RUN cd ${jenkinshome}/buildtools \
