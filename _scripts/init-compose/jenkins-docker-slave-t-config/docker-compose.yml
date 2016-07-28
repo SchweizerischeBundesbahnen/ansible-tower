@@ -7,6 +7,6 @@ slave:
     executors: 1
     ciuser: fsvctip
     cipassword: sommer11
-    slavename: ${HOSTNAME}-docker
-    labels: docker 
+    slavename: docker-${HOSTNAME}
+    labels: docker
   restart: always
