@@ -29,7 +29,6 @@ DATADIR=
 CURLVERBOSITY=" -s "
 
 # webproxy.sbb.ch has problems with JDK download, use this as a workaround
-#CURLPROXYWORKAROUND=" --socks5 localhost:60001"
 CURLPROXYWORKAROUND=" --proxy http://fstools:${FSTOOLSPWD}@testwebproxy.sbb.ch:8080"
 
 function error() {
@@ -72,7 +71,7 @@ function nexus_upload() {
     return
   fi
 
-  ARTIFACT="oracle-jdk-$V-$P"
+  ARTIFACT="oracle-jdk-${V}-${P}"
 
   for REV in {01..99}
   do
@@ -116,7 +115,7 @@ function unpack() {
   mkdir -p ${DATADIR} || error
 
   if [ ${FORMAT} == "exe" ]; then
-    7z e -bb0 -o${TMPDIR} ${TMPDIR}/${FILENAME} > /dev/null 2>&1  || error
+    7z e -y -o${TMPDIR} ${TMPDIR}/${FILENAME} > /dev/null 2>&1  || error
     unzip -q ${TMPDIR}/tools.zip -d ${DATADIR} || error
     rm ${TMPDIR}/tools.zip
     for file in $(find "${DATADIR}" -name "*pack"); do ${JAVA_HOME}/bin/unpack200 -r "${file}" "${file/%pack/jar}"; done
@@ -127,7 +126,7 @@ function unpack() {
 
 function pack() {
   echo "Packing jdk-${VER}-${OS}-${PLATFORM}-sbb.zip"
-  (cd ${ZIPROOTDIR} && zip -q -r $TMPDIR/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" .) || error
+  (cd ${ZIPROOTDIR} && zip -q -r ${TMPDIR}/"jdk-${VER}-${OS}-${PLATFORM}-sbb.zip" .) || error
 }
 
 function cleanup() {
@@ -150,7 +149,7 @@ function usage() {
 
 function checkdeps() {
   EXIT=0
-  for dep in ${DEPS[@]}
+  for dep in "${DEPS[@]}"
   do
     # @formatter:off
     command -v ${dep} > /dev/null 2>&1 || { echo >&2 "I require $dep but it's not installed."; EXIT=1; }
@@ -168,23 +167,23 @@ checkdeps
 
 mkdir -p $TMPDIR
 
-for version in ${VERSIONS[@]}
+for version in "${VERSIONS[@]}"
 do
-  find_build_id $version
+  find_build_id ${version}
   echo "Got build number ${BUILDID}"
-  [ $BUILDID -gt 100 ] && {
-  echo "Build-Id not in range, exiting..."
-  exit 1
-}
-  for platform in ${PLATFORMS[@]}
+  [ ${BUILDID} -gt 100 ] && {
+    echo "Build-Id not in range, exiting..."
+    exit 1
+  }
+  for platform in "${PLATFORMS[@]}"
   do
-    for os in ${OSS[@]}
+    for os in "${OSS[@]}"
     do
-      BUILD=$BUILDID
-      PLATFORM=$platform
-      VER=$version
-      OS=$os
-      [ "$OS" == "windows" ] && FORMAT="exe" || FORMAT="tar.gz"
+      BUILD=${BUILDID}
+      PLATFORM=${platform}
+      VER=${version}
+      OS=${os}
+      [ "${OS}" == "windows" ] && FORMAT="exe" || FORMAT="tar.gz"
       FILENAME="jdk-${VER}-${OS}-${PLATFORM}.${FORMAT}"
       download
       svn_upload
