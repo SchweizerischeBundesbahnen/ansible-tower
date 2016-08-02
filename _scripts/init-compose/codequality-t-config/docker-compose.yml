@@ -1,5 +1,5 @@
 sonar:
-  image: registry.sbb.ch/kd_wzu/sonar:latest
+  image: registry.sbb.ch/kd_wzu_ansible/sonar:latest
   environment:
     APP_URL: codequality-t.sbb.ch
     HTTP_PROXY: "http://fitba001:sommer09@webproxy.sbb.ch:8080"
