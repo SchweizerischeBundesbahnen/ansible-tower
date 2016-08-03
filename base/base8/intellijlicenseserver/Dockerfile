@@ -8,7 +8,7 @@ ENV idoffset 180
 ENV datadir /var/data
 ENV apphome /var/data/intellijlicenseserver
 ENV PATH /usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
-EXPOSE 8${idoffset}
+EXPOSE 8180
 
 # Create Data directory structure and add appuser to the image
 RUN mkdir -p ${datadir}/ && adduser ${appuser} -U -u 10${idoffset} --home ${apphome} && mkdir -p ${apphome}/.jb-license-server
