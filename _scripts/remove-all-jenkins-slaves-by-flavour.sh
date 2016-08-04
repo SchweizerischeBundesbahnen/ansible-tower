@@ -1,7 +1,7 @@
 #!/bin/bash
 jenkinsflavour=$1
 if [ -z "$jenkinsflavour" ]; then
-    echo "A Jenkins flavour must be specified: [jenkins-slave-mobile-android,...], see create-jenkins-slave-set.sh"
+    echo "A Jenkins flavour must be specified: [jenkins-slave-android,...], see create-jenkins-slave-set.sh"
 fi
 
 allcontainers=`sudo docker ps --all | grep "${jenkinsflavour}" | cut -d" " -f1`

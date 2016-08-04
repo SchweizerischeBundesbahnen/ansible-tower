@@ -1,0 +1,12 @@
+slave:
+  image: registry.sbb.ch/kd_wzu_ansible/jenkins-slave-docker:latest
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  environment:
+    master: https://ci-t.sbb.ch
+    executors: 1
+    ciuser: fsvctip
+    cipassword: sommer11
+    slavename: docker-${HOSTNAME}
+    labels: docker
+  restart: always

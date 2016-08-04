@@ -7,15 +7,15 @@ ENV datadir /var/data
 ENV jirahome /var/data/jira
 ENV idoffset 20
 ENV appuser jira
-ENV mysqlconnectorversion 5.1.36
-ENV jiraversion 6.4.11
+ENV mysqlconnectorversion 5.1.39
+ENV jiraversion 7.1.8
 
 # Create Data directory structure and add user jira to the image
 RUN mkdir -p ${datadir} && adduser ${appuser} -U -u 10${idoffset} --home ${jirahome}
 
 # Download jira into /opt
 RUN	cd /opt \
-	&& wget -qO- http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-${jiraversion}.tar.gz | tar xfz - \
+	&& wget -qO- http://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-${jiraversion}-jira-${jiraversion}.tar.gz | tar xfz - \
 	&& ln -s /opt/atlassian-jira* /opt/jira \
 	&& chown -R ${appuser}:${appuser} ${jirahome} /opt/atlassian-jira* /opt/jdk*
 

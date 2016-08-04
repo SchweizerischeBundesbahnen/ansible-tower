@@ -45,14 +45,14 @@ c.close()
 # Find the id of the pull request open on the branch corresponding to the commit_hash
 the_id = ""
 for value in values:
-    if value["fromRef"]["latestChangeset"] == commit_hash:
+    if value["fromRef"]["latestCommit"] == commit_hash:
         the_id = value["id"]
 
 # for the rare case that 2 automerge requests follow each other
 if the_id == "":
 #    print 'id not found yet....'
     for value in values:
-        if value["toRef"]["latestChangeset"] == commit_hash:
+        if value["toRef"]["latestCommit"] == commit_hash:
             the_id = value["id"]
 
 print the_id

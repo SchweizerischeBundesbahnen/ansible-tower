@@ -1,5 +1,5 @@
 netdata:
-  image: docker.io/mabeulux88/netdata
+  image: registry.sbb.ch/kd_wzu/netdata:latest 
   volumes:
      - /proc:/host/proc:ro
      - /sys:/host/sys:ro

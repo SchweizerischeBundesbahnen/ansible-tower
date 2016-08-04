@@ -1,10 +1,12 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM registry.sbb.ch/kd_wzu/jenkins-slave-base
+FROM registry.sbb.ch/kd_wzu/jenkins-slave-java
 MAINTAINER Igor Masen <igor.masen2@sbb.ch>
 
 ENV gradle2version 2.5
-ENV labels "android"
+ENV labels "android java"
 ENV ANDROID_HOME ${jenkinshome}/buildtools/android-sdk-linux
+
+USER root
 
 # Install qemu and kvm
 RUN yum install -q qemu-kvm qemu-kvm-tools npm -y && yum clean all -q
@@ -41,8 +43,9 @@ CMD \
          su - ${appuser} -c "source ${jenkinshome}/env.sh ${jenkinshome}/buildtools/android-sdk-linux/tools/android list target \
 		 && ( echo no | ${jenkinshome}/buildtools/android-sdk-linux/tools/android create avd -f -a -c 512M -s WVGA800 -n hudson_de-CH_160_WVGA_android-19_x86 -t android-19 --abi x86) \
 		 && ${jenkinshome}/buildtools/android-sdk-linux/platform-tools/adb start-server \
-		 && (${jenkinshome}/buildtools/android-sdk-linux/tools/emulator-x86 -no-boot-anim -ports 5608,5609 -prop persist.sys.language=de -prop persist.sys.country=CH -avd hudson_de-CH_160_WVGA_android-19_x86 -no-snapshot-load -no-snapshot-save -no-window -noaudio -qemu -m 2047 -enable-kvm &)"\
+		 && (${jenkinshome}/buildtools/android-sdk-linux/tools/emulator -no-boot-anim -ports 5608,5609 -prop persist.sys.language=de -prop persist.sys.country=CH -avd hudson_de-CH_160_WVGA_android-19_x86 -no-snapshot-load -no-snapshot-save -no-window -qemu -m 2047 -enable-kvm &)"\
 		 && sleep 30 \
+ 		 && su - ${appuser} -c "source ${jenkinshome}/env.sh ${jenkinshome}/buildtools/android-sdk-linux/tools/adb devices" \
 # \ OTM-63 Build mit Android Emulator funktioniert nicht\
-         && echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels ${labels} -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"
+         && echo "export externalport=${externalport} host=${host}" >> ${jenkinshome}/env.sh && su - ${appuser} -c "${jenkinshome}/run.sh" && su - ${appuser} -c "source ${jenkinshome}/env.sh && /opt/jdk/bin/java -jar ${jenkinshome}/swarm-client.jar -executors ${executors} -fsroot ${jenkinshome} -master ${master} -name ${slavename} -username ${ciuser} -password ${cipassword} -labels \"${labels}\" -mode exclusive -noRetryAfterConnected -retry 1 -disableClientsUniqueId"
 

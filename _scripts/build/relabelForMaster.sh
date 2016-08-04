@@ -35,7 +35,7 @@ echo "Start if list of images to Build to push to $REGISTRY"
 echo "-------------------------------------"
 echo ""
 echo ""
-FILELIST=`find . -type d -print | grep -v -E ".git|_doc|_scripts|configs"`
+FILELIST=`find . -type d -print | grep -v -E ".git|_doc|_scripts|configs" | sed -n '1!p'`
 echo "$FILELIST"
 echo ""
 echo ""
@@ -46,7 +46,7 @@ echo ""
 echo ""
 
 
-for TOBUILD in $FILELIST ; 
+for TOBUILD in $FILELIST ;
 do
     echo ""
     echo ""
@@ -55,7 +55,7 @@ do
     echo "-------------------------------------"
     echo ""
     echo ""
-    
+
     IMAGE=`basename $TOBUILD`
 
     # build and push images
@@ -90,7 +90,7 @@ do
             echo "BUILD failed! Pushing image=$IMAGE failed!"
             exit -4
     fi
-    
+
     echo ""
     echo ""
     echo "-------------------------------------"

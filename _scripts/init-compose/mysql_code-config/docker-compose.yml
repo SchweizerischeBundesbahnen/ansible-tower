@@ -1,5 +1,5 @@
 mysql_code:
-  image: mysql:5.6
+  image: registry.sbb.ch/kd_wzu/mysql:5.6
   volumes:
    - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
    - mysql_code_DBData:/var/lib/mysql

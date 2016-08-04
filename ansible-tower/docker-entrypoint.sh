@@ -33,6 +33,10 @@ if [ "$1" = 'ansible-tower' ]; then
         mkdir ${DATA}
         cp -R /var/lib/postgresql/9.4/main.bak ${DATA}/postgres
         cp -R /var/lib/awx.bak ${DATA}/awx
+        #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
+        echo "{\"websocket_port\": 11230}" > ${DATA}/awx/public/static/local_settings.json
+        #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
+        echo -e "[http]\n\tsslVerify = false"> ${DATA}/awx/.gitconfig && ${DATA}/awx/.gitconfig
     fi
     chown -R awx:awx ${DATA}/awx ${SETTINGS} ${LOGS}
     chown -R postgres:104 ${DATA}/postgres
