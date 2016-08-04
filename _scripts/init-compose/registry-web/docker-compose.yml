@@ -4,7 +4,7 @@ registry-web:
     - REGISTRY_TRUST_ANY_SSL=true
     - READONLY=true
     - REGISTRY_URL=http://registry:5000/v2
-    - REGISTRY_NAME=localhost:5000
+    - REGISTRY_NAME=registry.sbb.ch
   ports:
     - 8081:8080
   restart: always
