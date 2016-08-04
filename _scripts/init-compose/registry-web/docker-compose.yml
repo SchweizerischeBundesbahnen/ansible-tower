@@ -1,0 +1,10 @@
+registry-web:
+  image: hyper/docker-registry-web
+  environment:
+    - REGISTRY_TRUST_ANY_SSL=true
+    - READONLY=true
+    - REGISTRY_URL=http://registry:5000/v2
+    - REGISTRY_NAME=localhost:5000
+  ports:
+    - 8081:8080
+  restart: always
