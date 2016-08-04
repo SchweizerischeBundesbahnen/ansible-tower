@@ -1,5 +1,5 @@
 confluence:
-  image: registry.sbb.ch/kd_wzu/confluence:latest
+  image: registry.sbb.ch/kd_wzu_ansible/confluence:feature-11
   volumes:
         - confluence_i_FData:/var/data
   environment:
