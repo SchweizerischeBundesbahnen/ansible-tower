@@ -1,5 +1,5 @@
 confluence:
-  image: registry.sbb.ch/kd_wzu_ansible/confluence:feature-13
+  image: registry.sbb.ch/kd_wzu_ansible/confluence:latest
 
   volumes:
         - confluence_i_FData:/var/data
@@ -17,7 +17,7 @@ confluence:
   links:
     - mysql
 mysql:
-  image: registry.sbb.ch/kd_wzu/mysql:5.6
+  image: registry.sbb.ch/kd_wzu_ansible/mysql:5.6
   volumes:
    - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
    - confluence_i_DBData:/var/lib/mysql

@@ -1,5 +1,5 @@
 jira:
-  image: registry.sbb.ch/kd_wzu/jira:latest-dev
+  image: registry.sbb.ch/kd_wzu_ansible/jira:latest
   volumes:
     - tasks_i_FData:/var/data
   environment:
@@ -17,7 +17,7 @@ jira:
     - mysql
 	
 mysql:
-  image: registry.sbb.ch/kd_wzu/mysql:5.6
+  image: registry.sbb.ch/kd_wzu_ansible/mysql:5.6
   volumes:
    - /etc/wzu-docker/_scripts/default.mysql.cnf:/etc/mysql/conf.d/custom.cnf
    - tasks_i_DBData:/var/lib/mysql

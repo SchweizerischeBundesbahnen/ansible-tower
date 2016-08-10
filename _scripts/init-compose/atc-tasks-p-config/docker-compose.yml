@@ -1,5 +1,5 @@
 jira:
-  image: registry.sbb.ch/kd_wzu_ansible/jira:latest
+  image: registry.sbb.ch/kd_wzu_ansible/jira:7.1.8-1
   volumes:
     - atc-tasks_p_FData:/var/data
   environment:
