@@ -1,5 +1,5 @@
 intellijlicenserver:
-  image: registry.sbb.ch/kd_wzu/intellijlicenseserver:latest
+  image: registry.sbb.ch/kd_wzu/intellijlicenseserver:351
   ports:
     - 8180:8180
   environment:
