@@ -1,4 +1,4 @@
-FROM jenkinsci/jenkins:2.17
+FROM jenkins:2.7.2
  
 MAINTAINER lukas.elsner@sbb.ch
 
