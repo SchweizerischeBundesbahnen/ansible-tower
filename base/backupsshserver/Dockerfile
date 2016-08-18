@@ -10,6 +10,7 @@ RUN yum install openssh-server openssh-clients rsync -y \
 
 # copy the ssh keys for backupserver
 ADD configs/ssh/* /etc/ssh/
+RUN chmod 600 /etc/ssh/*_key
  
 # Create Data directory structure and add user to the image
 RUN adduser ${user} -U -u 1000 --home /home/${user} \
