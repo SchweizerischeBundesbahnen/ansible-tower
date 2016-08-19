@@ -6,9 +6,11 @@ ENV user backup
 
 # install/configure sshd
 RUN yum install openssh-server openssh-clients rsync -y \
-	&& yum clean all \
-	&& /usr/bin/ssh-keygen -A
+	&& yum clean all
 
+# copy the ssh keys for backupserver
+ADD configs/ssh/* /etc/ssh/
+RUN chmod 600 /etc/ssh/*_key
  
 # Create Data directory structure and add user to the image
 RUN adduser ${user} -U -u 1000 --home /home/${user} \
