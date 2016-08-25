@@ -12,7 +12,7 @@ rocketchat:
     - data_chat_t_uploads:/app/uploads
   environment:
     - PORT=8080
-    - ROOT_URL=http://v01033.sbb.ch
+    - ROOT_URL=http://chat-t.sbb.ch
     - MONGO_URL=mongodb://mongo:27017/rocketchat
     - MAIL_URL=smtp://smtp-app.sbb.ch
     - HTTP_PROXY=http://webproxy.sbb.ch:8080
