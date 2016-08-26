@@ -1,8 +1,0 @@
-server:
-  image: registry.sbb.ch/kd_wzu/backupsshserver
-  volumes:
-    - /var/backup:/var/backup
-  ports:
-    - 10022:22
-    - 21:22
-  restart: always
