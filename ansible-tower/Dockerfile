@@ -11,7 +11,7 @@ ENV LOGS /external/logs
 ENV GIT_SSL_NO_VERIFY 1
 
 RUN apt-get update \
-    && apt-get install -y software-properties-common wget \
+    && apt-get install -y software-properties-common wget curl bsdmainutils\
     && apt-add-repository -y ppa:ansible/ansible \
     && apt-get update \
     && apt-get install -y ansible \
@@ -30,9 +30,14 @@ ADD configs/inventory /opt/tower-setup/inventory
 RUN cd /opt/tower-setup \
     && ./setup.sh \
     && ansible-tower-service stop
-    
+
+# / CDP-69 Patch Jira module
+ADD configs/patch.txt /tmp/patch.txt
+RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastructure/jira.py /tmp/patch.txt
+# \ CDP-69 Patch Jira module
 #Backuping generated live data because various sources should be injected externally
-RUN echo "Caring about postgres-database" \
+RUN echo "" \
+    && echo "Caring about postgres-database" \
     && mv /var/lib/postgresql/9.4/main /var/lib/postgresql/9.4/main.bak \
     && ln -sf ${DATA}/postgres /var/lib/postgresql/9.4/main \
     && echo "Caring about tower-data" \
@@ -51,11 +56,15 @@ RUN echo "Caring about postgres-database" \
     && echo "Caring about ldap.py" \
     && mv /etc/tower/conf.d/ldap.py /etc/tower/conf.d/ldap.py.bak \
     && ln -sf ${SETTINGS}/ldap.py /etc/tower/conf.d/ldap.py \
-    && echo "Caring about log files" \
+    && echo "Caring about remote_host_headers.py" \
+    && mv /etc/tower/conf.d/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py.bak \
+    && ln -sf ${SETTINGS}/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py \
+    && echo "Caring about apache log files" \
     && mkdir -p ${LOGS}/apache2 \
     && ln -sf ${LOGS}/apache2/error.log /var/log/apache2/error.log \
     && ln -sf ${LOGS}/apache2/access.log /var/log/apache2/access.log \
     && ln -sf ${LOGS}/apache2/other_vhosts_access.log /var/log/apache2/other_vhosts_access.log \
+    && echo "Caring about tower log files" \
     && mkdir -p ${LOGS}/tower \
     && ln -sf ${LOGS}/tower/callback_receiver.log /var/log/tower/callback_receiver.log \
     && ln -sf ${LOGS}/tower/fact_receiver.log /var/log/tower/fact_receiver.log \

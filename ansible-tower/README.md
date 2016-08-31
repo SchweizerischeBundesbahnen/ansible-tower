@@ -5,18 +5,21 @@ Die Mounts sind statt unter /certs nun unter /settings .
 
 Laufen des Ansible-Towers.
 
-1. Order erstellen mit 
-1.1. settings/settings.py
-1.2. settings/certs/domain.crt und settings/certs/domain.key
-1.3. settings/license
-2.1 awx
-2.2 logs/apache-2
-2.3 logs/tower
+1. Named-Data-Ordner erstellen mit
+```
+settings/certs/deploy.sbb.ch_cer.pem
+settings/certs/deploy.sbb.ch_privatekey.pem
+settings/license
+settings/ldap.py
+settings/remote_host_headers.py
+settings/settings.py
+```
+Siehe Ordner bootstrapping.
 
-3. Container erstellen mit docker-compose
+2. Container erstellen mit docker-compose
 ```
 cd /etc/
-git clone https://code.sbb.ch/scm/kd_wzu/wzu-docker.git
+git clone https://code.sbb.ch/scm/kd_wzu/ansibletower-docker.git wzu-docker
 ln -s  /etc/wzu-docker/_scripts/init-compose/compose-init-script.sh /etc/init.d/deploy-t
 chkconfig deploy-t on
 service deploy-t init

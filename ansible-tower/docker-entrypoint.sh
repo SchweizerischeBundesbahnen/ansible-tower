@@ -1,23 +1,12 @@
 #!/bin/bash
 APACHE_CONF=/etc/apache2/conf-enabled/awx-httpd-443.conf
-set +e
+# bash setup
+set -e # fail fast
+set -x # echo everything
 trap "kill -15 -1 && echo all proc killed" TERM KILL INT
 
-function setupSettings {
-    sharefile=$1
-    dockerfile=$2
-    
-    
-    if [[ ! -e $sharefile ]]; then
-        echo "$sharefile not exiting, copying version of container to mount"
-        cp $dockerfile $sharefile
-    fi
-    if [[ -e $dockerfile ]]; then
-        mv $dockerfile $dockerfile.bak
-        ln -s $sharefile $dockerfile
-        chown awx:awx $dockerfile $sharefile
-    fi
-}
+# remove stale pid file when restarting the same container
+rm -f /run/apache2/apache2.pid
 
 if [ "$1" = 'ansible-tower' ]; then
     #Correcting Apache Config
@@ -30,22 +19,33 @@ if [ "$1" = 'ansible-tower' ]; then
     
     #Live data not existing, bootstrapping instance
     if [[ ! -e ${DATA} ]]; then
+        echo "Live data not existing, bootstrapping instance"
         mkdir ${DATA}
         cp -R /var/lib/postgresql/9.4/main.bak ${DATA}/postgres
         cp -R /var/lib/awx.bak ${DATA}/awx
         #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
         echo "{\"websocket_port\": 11230}" > ${DATA}/awx/public/static/local_settings.json
         #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
-        echo -e "[http]\n\tsslVerify = false"> ${DATA}/awx/.gitconfig && ${DATA}/awx/.gitconfig
+        echo -e "[http]\n\tsslVerify = false"> ${DATA}/awx/.gitconfig && cat ${DATA}/awx/.gitconfig
     fi
-    chown -R awx:awx ${DATA}/awx ${SETTINGS} ${LOGS}
-    chown -R postgres:104 ${DATA}/postgres
-    
+
+    #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
+    echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json
+    #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
+    echo -e "[http]\n\tsslVerify = false"> /var/lib/awx/.gitconfig && cat /var/lib/awx/.gitconfig
+
+    chown -R awx:awx ${DATA}/awx ${SETTINGS}
+    chown -R postgres:postgres ${DATA}/postgres
+
+    # create the logs directories if they do not yet exist
+    mkdir -p ${LOGS}/apache2
+    chown -R www-data:www-data ${LOGS}/apache2
+    mkdir -p ${LOGS}/tower
+    chown -R awx:awx ${LOGS}/tower
+
     
     #Starting the tower
     ansible-tower-service start
-    #sleep 10
-    #watch "netstat -an | grep -E '443.*LISTEN'"
     sleep inf & wait
 else
     exec "$@"
