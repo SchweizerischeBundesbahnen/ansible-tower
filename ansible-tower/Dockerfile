@@ -64,17 +64,9 @@ RUN echo "" \
     && mv /etc/tower/conf.d/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py.bak \
     && ln -sf ${SETTINGS}/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py \
     && echo "Caring about apache log files" \
-    && mkdir -p ${LOGS}/apache2 \
-    && ln -sf ${LOGS}/apache2/error.log /var/log/apache2/error.log \
-    && ln -sf ${LOGS}/apache2/access.log /var/log/apache2/access.log \
-    && ln -sf ${LOGS}/apache2/other_vhosts_access.log /var/log/apache2/other_vhosts_access.log \
+    && ln -sf ${LOGS}/apache2/ /var/log/apache2 \
     && echo "Caring about tower log files" \
-    && mkdir -p ${LOGS}/tower \
-    && ln -sf ${LOGS}/tower/callback_receiver.log /var/log/tower/callback_receiver.log \
-    && ln -sf ${LOGS}/tower/fact_receiver.log /var/log/tower/fact_receiver.log \
-    && ln -sf ${LOGS}/tower/socketio_service.log /var/log/tower/socketio_service.log \
-    && ln -sf ${LOGS}/tower/task_system.log /var/log/tower/task_system.log \
-    && ln -sf ${LOGS}/tower/tower.log /var/log/tower/tower.log
+    && ln -sf ${LOGS}/tower/ /var/log/tower/
     
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh

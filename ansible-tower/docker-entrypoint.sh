@@ -31,19 +31,16 @@ if [ "$1" = 'ansible-tower' ]; then
         #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
         echo -e "[http]\n\tsslVerify = false"> ${DATA}/awx/.gitconfig && cat ${DATA}/awx/.gitconfig
         
-        
+        # create the logs directories if they do not yet exist
+        mkdir -p ${LOGS}/apache2
+        chown -R www-data:www-data ${LOGS}/apache2
+        mkdir -p ${LOGS}/tower
+        chown -R awx:awx ${LOGS}/tower
         
     fi
 
-    chown -R awx:awx ${DATA}/awx ${SETTINGS}
+    chown -R awx:awx ${DATA} ${SETTINGS}
     chown -R postgres:postgres ${DATA}/postgres
-
-    # create the logs directories if they do not yet exist
-    mkdir -p ${LOGS}/apache2
-    chown -R www-data:www-data ${LOGS}/apache2
-    mkdir -p ${LOGS}/tower
-    chown -R awx:awx ${LOGS}/tower
-
     
     #Starting the tower
     ansible-tower-service start
