@@ -64,7 +64,6 @@ RUN echo "" \
     && mv /etc/tower/conf.d/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py.bak \
     && ln -sf ${SETTINGS}/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py \
     && echo "Caring about apache log files" \
-    && 
     && mv /var/log/apache2 /var/log/apache2.bak \
     && ln -sf ${LOGS}/apache2/ /var/log/ \
     && echo "Caring about tower log files" \
