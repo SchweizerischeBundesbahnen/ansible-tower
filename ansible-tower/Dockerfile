@@ -64,9 +64,9 @@ RUN echo "" \
     && mv /etc/tower/conf.d/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py.bak \
     && ln -sf ${SETTINGS}/remote_host_headers.py /etc/tower/conf.d/remote_host_headers.py \
     && echo "Caring about apache log files" \
-    && ln -sf ${LOGS}/apache2/ /var/log/apache2 \
+    && ln -sf ${LOGS}/apache2/ /var/log/ \
     && echo "Caring about tower log files" \
-    && ln -sf ${LOGS}/tower/ /var/log/tower/
+    && ln -sf ${LOGS}/tower/ /var/log/
     
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
