@@ -25,7 +25,6 @@ RUN cd /opt && tar -xvf ansible-tower-setup-${ANSIBLE_TOWER_VER}.tar.gz \
     && mv ansible-tower-setup-${ANSIBLE_TOWER_VER} /opt/tower-setup \
     && ls /opt/tower-setup
 
-ADD configs/tower_setup_conf.yml /opt/tower-setup/tower_setup_conf.yml
 ADD configs/inventory /opt/tower-setup/inventory
 
 RUN cd /opt/tower-setup \
