@@ -39,7 +39,7 @@ RUN echo "" \
     && mv /var/lib/awx /var/lib/awx.bak \
     && mv /etc/tower /etc/tower.bak \
     && mv /var/log/apache2 /var/log/apache2.bak \
-    && mv /var/log/tower /var/log/tower.bak \
+    && mv /var/log/tower /var/log/tower.bak
     
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
