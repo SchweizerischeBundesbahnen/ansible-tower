@@ -5,10 +5,6 @@ FROM ubuntu:14.04
 MAINTAINER sebastian.graf@sbb.ch
 
 ENV ANSIBLE_TOWER_VER 3.0.2
-ENV DATA /external/data
-ENV SETTINGS /external/settings
-ENV LOGS /external/logs
-ENV GIT_SSL_NO_VERIFY 1
 ENV USER root
 
 RUN apt-get update \

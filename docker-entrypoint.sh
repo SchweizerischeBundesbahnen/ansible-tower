@@ -17,36 +17,37 @@ if [ "$1" = 'ansible-tower' ]; then
         || sed -i -e "1s/^/ServerName $SERVER_NAME\n/" ${APACHE_CONF}
     fi
     
-    mkdir ${DATA}
-    
-    #Live data not existing, bootstrapping instance
-    if [[ ! -e ${SETTINGS} ]]; then
+    #Settings not existing, exiting because of missing clone
+    if [  "$(ls -A /etc/tower)" ]; then
         echo "Settings not existing"
         echo "Please clone a repository with a valid \"input\"-folder and related settings."
         exit 101
-        
-        
-        #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
-        echo "{\"websocket_port\": 11230}" > ${DATA}/awx/public/static/local_settings.json
-        #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
-        echo -e "[http]\n\tsslVerify = false"> ${DATA}/awx/.gitconfig && cat ${DATA}/awx/.gitconfig
-        
-        
-        
-        
-        
-        
-        
-        # create the logs directories if they do not yet exist
-        mkdir -p ${LOGS}/apache2
-        chown -R www-data:www-data ${LOGS}/apache2
-        mkdir -p ${LOGS}/tower
-        chown -R awx:awx ${LOGS}/tower
-        
     fi
-
-    chown -R awx:awx ${DATA} ${SETTINGS}
-    chown -R postgres:postgres ${DATA}/postgres
+    
+    #DB not existing, copying from container
+    if [  "$(ls -A /var/lib/postgresql/9.4/main)" ]; then
+        echo "DB not existing, bootstrapping from container"
+        cp -R /var/lib/postgresql/9.4/main.bak /var/lib/postgresql/9.4/main
+    fi
+    
+    #Data not existing, copying from container
+    if [  "$(ls -A /var/lib/awx)" ]; then
+        echo "AWX data not existing, bootstrapping from container"
+        cp -R /var/lib/awx.bak /var/lib/awx
+    
+        #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
+        echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
+        #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
+        echo -e "[http]\n\tsslVerify = false"> /var/lib/awx/.gitconfig && cat /var/lib/awx/.gitconfig
+    fi
+    # create the logs directories if they do not yet exist
+    mkdir -p /var/log/apache2
+    chown -R www-data:www-data /var/log/apache2
+    mkdir -p /var/log/tower
+    chown -R awx:awx /var/log/tower
+    #Setting permissions to data and settings
+    chown -R awx:awx /var/lib/awx /etc/tower
+    chown -R postgres:postgres /var/lib/postgresql/9.4/main/postgres
     
     #Starting the tower
     ansible-tower-service start
