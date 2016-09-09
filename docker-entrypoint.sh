@@ -17,19 +17,25 @@ if [ "$1" = 'ansible-tower' ]; then
         || sed -i -e "1s/^/ServerName $SERVER_NAME\n/" ${APACHE_CONF}
     fi
     
+    mkdir ${DATA}
+    
     #Live data not existing, bootstrapping instance
-    if [[ ! -e ${DATA} ]]; then
-        echo "Live data not existing, bootstrapping instance"
-        mkdir ${DATA}
-        cp -R /var/lib/postgresql/9.4/main.bak ${DATA}/postgres
-        cp -R /var/lib/awx.bak ${DATA}/awx
+    if [[ ! -e ${SETTINGS} ]]; then
+        echo "Settings not existing"
+        echo "Please clone a repository with a valid \"input\"-folder and related settings."
+        exit 101
         
-        cp -R /tmp/bootstrap ${SETTINGS}
         
         #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
         echo "{\"websocket_port\": 11230}" > ${DATA}/awx/public/static/local_settings.json
         #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
         echo -e "[http]\n\tsslVerify = false"> ${DATA}/awx/.gitconfig && cat ${DATA}/awx/.gitconfig
+        
+        
+        
+        
+        
+        
         
         # create the logs directories if they do not yet exist
         mkdir -p ${LOGS}/apache2
