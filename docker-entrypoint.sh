@@ -33,8 +33,8 @@ if [ "$1" = 'ansible-tower' ]; then
     #Data not existing, copying from container
     if [  "$(ls -A /var/lib/awx)" ]; then
         echo "AWX data not existing, bootstrapping from container"
-        cp -R /var/lib/awx.bak/*) /var/lib/awx/*
-    
+        cp -R /var/lib/awx.bak/* /var/lib/awx/*
+
         #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
         echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
         #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
