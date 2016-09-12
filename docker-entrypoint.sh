@@ -24,22 +24,32 @@ if [ "$1" = 'ansible-tower' ]; then
         exit 101
     fi
     
-    #DB not existing, copying from container
-    if [  "$(ls -A /var/lib/postgresql/9.4/main)" ]; then
-        echo "DB not existing, bootstrapping from container"
-        cp -R /var/lib/postgresql/9.4/main.bak/* /var/lib/postgresql/9.4/main/*
+    #Check if DB exists
+    if [  ! -d "/var/lib/postgresql/9.4/main" ]; then
+        echo "DB not existing, please mount container"
+        exit 101
+    fi
+    #Check if AWX-Data exists
+    if [  ! -d "/var/lib/awx" ]; then
+        echo "AWX-Data not existing, please mount container"
+        exit 101
     fi
     
-    #Data not existing, copying from container
-    if [  "$(ls -A /var/lib/awx)" ]; then
+    #Boostrapping DB is not existing
+    if [ ! "$(ls -A /var/lib/postgresql/9.4/main)" ]; then
+        echo "DB mounted, but not existing: Bootstrapping"
+        cp -R /var/lib/postgresql/9.4/main.bak/* /var/lib/postgresql/9.4/main/*
+    fi
+    #BootStrapping AWX-Data, if not existing
+    if [ ! "$(ls -A /var/lib/awx)" ]; then
         echo "AWX data not existing, bootstrapping from container"
         cp -R /var/lib/awx.bak/* /var/lib/awx/*
-
         #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
         echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
         #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
         echo -e "[http]\n\tsslVerify = false"> /var/lib/awx/.gitconfig && cat /var/lib/awx/.gitconfig
     fi
+    
     # create the logs directories if they do not yet exist
     mkdir -p /var/log/apache2
     chown -R www-data:www-data /var/log/apache2
