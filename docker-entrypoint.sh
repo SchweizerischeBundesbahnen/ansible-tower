@@ -18,7 +18,7 @@ if [ "$1" = 'ansible-tower' ]; then
     fi
     
     #Settings not existing, exiting because of missing clone
-    if [  "$(ls -A /etc/tower)" ]; then
+    if [ ! -d "/etc/tower" ]; then
         echo "Settings not existing"
         echo "Please clone a repository with a valid \"input\"-folder and related settings."
         exit 101
