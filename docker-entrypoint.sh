@@ -47,7 +47,7 @@ if [ "$1" = 'ansible-tower' ]; then
     chown -R awx:awx /var/log/tower
     #Setting permissions to data and settings
     chown -R awx:awx /var/lib/awx /etc/tower
-    chown -R postgres:postgres /var/lib/postgresql/9.4/main/postgres
+    chown -R postgres:postgres /var/lib/postgresql/9.4/main
     
     #Starting the tower
     ansible-tower-service start
