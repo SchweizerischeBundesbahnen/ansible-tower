@@ -48,8 +48,6 @@ if [ "$1" = 'ansible-tower' ]; then
         echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
         #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
         echo -e "[http]\n\tsslVerify = false"> /var/lib/awx/.gitconfig && cat /var/lib/awx/.gitconfig
-        #Linking hardlinked binaries
-        rm -rf /var/lib/awx/venv && ln -s /var/lib/awx.bak/venv /var/lib/awx/venv
     fi
     
     # create the logs directories if they do not yet exist
