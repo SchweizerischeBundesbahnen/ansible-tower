@@ -39,6 +39,9 @@ if [ "$1" = 'ansible-tower' ]; then
     if [ ! "$(ls -A /var/lib/postgresql/9.4/main)" ]; then
         echo "DB mounted, but not existing: Bootstrapping"
         cp -R /var/lib/postgresql/9.4/main.bak/. /var/lib/postgresql/9.4/main/
+        #Ugly hack to ensure that key stored in ha.py is in sync to the one stored in the db.
+        #Otherwise, we are facing server errors
+        cp /etc/tower.bak/conf.d/ha.py /etc/tower/conf.d/ha.py
     fi
     #BootStrapping AWX-Data, if not existing
     if [ ! "$(ls -A /var/lib/awx)" ]; then
