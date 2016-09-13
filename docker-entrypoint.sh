@@ -61,6 +61,7 @@ if [ "$1" = 'ansible-tower' ]; then
     chmod 700 /var/lib/postgresql/9.4/main    
     
     #Starting the tower
+    sleep inf & wait
     ansible-tower-service start
     sleep inf & wait
 else
