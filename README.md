@@ -46,5 +46,4 @@ docker-compose ansible-tower up -d
 4. [Optional] Umsetzen des Admin-Passworts
 ```
 docker exec -it deploytinstance_ansible-tower_1 tower-manage changepassword admin
-docker exec -it deploytinstance_ansible-tower_1 tower-manage changepassword admin
 ```
