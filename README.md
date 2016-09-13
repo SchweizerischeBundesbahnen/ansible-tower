@@ -1,6 +1,9 @@
 # ansible-tower
 Ansible Tower dockerized
-Das Image basiert auf https://github.com/ybalt/ansible-tower , mit folgendem Unterschied
+Das Image basiert auf https://github.com/ybalt/ansible-tower.
+
+
+
 Die Mounts sind statt unter /certs nun unter /settings .
 
 Laufen des Ansible-Towers.

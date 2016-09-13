@@ -48,4 +48,4 @@ EXPOSE 443 11230
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["ansible-tower"]
+CMD ["start"]
