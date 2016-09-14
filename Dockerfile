@@ -41,8 +41,9 @@ RUN echo "" \
     && mv /var/log/apache2 /var/log/apache2.bak \
     && mv /var/log/tower /var/log/tower.bak
     
-ADD docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+ADD scripts/docker-entrypoint.sh /docker-entrypoint.sh
+ADD scripts/backup.sh /backup.sh
+RUN chmod +x /docker-entrypoint.sh /backup.sh
 
 EXPOSE 443 11230
 

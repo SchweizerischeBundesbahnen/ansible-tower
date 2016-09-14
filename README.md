@@ -20,11 +20,8 @@ Es müssen dabei Ordner für settings, postgres, daten und logs gemountet werden
 ### /var/log/apache2, /var/log/tower
 * Mounts für logs
 
-
 ## Starten des Ansible-Towers.
 Docker und Docker-Compose müssen installiert sein.
-
-
 
 1. Clonen des Settings-Repos
 ```
@@ -47,3 +44,15 @@ docker-compose ansible-tower up -d
 ```
 docker exec -it deploytinstance_ansible-tower_1 tower-manage changepassword admin
 ```
+
+## Outline dieses Repos
+
+## ./configs
+Konfigurationen für den Buildprozess wie bspw. Inventory für die Installation und Patches
+
+##  ./scripts
+Scripte, welche in das Image kopiert werden wie entrypoint und backup
+
+## Dockerfile, Readme, License
+
+WYSIWYG
