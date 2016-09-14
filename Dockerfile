@@ -47,7 +47,7 @@ ADD scripts/restore.sh /restore.sh
 RUN chmod +x /docker-entrypoint.sh /backup.sh /restore.sh
 
 EXPOSE 443 11230
-
+USER awx
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["start"]
