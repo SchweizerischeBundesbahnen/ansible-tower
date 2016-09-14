@@ -21,12 +21,17 @@ if [ ! -d "/etc/tower" ]; then
 fi
 #Check if DB-Mount exists, exiting if not
 if [  ! -d "/var/lib/postgresql/9.4/main" ]; then
-    echo "DB not existing, please mount container"
+    echo "DB-mount not existing, please mount in container"
     exit 101
 fi
 #Check if AWX-Data exists, exiting if not
 if [  ! -d "/var/lib/awx" ]; then
-    echo "AWX-Data not existing, please mount container"
+    echo "AWX-Data Mount not existing, please mount in container"
+    exit 101
+fi
+#Check if Secret Data exists, exiting if not
+if [  ! -d "/secret" ]; then
+    echo "Mount for secret-data not existing, please mount in container"
     exit 101
 fi
 
@@ -69,6 +74,7 @@ elif [ "$1" = 'start' ]; then
         echo "DB and/or Data and/or Settings not existing. Clone and/or bootstrap first."
         exit 102
     fi
+    source /secret/*
     #Starting the tower
     ansible-tower-service start
     sleep inf & wait
