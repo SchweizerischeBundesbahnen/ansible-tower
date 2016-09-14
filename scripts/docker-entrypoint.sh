@@ -63,10 +63,11 @@ if [ "$1" = 'initialize' ]; then
     #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
     echo -e "[http]\n\tsslVerify = false"> /var/lib/awx/.gitconfig && cat /var/lib/awx/.gitconfig
     # create the logs directories if they do not yet exist
-    mkdir -p /var/log/apache2
-    mkdir -p /var/log/tower
+    mkdir -p /var/log/apache2 /var/log/tower /var/log/redis /var/log/postgres
     chown -R www-data:www-data /var/log/apache2
     chown -R awx:awx /var/log/tower
+    chown -R postgres:postgres /var/log/postgres
+    chown -R redis:redis /var/log/redis
     #Setting permissions to data and settings
     chown -R awx:awx /var/lib/awx /etc/tower
     chown -R postgres:postgres /var/lib/postgresql/9.4/main
