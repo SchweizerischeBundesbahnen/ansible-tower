@@ -38,10 +38,7 @@ RUN echo "" \
     && mv /var/lib/postgresql/9.4/main /var/lib/postgresql/9.4/main.bak \
     && mv /var/lib/awx /var/lib/awx.bak \
     && mv /etc/tower /etc/tower.bak \
-    && mv /var/log/apache2 /var/log/apache2.bak \
-    && mv /var/log/tower /var/log/tower.bak \
-    && mv /var/log/redis /var/log/redis.bak \
-    && mv /var/log/postgres /var/log/postgres.bak 
+    && mv /var/log /var/log.bak
     
 ADD scripts/docker-entrypoint.sh /docker-entrypoint.sh
 ADD scripts/backup.sh /backup.sh

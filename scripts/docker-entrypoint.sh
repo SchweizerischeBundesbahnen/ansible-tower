@@ -12,7 +12,11 @@ if [[ ${SERVER_NAME} ]]; then
    && sed -i -e "s/^ServerName.*/ServerName $SERVER_NAME/" ${APACHE_CONF} \
    || sed -i -e "1s/^/ServerName $SERVER_NAME\n/" ${APACHE_CONF}
 fi
-
+#Check if Secret Data exists, exiting if not
+if [  ! -d "/var/log" ]; then
+    echo "Mount for log /var/log not existing, please mount in container"
+    exit 101
+fi
 #Fail Fast, Settings not existing, exiting because of missing clone
 if [ ! -d "/etc/tower" ]; then
    echo "Settings /etc/tower not existing"
@@ -62,17 +66,10 @@ if [ "$1" = 'initialize' ]; then
     echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
     #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
     echo -e "[http]\n\tsslVerify = false"> /var/lib/awx/.gitconfig && cat /var/lib/awx/.gitconfig
-    # create the logs directories if they do not yet exist
-    mkdir -p /var/log/apache2 /var/log/tower /var/log/redis /var/log/postgres
-    chown -R www-data:www-data /var/log/apache2
-    chown -R awx:awx /var/log/tower
-    chown -R postgres:postgres /var/log/postgres
-    chown -R redis:redis /var/log/redis
     #Setting permissions to data and settings
     chown -R awx:awx /var/lib/awx /etc/tower
     chown -R postgres:postgres /var/lib/postgresql/9.4/main
     chmod 700 /var/lib/postgresql/9.4/main
-    
 elif [ "$1" = 'start' ]; then
     if [ ! "$(ls -A /var/lib/postgresql/9.4/main)" ] || [ ! "$(ls -A /var/lib/awx)" ] || [ ! "$(ls -A /etc/tower)" ]; then
         echo "DB and/or Data and/or Settings not existing. Clone and/or bootstrap first."
