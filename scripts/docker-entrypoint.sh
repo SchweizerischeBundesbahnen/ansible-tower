@@ -62,20 +62,18 @@ if [ "$1" = 'initialize' ]; then
         touch /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
     fi
     #Bootstrapping postgres from container
-    cp -R /var/lib/postgresql/9.4/main.bak/. /var/lib/postgresql/9.4/main/
+    cp -pR /var/lib/postgresql/9.4/main.bak/. /var/lib/postgresql/9.4/main/
     #Ugly hack to ensure that key stored in ha.py is in sync to the one stored in the db.
     #Otherwise, we are facing server errors
-    cp /etc/tower.bak/conf.d/ha.py /etc/tower/conf.d/ha.py
+    cp -p /etc/tower.bak/conf.d/ha.py /etc/tower/conf.d/ha.py
     #Bootstrapping AWX-Data from container
-    cp -R /var/lib/awx.bak/. /var/lib/awx/
+    cp -pR /var/lib/awx.bak/. /var/lib/awx/
     #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
     echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
     #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
     echo -e "[http]\n\tsslVerify = false"> /var/lib/awx/.gitconfig && cat /var/lib/awx/.gitconfig
     #Setting permissions to data and settings
-    chown -R awx:awx /var/lib/awx /etc/tower
-    chown -R postgres:postgres /var/lib/postgresql/9.4/main
-    chmod 700 /var/lib/postgresql/9.4/main
+    chown -R awx:awx /etc/tower
 elif [ "$1" = 'start' ]; then
     if [ ! "$(ls -A /var/lib/postgresql/9.4/main)" ] || [ ! "$(ls -A /var/lib/awx)" ] || [ ! "$(ls -A /etc/tower)" ]; then
         echo "DB and/or Data and/or Settings not existing. Clone and/or bootstrap first."
