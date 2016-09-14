@@ -17,11 +17,9 @@ if [  ! -d "/var/log" ]; then
     echo "Mount for log /var/log not existing, please mount in container"
     exit 101
 else
-    rm -f /var/log/.gitignore
-    if [ "$(ls -A /var/log)" ] ; then
+    if [ ! "$(ls /var/log)" ] ; then
         cp -pR /var/log.bak/. /var/log
     fi
-    touch /var/log/.gitignore
 fi
 #Fail Fast, Settings not existing, exiting because of missing clone
 if [ ! -d "/etc/tower" ]; then
