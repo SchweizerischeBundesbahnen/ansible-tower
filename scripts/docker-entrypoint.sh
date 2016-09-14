@@ -12,10 +12,16 @@ if [[ ${SERVER_NAME} ]]; then
    && sed -i -e "s/^ServerName.*/ServerName $SERVER_NAME/" ${APACHE_CONF} \
    || sed -i -e "1s/^/ServerName $SERVER_NAME\n/" ${APACHE_CONF}
 fi
-#Check if Secret Data exists, exiting if not
+#Check if Log Data exists, exiting if not
 if [  ! -d "/var/log" ]; then
     echo "Mount for log /var/log not existing, please mount in container"
     exit 101
+else
+    rm -f /var/log/.gitignore
+    if [ "$(ls -A /var/log)" ] ; then
+        cp -pR /var/log.bak/. /var/log
+    fi
+    touch /var/log/.gitignore
 fi
 #Fail Fast, Settings not existing, exiting because of missing clone
 if [ ! -d "/etc/tower" ]; then
