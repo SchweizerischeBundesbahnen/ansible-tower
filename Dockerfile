@@ -43,7 +43,8 @@ RUN echo "" \
     
 ADD scripts/docker-entrypoint.sh /docker-entrypoint.sh
 ADD scripts/backup.sh /backup.sh
-RUN chmod +x /docker-entrypoint.sh /backup.sh
+ADD scripts/restore.sh /restore.sh
+RUN chmod +x /docker-entrypoint.sh /backup.sh /restore.sh
 
 EXPOSE 443 11230
 
