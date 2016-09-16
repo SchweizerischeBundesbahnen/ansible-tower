@@ -4,7 +4,7 @@ if [ ! -f /backup/tower-backup-latest.tar.gz ] ; then
     exit 102
 fi
 
-rm /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
+rm -f /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
 if [ "$(ls -A /var/lib/postgresql/9.4/main)" ] || [ "$(ls -A /var/lib/awx)" ]; then
     echo "DB (/var/lib/postgresql/9.4/main) and/or Data (/var/lib/awx) existing. Remove on Host first and try again. Exiting..."
     exit 102
