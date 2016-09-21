@@ -38,7 +38,11 @@ RUN echo "" \
     && mv /var/lib/postgresql/9.4/main /var/lib/postgresql/9.4/main.bak \
     && mv /var/lib/awx /var/lib/awx.bak \
     && mv /etc/tower /etc/tower.bak \
-    && mv /var/log /var/log.bak
+    && mv /var/log/apache2 /var/log/apache2.bak \
+    && mv /var/log/postgresql /var/log/postgresql.bak \
+    && mv /var/log/supervisor /var/log/supervisor.bak \
+    && mv /var/log/tower /var/log/tower.bak \
+    && mv /var/log/redis /var/log/redis.bak
     
 ADD scripts/docker-entrypoint.sh /docker-entrypoint.sh
 ADD scripts/backup.sh /backup.sh
@@ -48,5 +52,4 @@ RUN chmod +x /docker-entrypoint.sh /backup.sh /restore.sh
 EXPOSE 443 11230
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-
 CMD ["start"]

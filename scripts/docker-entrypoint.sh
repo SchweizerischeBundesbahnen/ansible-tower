@@ -12,14 +12,17 @@ if [[ ${SERVER_NAME} ]]; then
    && sed -i -e "s/^ServerName.*/ServerName $SERVER_NAME/" ${APACHE_CONF} \
    || sed -i -e "1s/^/ServerName $SERVER_NAME\n/" ${APACHE_CONF}
 fi
+
 #Check if Log Data exists, exiting if not
-if [  ! -d "/var/log" ]; then
-    echo "Mount for log /var/log not existing, please mount in container"
+if [  ! -d "/var/log/apache2" ] || [  ! -d "/var/log/postgresql" ] || [  ! -d "/var/log/supervisor" ] || [  ! -d "/var/log/tower" ] || [  ! -d "/var/log/redis" ]; then
+    echo "Mount for log /var/log/[apache2|postgresql|supervisor|tower|redis] not existing, please mount in container"
     exit 101
 else
-    if [ ! "$(ls /var/log)" ] ; then
-        cp -pR /var/log.bak/. /var/log
-    fi
+    cp -pRn /var/log/apache2.bak/. /var/log/apache2
+    cp -pRn /var/log/postgresql.bak/. /var/log/postgresql
+    cp -pRn /var/log/supervisor.bak/. /var/log/supervisor
+    cp -pRn /var/log/tower.bak/. /var/log/tower
+    cp -pRn /var/log/redis.bak/. /var/log/redis
 fi
 #Fail Fast, Settings not existing, exiting because of missing clone
 if [ ! -d "/etc/tower" ]; then
