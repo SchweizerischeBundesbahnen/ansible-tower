@@ -4,6 +4,11 @@ FROM ubuntu:14.04
 #Image based on https://github.com/ybalt/ansible-tower 
 MAINTAINER sebastian.graf@sbb.ch
 
+ARG GIT_REFERENCE=unknown
+
+LABEL git.branch=$GIT_REFERENCE
+LABEL git.commit=$GIT_REFERENCE
+
 ENV ANSIBLE_TOWER_VER 3.0.2
 ENV USER root
 
