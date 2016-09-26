@@ -9,7 +9,7 @@ if [ "$(ls -A /var/lib/postgresql/9.4/main)" ] || [ "$(ls -A /var/lib/awx)" ]; t
     echo "DB (/var/lib/postgresql/9.4/main) and/or Data (/var/lib/awx) existing. Remove on Host first and try again. Exiting..."
     exit 102
 fi
-touch /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
+install -o awx -g awx /dev/null /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
 
 #Copying backup to correct location
 cp /backup/tower-backup-latest.tar.gz /opt/tower-setup/tower-backup-latest.tar.gz
