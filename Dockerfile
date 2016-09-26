@@ -32,6 +32,14 @@ ADD configs/patch.txt /tmp/patch.txt
 RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastructure/jira.py /tmp/patch.txt
 # \ CDP-69 Patch Jira module
 
+# / CDP-71 Forcing Supervisor to log as awx-user
+RUN cp /etc/supervisor/supervisord.conf /etc/supervisor/supervisord.conf.bak \
+    && sed -e'/^\[supervisord\]$/a user=awx' /etc/supervisor/supervisord.conf.bak > /etc/supervisor/supervisord.conf \
+    && chown -R awx:awx /var/log/supervisor \
+    && chown awx:awx /var/run
+# \ CDP-71 Forcing Supervisor to log as awx-user
+
+
 #Backuping generated live data because various sources should be injected externally
 RUN echo "" \
     && echo "Caring about postgres-database, data, certs, settings, apache log, tower log" \

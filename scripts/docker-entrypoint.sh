@@ -56,11 +56,11 @@ if [ "$1" = 'initialize' ]; then
     if [ "$(ls -A /var/lib/postgresql/9.4/main)" ] || [ "$(ls -A /var/lib/awx)" ]; then
         echo "DB (/var/lib/postgresql/9.4/main) and/or Data (/var/lib/awx) existing. Remove on Host first and try again. Exiting..."
         #Setting git-placeholder again
-        touch /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
+        install -o awx -g awx /dev/null /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
         exit 102
     else
         #Setting git-placeholder again, anyhow
-        touch /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
+        install -o awx -g awx /dev/null /var/lib/postgresql/9.4/main/.gitignore /var/lib/awx/.gitignore
     fi
     #Bootstrapping postgres from container
     cp -pR /var/lib/postgresql/9.4/main.bak/. /var/lib/postgresql/9.4/main/
