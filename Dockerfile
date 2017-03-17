@@ -14,9 +14,9 @@ ENV USER root
 
 RUN apt-get update \
     && apt-get install -y software-properties-common wget curl bsdmainutils \
-    # / CDP-209 Kerberos Integration
+    # / CDP-209, GISSRV-989 Kerberos, credssp Integration
     && apt-get install -y python-dev libkrb5-dev krb5-user libffi-dev libssl-dev \
-    # \ CDP-209 Kerberos Integration
+    # \ CDP-209, GISSRV-989 Kerberos, credssp Integration
     && apt-add-repository -y ppa:ansible/ansible \
     && apt-get update \
     && apt-get install -y ansible \
@@ -40,10 +40,10 @@ RUN cd /opt/tower-setup \
 ADD configs/patch.txt /tmp/patch.txt
 RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastructure/jira.py /tmp/patch.txt
 # \ CDP-69 Patch Jira module
-# / CDP-174, CDP-209 Adding windows and kerberos modules
+# / CDP-174, CDP-209, GISSRV-989 Adding windows and kerberos modules
 RUN pip install --upgrade six \
     && pip install pyparsing appdirs cryptography pywinrm kerberos requests_kerberos requests-credssp
-# \ CDP-174, CDP-209 Adding windows and kerberos modules
+# \ CDP-174, CDP-209, GISSRV-989 Adding windows and kerberos modules
 
 #Backuping generated live data because various sources should be injected externally
 RUN echo "" \
