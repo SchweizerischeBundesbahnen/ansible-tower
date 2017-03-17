@@ -9,10 +9,11 @@ ARG VCS_REF
 LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/SchweizerischeBundesbahnen/ansible-tower"
 
-ENV ANSIBLE_TOWER_VER 3.0.2
+ENV ANSIBLE_TOWER_VER 3.1.1
 ENV USER root
 
-RUN apt-get update \
+RUN DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
     && apt-get install -y software-properties-common wget curl bsdmainutils \
     # / CDP-209, GISSRV-989 Kerberos, credssp Integration
     && apt-get install -y python-dev libkrb5-dev krb5-user libffi-dev libssl-dev \
@@ -32,7 +33,8 @@ RUN cd /opt && tar -xvf ansible-tower-setup-${ANSIBLE_TOWER_VER}.tar.gz \
 ADD configs/inventory /opt/tower-setup/inventory
 ADD configs/krb5.conf /etc/krb5.conf
 
-RUN cd /opt/tower-setup \
+RUN locale-gen en_US.UTF-8 \
+    && cd /opt/tower-setup \
     && ./setup.sh \
     && ansible-tower-service stop
 
