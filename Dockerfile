@@ -41,7 +41,8 @@ ADD configs/patch.txt /tmp/patch.txt
 RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastructure/jira.py /tmp/patch.txt
 # \ CDP-69 Patch Jira module
 # / CDP-174, CDP-209 Adding windows and kerberos modules
-RUN pip install xmltodict pywinrm kerberos requests_kerberos requests-credssp
+RUN pip install --upgrade six \
+    && pip install pyparsing appdirs cryptography pywinrm kerberos requests_kerberos requests-credssp
 # \ CDP-174, CDP-209 Adding windows and kerberos modules
 
 
