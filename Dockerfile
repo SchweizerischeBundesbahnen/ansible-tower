@@ -9,7 +9,7 @@ ARG VCS_REF
 LABEL org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/SchweizerischeBundesbahnen/ansible-tower"
 
-ENV ANSIBLE_TOWER_VER 3.0.3
+ENV ANSIBLE_TOWER_VER 3.0.2
 ENV USER root
 
 RUN apt-get update \
@@ -44,7 +44,6 @@ RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastruc
 RUN pip install --upgrade six \
     && pip install pyparsing appdirs cryptography pywinrm kerberos requests_kerberos requests-credssp
 # \ CDP-174, CDP-209 Adding windows and kerberos modules
-
 
 #Backuping generated live data because various sources should be injected externally
 RUN echo "" \
