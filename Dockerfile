@@ -51,6 +51,10 @@ RUN pip install --upgrade six \
 RUN echo "" \
     && echo "Caring about postgres-database, data, certs, settings, logs" \
     && mv /var/lib/postgresql/9.4 /var/lib/postgresql/9.4.bak \
+    && mv /var/lib/awx/projects /var/lib/awx/projects.bak \
+    && ln -s /var/lib/awx/projects /var/lib/awx-data/projects \
+    && mv /var/lib/awx/job_status /var/lib/awx/job_status.bak \
+    && ln -s /var/lib/awx/job_status /var/lib/awx-data/job_status \
     && mv /var/log/ /var/log.bak
 
 ADD scripts/docker-entrypoint.sh /docker-entrypoint.sh
