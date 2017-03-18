@@ -1,17 +1,7 @@
 #!/bin/bash
-APACHE_CONF=/etc/apache2/conf-enabled/awx-httpd-443.conf
-# bash setup
 set -e # fail fast
 set -x # echo everything
 trap "kill -15 -1 && echo all proc killed" TERM KILL INT
-
-#Correcting Apache Config, must occur here since Apache Config is transient
-if [[ ${SERVER_NAME} ]]; then
-   echo "add ServerName to $SERVER_NAME"
-   head -n 1 ${APACHE_CONF} | grep -q "^ServerName" \
-   && sed -i -e "s/^ServerName.*/ServerName $SERVER_NAME/" ${APACHE_CONF} \
-   || sed -i -e "1s/^/ServerName $SERVER_NAME\n/" ${APACHE_CONF}
-fi
 
 #Check if Persisted Data exists, exiting if not
 if [  ! -d "/tmp/persisted" ]; then
@@ -51,9 +41,6 @@ if [  ! -d "/secret" ]; then
    echo "Mount for secret-data /secret not existing, skipping..."
    exit 101
 fi
-
-# remove stale pid file when restarting the same container
-rm -f /run/apache2/apache2.pid
 
 if [ "$1" = 'initialize' ]; then
     #Bootstrapping postgres from container
