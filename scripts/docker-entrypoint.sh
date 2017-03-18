@@ -50,8 +50,8 @@ if [ "$1" = 'initialize' ]; then
     cp -p /etc/tower/conf.d/ha.py /tmp/persisted/ha.py
     #Bootstrapping AWX-Data from container
     mkdir /var/lib/awx-data
-    cp -pR /var/lib/awx.bak/job_status /var/lib/awx-data/job_status
-    cp -pR /var/lib/awx.bak/projects /var/lib/awx-data/projects
+    cp -pR /var/lib/awx/job_status.bak /var/lib/awx-data/job_status
+    cp -pR /var/lib/awx/projects.bak /var/lib/awx-data/projects
     #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
     echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
     #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
