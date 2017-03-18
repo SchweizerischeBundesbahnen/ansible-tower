@@ -68,8 +68,10 @@ elif [ "$1" = 'start' ]; then
     cp -R --no-preserve=mode,ownership --backup /tmp/persisted/ha.py /etc/tower/conf.d/ha.py
     #.tower_version must be replaced every time the container start
     cp -R --no-preserve=mode,ownership --backup /var/lib/awx.bak/.tower_version /var/lib/awx/.tower_version
-   
-	#Starting the tower
+    #quickfix because permissions / users changes between 3.0.2 and 3.1.1
+    chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
+    
+    #Starting the tower
     ansible-tower-service start
     echo -e "----------------------------------------"
     echo -e "Tower started, Process idles......."
