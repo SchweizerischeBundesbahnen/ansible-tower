@@ -71,8 +71,8 @@ elif [ "$1" = 'start' ]; then
     #quickfix because permissions / users changes between 3.0.2 and 3.1.1
     chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
     #getting links to the data
-    ln -s /var/lib/awx/projects /var/lib/awx-data/projects
-    ln -s /var/lib/awx/job_status /var/lib/awx-data/job_status
+    ln -sf /var/lib/awx-data/projects /var/lib/awx/projects
+    ln -sf /var/lib/awx-data/job_status /var/lib/awx/job_status
     
     #Starting the tower
     ansible-tower-service start
