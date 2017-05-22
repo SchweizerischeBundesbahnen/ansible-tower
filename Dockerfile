@@ -42,10 +42,10 @@ RUN cd /opt/tower-setup \
 # RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastructure/jira.py /tmp/patch.txt
 # \ CDP-69 Patch Jira module
 # / CDP-174, CDP-209, GISSRV-989 Adding windows and kerberos modules
-RUN  source /var/lib/awx/venv/ansible/bin/activate \
+RUN  /bin/bash -c "source /var/lib/awx/venv/ansible/bin/activate" \
     && pip install --upgrade six \
     && pip install pyparsing appdirs cryptography pywinrm kerberos requests_kerberos requests-credssp \
-    && deactivate
+    && /bin/bash -c "deactivate"
 # \ CDP-174, CDP-209, GISSRV-989 Adding windows and kerberos modules
 
 #Backuping generated live data because various sources should be injected externally
