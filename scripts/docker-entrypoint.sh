@@ -78,10 +78,12 @@ elif [ "$1" = 'start' ]; then
     fi
     source /secret/*
     #ha.py need to be copied from host
-    cp -R --no-preserve=mode,ownership --backup /tmp/persisted/ha.py /etc/tower/conf.d/ha.py
+    cp -pR --backup /tmp/persisted/ha.py /etc/tower/conf.d/ha.py
     #.tower_version must be replaced every time the container start
-    cp -R --no-preserve=mode,ownership --backup /var/lib/awx.bak/.tower_version /var/lib/awx/.tower_version
-   
+    cp -pR --backup /var/lib/awx.bak/.tower_version /var/lib/awx/.tower_version
+    #venv must be copied because of installed packages
+    cp -pR --backup /var/lib/awx.bak/venv /var/lib/awx/
+
 	#Starting the tower
     ansible-tower-service start
     echo -e "----------------------------------------"
