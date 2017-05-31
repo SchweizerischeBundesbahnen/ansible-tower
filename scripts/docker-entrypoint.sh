@@ -82,13 +82,16 @@ elif [ "$1" = 'start' ]; then
     compare=`diff /var/lib/awx/.tower_version /var/lib/awx.bak/.tower_version | head -n1`
     #when update, copy all to /var/lib/awx
     if [ -n "$compare" ]; then
-        #moving everything to safe location
+        echo -e "----------------------------------------"
+        echo -e "Versions differ, migration started......"
+        echo -e "----------------------------------------"
+        echo -e "moving content to bak......"
         mv /var/lib/awx/projects /tmp/projects.bak
         mv /var/lib/awx/job_status /tmp/job_status.bak
         mv /var/lib/awx/public/static/local_settings.json  /tmp/local_settings.json.bak
-        #removing "old" awx and moving awx from update
+        echo -e "removing old awx and moving awx from update"
         rm -rf /var/lib/awx && mv /var/lib/awx.bak /var/lib/awx
-        #re-moving all content to old location
+        echo -e "re-moving all content to old location"
         mv /tmp/projects.bak /var/lib/awx/projects
         mv /tmp/job_status.bak /var/lib/awx/job_status
         mv /tmp/local_settings.json.bak /var/lib/awx/public/static/local_settings.json
