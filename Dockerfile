@@ -14,7 +14,7 @@ ENV USER root
 
 RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get install -y software-properties-common wget curl bsdmainutils \
+    && apt-get install -y software-properties-common wget curl bsdmainutils python-dev libssl-dev  \
     && apt-add-repository -y ppa:ansible/ansible \
     && apt-get update \
     && apt-get install -y ansible \
@@ -38,7 +38,7 @@ RUN cd /opt/tower-setup \
 #RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastructure/jira.py /tmp/patch.txt
 # \ CDP-69 Patch Jira module
 # / CDP-174, CDP-209, GISSRV-989 Adding windows modules
-RUN /bin/bash -c "source /var/lib/awx/venv/ansible/bin/activate; pip install --upgrade pywinrm; pip install pywinrm[credssp]; deactivate;"
+RUN /bin/bash -c "source /var/lib/awx/venv/ansible/bin/activate; pip install --upgrade pywinrm; pip install --upgrade pyOpenSSL; pip install pywinrm[credssp]; deactivate;"
 # \ CDP-174, CDP-209, GISSRV-989 Adding windows modules
 
 #Backuping generated live data because various sources should be injected externally
