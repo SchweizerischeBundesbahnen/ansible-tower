@@ -79,7 +79,7 @@ elif [ "$1" = 'start' ]; then
     source /secret/*
     #ha.py need to be copied from host
     cp -pR --backup /tmp/persisted/ha.py /etc/tower/conf.d/ha.py
-    compare=`diff /var/lib/awx/.tower_version /var/lib/awx.bak/.tower_version`
+    compare=`diff /var/lib/awx/.tower_version /var/lib/awx.bak/.tower_version | head -n1`
     #when update, copy all to /var/lib/awx
     if [ -n "$compare" ]; then
         #moving everything to safe location
