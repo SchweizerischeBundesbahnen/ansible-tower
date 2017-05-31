@@ -15,9 +15,6 @@ ENV USER root
 RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
     && apt-get install -y software-properties-common wget curl bsdmainutils \
-    # / CDP-209, GISSRV-989 credssp Integration
-    && apt-get install -y python-dev libffi-dev libssl-dev \
-    # \ CDP-209, GISSRV-989 credssp Integration
     && apt-add-repository -y ppa:ansible/ansible \
     && apt-get update \
     && apt-get install -y ansible \
@@ -32,7 +29,8 @@ RUN cd /opt && tar -xvf ansible-tower-setup-${ANSIBLE_TOWER_VER}.tar.gz \
 
 ADD configs/inventory /opt/tower-setup/inventory
 
-RUN cd /opt/tower-setup \
+RUN locale-gen en_US.UTF-8 \
+    && cd /opt/tower-setup \
     && ./setup.sh \
     && ansible-tower-service stop
 
@@ -48,7 +46,8 @@ RUN /bin/bash -c "source /var/lib/awx/venv/ansible/bin/activate; pip install --u
 RUN echo "" \
     && echo "Caring about postgres-database, data, certs, settings, logs" \
     && mv /var/lib/postgresql/9.4 /var/lib/postgresql/9.4.bak \
-    && mv /var/lib/awx /var/lib/awx.bak \
+    && mv /var/lib/awx/projects /var/lib/awx/projects.bak \
+    && mv /var/lib/awx/job_status /var/lib/awx/job_status.bak \
     && mv /var/log/ /var/log.bak
 
 ADD scripts/docker-entrypoint.sh /docker-entrypoint.sh

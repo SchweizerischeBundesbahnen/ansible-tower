@@ -1,17 +1,7 @@
 #!/bin/bash
-APACHE_CONF=/etc/apache2/conf-enabled/awx-httpd-443.conf
-# bash setup
 set -e # fail fast
 set -x # echo everything
 trap "kill -15 -1 && echo all proc killed" TERM KILL INT
-
-#Correcting Apache Config, must occur here since Apache Config is transient
-if [[ ${SERVER_NAME} ]]; then
-   echo "add ServerName to $SERVER_NAME"
-   head -n 1 ${APACHE_CONF} | grep -q "^ServerName" \
-   && sed -i -e "s/^ServerName.*/ServerName $SERVER_NAME/" ${APACHE_CONF} \
-   || sed -i -e "1s/^/ServerName $SERVER_NAME\n/" ${APACHE_CONF}
-fi
 
 #Check if Persisted Data exists, exiting if not
 if [  ! -d "/tmp/persisted" ]; then
@@ -41,8 +31,8 @@ if [  ! -d "/var/lib/postgresql/9.4" ]; then
    exit 101
 fi
 #Check if AWX-Data exists, exiting if not
-if [  ! -d "/var/lib/awx" ]; then
-   echo "AWX-Data Mount /var/lib/awx not existing, please mount in container"
+if [  ! -d "/var/lib/awx-data" ]; then
+   echo "AWX-Data Mount /var/lib/awx-data not existing, please mount in container"
    echo "Exiting..."
    exit 101
 fi
@@ -52,9 +42,6 @@ if [  ! -d "/secret" ]; then
    exit 101
 fi
 
-# remove stale pid file when restarting the same container
-rm -f /run/apache2/apache2.pid
-
 if [ "$1" = 'initialize' ]; then
     #Bootstrapping postgres from container
     cp -pR /var/lib/postgresql/9.4.bak/main /var/lib/postgresql/9.4/main
@@ -62,7 +49,9 @@ if [ "$1" = 'initialize' ]; then
     #Copying it to "/tmp/persisted"
     cp -p /etc/tower/conf.d/ha.py /tmp/persisted/ha.py
     #Bootstrapping AWX-Data from container
-    cp -pR /var/lib/awx.bak/. /var/lib/awx/
+    mkdir /var/lib/awx-data
+    cp -pR /var/lib/awx/job_status.bak /var/lib/awx-data/job_status
+    cp -pR /var/lib/awx/projects.bak /var/lib/awx-data/projects
     #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
     echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
     #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
@@ -72,15 +61,18 @@ if [ "$1" = 'initialize' ]; then
     echo -e "Done Bootstrapping..."
     echo -e "----------------------------------------"
 elif [ "$1" = 'start' ]; then
-    if [ ! "$(ls -A /var/lib/postgresql/9.4)" ] || [ ! "$(ls -A /var/lib/awx)" ] || [ ! "$(ls -A /etc/tower)" ]; then
+    if [ ! "$(ls -A /var/lib/postgresql/9.4)" ] || [ ! "$(ls -A /var/lib/awx-data)" ] || [ ! "$(ls -A /etc/tower)" ]; then
         echo "DB and/or Data and/or Settings not existing. Clone and/or bootstrap first."
         exit 102
     fi
     source /secret/*
     #ha.py need to be copied from host
     cp -pR --backup /tmp/persisted/ha.py /etc/tower/conf.d/ha.py
-    #venv must be copied because of installed packages
-    cp -pR --backup /var/lib/awx.bak/venv /var/lib/awx/
+    #quickfix because permissions / users changes between 3.0.2 and 3.1.1
+    chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
+     #getting links to the data
+    ln -sf /var/lib/awx-data/projects /var/lib/awx/projects
+    ln -sf /var/lib/awx-data/job_status /var/lib/awx/job_status
     #.tower_version: check and replace if not up to date
     compare=`diff /var/lib/awx/.tower_version /var/lib/awx.bak/.tower_version`
     if [ -n "$VAR" ]; then

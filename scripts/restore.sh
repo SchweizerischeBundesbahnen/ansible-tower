@@ -4,8 +4,8 @@ if [ ! -f /backup/tower-backup-latest.tar.gz ] ; then
     exit 102
 fi
 
-if [ "$(ls -A /var/lib/postgresql/9.4/main)" ] || [ "$(ls -A /var/lib/awx)" ]; then
-    echo "DB (/var/lib/postgresql/9.4/main) and/or Data (/var/lib/awx) existing. Remove on Host first and try again. Exiting..."
+if [ "$(ls -A /var/lib/postgresql/9.4/main)" ] || [ "$(ls -A /var/lib/awx-data)" ]; then
+    echo "DB (/var/lib/postgresql/9.4/main) and/or Data (/var/lib/awx-data) existing. Remove on Host first and try again. Exiting..."
     exit 102
 fi
 
