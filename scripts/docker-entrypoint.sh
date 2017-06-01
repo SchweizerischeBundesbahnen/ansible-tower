@@ -68,11 +68,12 @@ elif [ "$1" = 'start' ]; then
     source /secret/*
     #ha.py need to be copied from host
     cp -pR --backup /tmp/persisted/ha.py /etc/tower/conf.d/ha.py
-    #quickfix because permissions / users changes between 3.0.2 and 3.1.1
-    chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
+    #check if to upgrade or not
     compare=`diff /var/lib/awx/.tower_version /var/lib/awx.bak/.tower_version | head -n1`
     #when update, copy all to /var/lib/awx
     if [ -n "$compare" ]; then
+        #quickfix because permissions / users changes between 3.0.2 and 3.1.1
+        chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
         echo -e "----------------------------------------"
         echo -e "Versions differ, migration started......"
         echo -e "----------------------------------------"
@@ -87,6 +88,8 @@ elif [ "$1" = 'start' ]; then
         mv /tmp/projects.bak/* /var/lib/awx/projects
         mv /tmp/job_status.bak/* /var/lib/awx/job_status
         mv /tmp/local_settings.json.bak /var/lib/awx/public/static/local_settings.json
+        /opt/tower/setup.sh
+        ansible-tower-service stop
     fi
 	#Starting the tower
     ansible-tower-service start
