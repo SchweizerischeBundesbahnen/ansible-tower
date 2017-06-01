@@ -90,11 +90,11 @@ elif [ "$1" = 'start' ]; then
         mv /var/lib/awx/job_status /tmp/job_status.bak
         mv /var/lib/awx/public/static/local_settings.json  /tmp/local_settings.json.bak
         echo -e "removing old awx and moving awx from update"
-        rm -rvf /var/lib/awx/*
-        cp -Pr /var/lib/awx.bak/* /var/lib/awx
+        find /var/lib/awx -mindepth 1 -delete
+        cp -pR /var/lib/awx.bak/. /var/lib/awx
         echo -e "re-moving all content to old location"
-        mv /tmp/projects.bak /var/lib/awx/projects
-        mv /tmp/job_status.bak /var/lib/awx/job_status
+        mv /tmp/projects.bak/* /var/lib/awx/projects
+        mv /tmp/job_status.bak/* /var/lib/awx/job_status
         mv /tmp/local_settings.json.bak /var/lib/awx/public/static/local_settings.json
     fi
 	#Starting the tower
