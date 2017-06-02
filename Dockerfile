@@ -46,8 +46,7 @@ RUN /bin/bash -c "source /var/lib/awx/venv/ansible/bin/activate; pip install --u
 RUN echo "" \
     && echo "Caring about postgres-database, data, certs, settings, logs" \
     && mv /var/lib/postgresql/9.4 /var/lib/postgresql/9.4.bak \
-    && mv /var/lib/awx/projects /var/lib/awx/projects.bak \
-    && mv /var/lib/awx/job_status /var/lib/awx/job_status.bak \
+    && mv /var/lib/awx /var/lib/awx.bak \
     && mv /var/log/ /var/log.bak
 
 ADD scripts/docker-entrypoint.sh /docker-entrypoint.sh

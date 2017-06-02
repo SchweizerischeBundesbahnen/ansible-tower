@@ -31,8 +31,8 @@ if [  ! -d "/var/lib/postgresql/9.4" ]; then
    exit 101
 fi
 #Check if AWX-Data exists, exiting if not
-if [  ! -d "/var/lib/awx-data" ]; then
-   echo "AWX-Data Mount /var/lib/awx-data not existing, please mount in container"
+if [  ! -d "/var/lib/awx" ]; then
+   echo "AWX-Data Mount /var/lib/awx not existing, please mount in container"
    echo "Exiting..."
    exit 101
 fi
@@ -49,9 +49,7 @@ if [ "$1" = 'initialize' ]; then
     #Copying it to "/tmp/persisted"
     cp -p /etc/tower/conf.d/ha.py /tmp/persisted/ha.py
     #Bootstrapping AWX-Data from container
-    mkdir /var/lib/awx-data
-    cp -pR /var/lib/awx/job_status.bak /var/lib/awx-data/job_status
-    cp -pR /var/lib/awx/projects.bak /var/lib/awx-data/projects
+    cp -pR /var/lib/awx.bak/. /var/lib/awx/
     #Fixing Websocketport: https://issues.sbb.ch/browse/CDP-64
     echo "{\"websocket_port\": 11230}" > /var/lib/awx/public/static/local_settings.json && cat /var/lib/awx/public/static/local_settings.json
     #Fixing SSL-Access: https://issues.sbb.ch/browse/CDP-68
@@ -61,7 +59,7 @@ if [ "$1" = 'initialize' ]; then
     echo -e "Done Bootstrapping..."
     echo -e "----------------------------------------"
 elif [ "$1" = 'start' ]; then
-    if [ ! "$(ls -A /var/lib/postgresql/9.4)" ] || [ ! "$(ls -A /var/lib/awx-data)" ] || [ ! "$(ls -A /etc/tower)" ]; then
+    if [ ! "$(ls -A /var/lib/postgresql/9.4)" ] || [ ! "$(ls -A /var/lib/awx)" ] || [ ! "$(ls -A /etc/tower)" ]; then
         echo "DB and/or Data and/or Settings not existing. Clone and/or bootstrap first."
         exit 102
     fi
@@ -72,11 +70,11 @@ elif [ "$1" = 'start' ]; then
     compare=`diff /var/lib/awx/.tower_version /var/lib/awx.bak/.tower_version | head -n1`
     #when update, copy all to /var/lib/awx
     if [ -n "$compare" ]; then
-        #quickfix because permissions / users changes between 3.0.2 and 3.1.1
-        chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
         echo -e "----------------------------------------"
         echo -e "Versions differ, migration started......"
         echo -e "----------------------------------------"
+        #quickfix because permissions / users changes between 3.0.2 and 3.1.1
+        chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
         echo -e "moving content to bak......"
         mv /var/lib/awx/projects /tmp/projects.bak
         mv /var/lib/awx/job_status /tmp/job_status.bak
@@ -84,12 +82,12 @@ elif [ "$1" = 'start' ]; then
         echo -e "removing old awx and moving awx from update"
         find /var/lib/awx -mindepth 1 -delete
         cp -pR /var/lib/awx.bak/. /var/lib/awx
+        /opt/tower/setup.sh
+        ansible-tower-service stop
         echo -e "re-moving all content to old location"
         mv /tmp/projects.bak/* /var/lib/awx/projects
         mv /tmp/job_status.bak/* /var/lib/awx/job_status
         mv /tmp/local_settings.json.bak /var/lib/awx/public/static/local_settings.json
-        /opt/tower/setup.sh
-        ansible-tower-service stop
     fi
 	#Starting the tower
     ansible-tower-service start
