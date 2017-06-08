@@ -63,7 +63,7 @@ elif [ "$1" = 'start' ]; then
         echo "DB and/or Data and/or Settings not existing. Clone and/or bootstrap first."
         exit 102
     fi
-    source /secret/*
+    . /secret/*
     #ha.py need to be copied from host
     cp -pR --backup /tmp/persisted/ha.py /etc/tower/conf.d/ha.py
     #check if to upgrade or not
@@ -76,18 +76,18 @@ elif [ "$1" = 'start' ]; then
         #quickfix because permissions / users changes between 3.0.2 and 3.1.1
         chown -R postgres:postgres /var/lib/postgresql/9.4 /var/log/postgresql
         echo -e "moving content to bak......"
-        mv /var/lib/awx/projects /tmp/projects.bak
-        mv /var/lib/awx/job_status /tmp/job_status.bak
-        mv /var/lib/awx/public/static/local_settings.json  /tmp/local_settings.json.bak
+        cp -pR /var/lib/awx/projects /tmp/projects.bak
+        cp -pR /var/lib/awx/job_status /tmp/job_status.bak
+        cp -pR /var/lib/awx/public/static/local_settings.json  /tmp/local_settings.json.bak
         echo -e "removing old awx and moving awx from update"
         find /var/lib/awx -mindepth 1 -delete
         cp -pR /var/lib/awx.bak/. /var/lib/awx
         /opt/tower/setup.sh
         ansible-tower-service stop
         echo -e "re-moving all content to old location"
-        mv /tmp/projects.bak/* /var/lib/awx/projects
-        mv /tmp/job_status.bak/* /var/lib/awx/job_status
-        mv /tmp/local_settings.json.bak /var/lib/awx/public/static/local_settings.json
+        cp -pR /tmp/projects.bak/* /var/lib/awx/projects
+        cp -pR /tmp/job_status.bak/* /var/lib/awx/job_status
+        cp -pR /tmp/local_settings.json.bak /var/lib/awx/public/static/local_settings.json
     fi
 	#Starting the tower
     ansible-tower-service start
