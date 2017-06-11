@@ -82,7 +82,7 @@ elif [ "$1" = 'start' ]; then
         echo -e "removing old awx and moving awx from update"
         find /var/lib/awx -mindepth 1 -delete
         cp -pR /var/lib/awx.bak/. /var/lib/awx
-        /opt/tower/setup.sh
+        /opt/tower-setup/setup.sh
         ansible-tower-service stop
         echo -e "re-moving all content to old location"
         cp -pR /tmp/projects.bak/* /var/lib/awx/projects
