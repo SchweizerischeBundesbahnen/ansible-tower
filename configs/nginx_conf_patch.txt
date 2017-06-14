@@ -1,4 +1,19 @@
-42c42
-<
----
->       listen 8088 default_server;
+*** nginx.conf.first    Wed Jun 14 08:12:22 2017
+--- nginx.conf  Wed Jun 14 06:36:16 2017
+***************
+*** 39,45 ****
+                  listen 443 default_server ssl;
+          listen 127.0.0.1:80 default_server;
+                  listen [::1]:80 default_server;
+!
+          # If you have a domain name, this is where to add it
+          server_name _;
+          keepalive_timeout 65;
+--- 39,45 ----
+                  listen 443 default_server ssl;
+          listen 127.0.0.1:80 default_server;
+                  listen [::1]:80 default_server;
+!       listen 8088 default_server;
+          # If you have a domain name, this is where to add it
+          server_name _;
+          keepalive_timeout 65;
