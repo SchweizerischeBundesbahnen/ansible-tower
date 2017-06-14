@@ -34,10 +34,10 @@ RUN locale-gen en_US.UTF-8 \
     && ./setup.sh \
     && ansible-tower-service stop
 
-# / CDP-69 Patch Jira module
-#ADD configs/patch.txt /tmp/patch.txt
-#RUN patch /usr/lib/python2.7/dist-packages/ansible/modules/extras/web_infrastructure/jira.py /tmp/patch.txt
-# \ CDP-69 Patch Jira module
+# / Patch nginx.conf
+ADD configs/nginx_conf_patch.txt /tmp/nginx_conf_patch.txt
+RUN patch /etc/nginx/nginx.conf /tmp/nginx_conf_patch.txt
+# \ Patch nginx.conf
 # / CDP-174, CDP-209, GISSRV-989 Adding windows modules
 RUN /bin/bash -c "source /var/lib/awx/venv/ansible/bin/activate; pip install --upgrade pywinrm; pip install --upgrade pyOpenSSL; pip install pywinrm[credssp]; deactivate;"
 # \ CDP-174, CDP-209, GISSRV-989 Adding windows modules
