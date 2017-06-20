@@ -1,4 +1,0 @@
-42c42
-<
----
->       listen 8088 default_server;
