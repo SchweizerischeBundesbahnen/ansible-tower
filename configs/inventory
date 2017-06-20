@@ -1,13 +1,10 @@
-[primary]
+[tower]
 localhost ansible_connection=local
-
-[secondary]
 
 [database]
 
 [all:vars]
 admin_password='000'
-redis_password='000'
 
 pg_host=''
 pg_port=''
@@ -15,3 +12,12 @@ pg_port=''
 pg_database='awx'
 pg_username='awx'
 pg_password='000'
+
+rabbitmq_port=5672
+rabbitmq_vhost=tower
+rabbitmq_username=tower
+rabbitmq_password='000'
+rabbitmq_cookie=cookiemonster
+
+# Needs to be true for fqdns and ip addresses
+rabbitmq_use_long_name=false
